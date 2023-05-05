@@ -1,0 +1,155 @@
+.footer-containter {
+  margin: 0 auto;
+  max-width: 1600px;
+}
+
+.logo-footer {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  animation: fadeIn 1.5s forwards;
+  opacity: 0;
+  transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.first {
+  display: inline-block;
+  animation: firstspan 1.5s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  background-color: #2851a3;
+  z-index: 1;
+  position: relative;
+  font-weight: 600;
+}
+
+.slide {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.second {
+  font-weight: 600;
+  color: #8b9dc3;
+  z-index: -1;
+  display: inline-block;
+  animation: secondspan 1.5s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transition-timing-function: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transition-timing-function: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transition-timing-function: scale(1);
+  }
+}
+
+@keyframes firstspan {
+  0% {
+    transform: translateX(100%);
+  }
+  60% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes secondspan {
+  0% {
+    transform: translateX(-100%);
+  }
+  60% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.logo font {
+  color: #8b9dc3;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+  margin: 2rem 0rem;
+}
+
+.navigation-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.navigation-links a {
+  color: #ffffff;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.navigation-links a:hover {
+  color: #dfe3ee;
+}
+
+.copy a {
+  letter-spacing: 0.2rem;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.copy a:hover {
+  color: #dfe3ee;
+}
+
+@media screen and (max-width: 1260px) {
+  .logo-footer {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .footer-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .navigation-links {
+    align-items: center;
+  }
+  .copy a {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .navigation-links {
+    align-items: center;
+  }
+}

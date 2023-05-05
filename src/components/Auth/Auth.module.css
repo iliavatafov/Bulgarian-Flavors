@@ -1,0 +1,172 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 4px;
+  font-size: 1.8rem;
+  padding-bottom: 0.5rem;
+}
+
+.singup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.singup-form input:not(:focus) {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding-left: 1rem;
+}
+
+.singup-form button {
+  height: 3rem;
+}
+
+.singup-form input:focus {
+  padding-left: 1rem;
+  outline: none;
+  border: 1px solid #1877f2;
+  border-radius: 6px;
+  background-color: rgb(232, 240, 254);
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+input {
+  height: 3rem;
+}
+
+.singup-form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.link-to-login-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.link-to-login {
+  border-bottom: 1px solid transparent;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  color: #1877f2;
+  height: 100%;
+}
+
+.link-to-login:hover {
+  border-bottom-color: #1877f2;
+  padding-bottom: 2px;
+}
+
+.link-to-forgoten-password {
+  width: 9.6rem;
+  margin: 0 auto;
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1877f2;
+  margin-top: 1rem;
+}
+
+.link-to-login-forgoten-pass {
+  width: 3.2rem;
+  margin: 0 auto;
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1877f2;
+  margin-top: 1rem;
+}
+
+.link-to-login-forgoten-pass:hover {
+  border-bottom-color: #1877f2;
+}
+
+.link-to-forgoten-password:hover {
+  border-bottom-color: #1877f2;
+}
+
+.errorMessage {
+  min-height: 3rem;
+  width: 100%;
+  background-color: #f6d6d9;
+  color: #7b5358;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.message {
+  min-height: 3rem;
+  width: 100%;
+  background-color: #d3ecd9;
+  color: #557460;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 600px) {
+  .auth-container {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  input::placeholder {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  input::placeholder {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  input::placeholder {
+    font-size: 0.68rem;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .auth-container {
+    padding: 1rem;
+  }
+  input::placeholder {
+    font-size: 0.56rem;
+  }
+}
