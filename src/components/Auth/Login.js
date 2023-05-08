@@ -1,23 +1,36 @@
+import ReactDOM from "react-dom";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import {
+  faFacebook,
+  faGoogle,
+  faSquareFacebook,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { useAuth } from "../../cotext/AuthContext";
+import { useModal } from "../../cotext/ModalContext";
 
+import { Backdrop } from "../Modal/Backdrop";
+import { ModalOverlay } from "../Modal/ModalOverlay";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 
 import styles from "./Auth.module.css";
+import { signInWithGoogle } from "../../firebase";
 
 export const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const { login } = useAuth();
+  const { login, googleLogin, facebookLogin } = useAuth();
+  const { handleOpenModal, handleCloseModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,15 +39,24 @@ export const Login = () => {
       setError("");
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
+      handleCloseModal();
     } catch (error) {
       setError("Грешно потребителско име или парола");
     }
     setLoading(false);
   };
 
-  return (
+  const handleShowPassword = () => {
+    setShowPassword((oldState) => !oldState);
+  };
+
+  const loginHTML = (
     <div className={styles["auth-container"]}>
+      <FontAwesomeIcon
+        icon={faXmark}
+        className={styles.xmark}
+        onClick={handleCloseModal}
+      />
       <div className={styles["auth-body"]}>
         <h2 className={styles.title}>Вход</h2>
         {error && (
@@ -46,44 +68,77 @@ export const Login = () => {
           <Input
             type="email"
             id="email"
+            name={"email"}
             label="E-mail"
             reference={emailRef}
             require={true}
           />
           <Input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
+            name={"password"}
             label="Парола"
             reference={passwordRef}
             require={true}
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowPassword}
+                className="eye"
+                icon={faEye}
+              />
+            }
           />
           <Button
             disabled={loading}
             type="submit"
             value={loading ? "Вход..." : "Вход"}
-            color="blue"
+            color="green-cyan"
           />
           <Button
-            type="submit"
+            icon={<FontAwesomeIcon icon={faGoogle} />}
+            disabled={loading}
+            type="button"
+            value={loading ? "Влизане..." : "Влез с Google акаунт"}
+            color="brands"
+            handler={googleLogin}
+          />
+          <Button
+            icon={<FontAwesomeIcon icon={faSquareFacebook} />}
+            disabled={loading}
+            type="button"
+            value={loading ? "Влизане..." : "Влез с Facebook акаунт"}
+            color="brands"
+            handler={facebookLogin}
+          />
+          <Button
+            type="button"
             value="Регистрирай се"
-            color="white-blue"
-            handler={() => navigate("/register")}
+            color="dark-blue"
+            handler={() => handleOpenModal("register")}
           />
         </form>
 
         <Link
-          to="/forgot-password"
+          to="#"
+          onClick={() => handleOpenModal("resetPassword")}
           className={styles["link-to-forgoten-password"]}
         >
           Забравена парола?
         </Link>
       </div>
-      {/* <div className={styles["link-to-login-container"]}>
-        Все още нямаш акаунт?
-        <Link to={"/register"} className={styles["link-to-login"]}>
-          Регистрация
-        </Link>
-      </div> */}
     </div>
+  );
+
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <Backdrop />,
+        document.getElementById("backdrop-root")
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay>{loginHTML}</ModalOverlay>,
+        document.getElementById("overlay-root")
+      )}
+    </>
   );
 };

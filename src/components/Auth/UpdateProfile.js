@@ -1,8 +1,15 @@
+import ReactDOM from "react-dom";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useAuth } from "../../cotext/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
 
+import { useAuth } from "../../cotext/AuthContext";
+import { useModal } from "../../cotext/ModalContext";
+
+import { Backdrop } from "../Modal/Backdrop";
+import { ModalOverlay } from "../Modal/ModalOverlay";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 
@@ -11,6 +18,8 @@ import styles from "./Auth.module.css";
 export const UpdateProfile = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepass, setShowRepass] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,6 +28,7 @@ export const UpdateProfile = () => {
   const passwordConfirmRef = useRef();
 
   const { currentUser, updateEmail, updatePassword } = useAuth();
+  const { handleOpenModal, handleCloseModal } = useModal();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,6 +51,7 @@ export const UpdateProfile = () => {
 
     Promise.all(promises)
       .then(() => {
+        handleCloseModal();
         navigate("/");
       })
       .catch((error) => {
@@ -70,8 +81,21 @@ export const UpdateProfile = () => {
       });
   };
 
-  return (
+  const handleShowPassword = () => {
+    setShowPassword((oldState) => !oldState);
+  };
+
+  const handleShowRepass = () => {
+    setShowRepass((oldState) => !oldState);
+  };
+
+  const updateProfileHTML = (
     <div className={styles["auth-container"]}>
+      <FontAwesomeIcon
+        icon={faXmark}
+        className={styles.xmark}
+        onClick={handleCloseModal}
+      />
       <div className={styles["auth-body"]}>
         <h2 className={styles.title}>Актуализиране на акаунт</h2>
         {error && (
@@ -88,32 +112,61 @@ export const UpdateProfile = () => {
             defaultVal={currentUser.email}
           />
           <Input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             label="Парола"
             reference={passwordRef}
-            placeHolder="Остави празнo, за да запазиш същата парола"
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowPassword}
+                className="eye"
+                icon={faEye}
+              />
+            }
           />
           <Input
-            type="password"
+            type={showRepass ? "text" : "password"}
             id="password-confirm"
             label="Повторете паролата"
             reference={passwordConfirmRef}
-            placeHolder="Остави празнo, за да запазиш същата парола"
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowRepass}
+                className="eye"
+                icon={faEye}
+              />
+            }
           />
           <Button
             disabled={loading}
             type="submit"
             value={loading ? "Обновяване..." : "Обнови"}
-            color="blue"
+            color="green-cyan"
           />
         </form>
       </div>
       <div className={styles["link-to-login-container"]}>
-        <Link to={"/profile"} className={styles["link-to-login"]}>
+        <Link
+          to={"#"}
+          className={styles["link-to-login"]}
+          onClick={() => handleOpenModal("profile")}
+        >
           Затвори
         </Link>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <Backdrop />,
+        document.getElementById("backdrop-root")
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay>{updateProfileHTML}</ModalOverlay>,
+        document.getElementById("overlay-root")
+      )}
+    </>
   );
 };

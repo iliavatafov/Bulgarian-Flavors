@@ -1,12 +1,27 @@
 .profile-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 2rem;
+  padding-top: 3rem;
   max-width: 500px;
   background-color: #fff;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.xmark {
+  color: #000;
+  font-size: 1.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 0.7rem;
+  cursor: pointer;
+}
+
+.xmark:hover {
+  color: var(--green-cyan-color);
 }
 
 .profile-body {
@@ -38,25 +53,58 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1877f2;
+  color: var(--lightblue-color);
 
   border-bottom: 1px solid transparent;
 }
 
 .logout a:hover {
-  border-bottom-color: #1877f2;
+  border-bottom-color: var(--lightblue-color);
 }
 
 @media screen and (max-width: 600px) {
   .profile-container {
     width: 90%;
-    padding: 2rem;
+  }
+  .xmark {
+    font-size: 1.2rem;
   }
 }
 
 @media screen and (max-width: 300px) {
   .profile-container {
-    width: 98%;
-    padding: 2rem;
+    padding: 1rem;
+    padding-top: 2.2rem;
+    font-size: 0.8rem;
+  }
+
+  .profile-body {
+    padding: 1rem;
+  }
+
+  .profile-title {
+    font-size: 1.6rem;
+  }
+
+  input {
+    height: 2.5rem;
+  }
+
+  input,
+  label {
+    font-size: 0.8rem;
+  }
+
+  input::placeholder {
+    font-size: 0.56rem;
+  }
+
+  .singup-form button {
+    height: 2.5rem;
+    width: 100%;
+  }
+
+  .errorMessage {
+    font-size: 0.8rem;
   }
 }

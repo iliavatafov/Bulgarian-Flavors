@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #ffffff;
+  color: #00d49a;
   animation: fadeIn 1.5s forwards;
   opacity: 0;
   transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
@@ -102,7 +102,7 @@
 }
 
 .navigation-links a:hover {
-  color: #dfe3ee;
+  color: #00d49a;
 }
 
 .copy a {
@@ -121,7 +121,7 @@
   color: #dfe3ee;
 }
 
-@media screen and (max-width: 1260px) {
+@media screen and (max-width: 1400px) {
   .logo-footer {
     font-size: 20px;
   }

@@ -1,3 +1,5 @@
+import "./Input.css";
+
 export const Input = ({
   type,
   id,
@@ -7,9 +9,12 @@ export const Input = ({
   defaultVal,
   disable,
   placeHolder,
+  name,
+  icon,
 }) => {
   return (
     <div>
+      {icon && icon}
       <label htmlFor={type}>{label}</label>
       <input
         type={type}
@@ -19,6 +24,7 @@ export const Input = ({
         defaultValue={defaultVal && defaultVal}
         disabled={disable}
         placeholder={placeHolder}
+        name={name}
       />
     </div>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { useAuth } from "../../cotext/AuthContext";
+import { useModal } from "../../cotext/ModalContext";
 
 import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
 
@@ -12,6 +13,7 @@ export const Navbar = () => {
   const [menuToRender, setMenuToRender] = useState([]);
 
   const { currentUser } = useAuth();
+  const { handleOpenModal } = useModal();
 
   useEffect(() => {
     if (currentUser) {
@@ -25,18 +27,23 @@ export const Navbar = () => {
     }
   }, [currentUser]);
 
-  const myLinks = menuToRender.map(({ title, url }, index) => {
-    return (
-      <li key={index}>
-        <NavLink
-          to={url}
-          className={({ isActive }) => (isActive ? "active" : undefined)}
-        >
-          {title}
-        </NavLink>
-      </li>
-    );
-  });
+  const myLinks = menuToRender.map(
+    ({ title, url, isModal, modalName }, index) => {
+      return (
+        <li key={index}>
+          <NavLink
+            to={url}
+            className={({ isActive }) =>
+              isActive && url !== "#" ? "active" : ""
+            }
+            onClick={isModal && (() => handleOpenModal(modalName))}
+          >
+            {title}
+          </NavLink>
+        </li>
+      );
+    }
+  );
 
   const navbarClickHandler = () => {
     setClicked(!clicked);
