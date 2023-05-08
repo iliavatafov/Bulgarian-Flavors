@@ -29,9 +29,10 @@ export const AuthProvider = ({ children }) => {
 
   const googleLogin = async () => {
     const provider = new GoogleAuthProvider();
-    const googleAuth = getAuth();
-    signInWithPopup(googleAuth, provider)
+
+    signInWithPopup(auth, provider)
       .then((result) => {
+        console.log("here");
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
@@ -55,13 +56,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const facebookLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    const facebookAuth = getAuth();
-    signInWithPopup(facebookAuth, provider)
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(auth, provider)
       .then((result) => {
         // The signed-in user info.
         const user = result.user;
-        console.log(user);
 
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
