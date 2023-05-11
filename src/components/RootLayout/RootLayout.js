@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import { useModal } from "../../cotext/ModalContext";
+import { useSelector } from "react-redux";
 
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
@@ -13,18 +13,19 @@ import { UpdateProfile } from "../Auth/UpdateProfile";
 import styles from "./RootLayout.module.css";
 
 export const RootLayout = () => {
-  const { showModal } = useModal();
+  const modal = useSelector((state) => state.modal);
+
   return (
     <>
       <header className={styles.header}>
         <Navbar />
       </header>
       <main className={styles.main}>
-        {showModal.login && <Login />}
-        {showModal.register && <Register />}
-        {showModal.resetPassword && <ForgotPassword />}
-        {showModal.profile && <Profile />}
-        {showModal.updateProfile && <UpdateProfile />}
+        {modal.login && <Login />}
+        {modal.register && <Register />}
+        {modal.resetPassword && <ForgotPassword />}
+        {modal.profile && <Profile />}
+        {modal.updateProfile && <UpdateProfile />}
         <Outlet />
       </main>
       <footer className={styles.footer}>

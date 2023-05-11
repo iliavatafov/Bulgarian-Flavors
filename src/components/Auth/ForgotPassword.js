@@ -2,11 +2,12 @@ import ReactDOM from "react-dom";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { modalActions } from "../../store/modalSlice";
+import { resetPassword } from "../../store/authSlice";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
-import { useAuth } from "../../cotext/AuthContext";
-import { useModal } from "../../cotext/ModalContext";
 
 import { Backdrop } from "../Modal/Backdrop";
 import { ModalOverlay } from "../Modal/ModalOverlay";
@@ -17,13 +18,13 @@ import styles from "./Auth.module.css";
 
 export const ForgotPassword = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
+
+  const loading = useSelector((state) => state.loading.loading);
 
   const emailRef = useRef();
 
-  const { resetPassword } = useAuth();
-  const { handleOpenModal, handleCloseModal } = useModal();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,15 +32,13 @@ export const ForgotPassword = () => {
     try {
       setMessage("");
       setError("");
-      setLoading(true);
-      await resetPassword(emailRef.current.value);
+      await dispatch(resetPassword(emailRef.current.value));
       setMessage(
         `Изпратени са инструкции за промяна на парола на ${emailRef.current.value}`
       );
     } catch (error) {
-      setError("Грешка при опит за рестартиране на парола");
+      setError(error.message);
     }
-    setLoading(false);
   };
 
   const updatePasswordHTML = (
@@ -47,7 +46,7 @@ export const ForgotPassword = () => {
       <FontAwesomeIcon
         icon={faXmark}
         className={styles.xmark}
-        onClick={handleCloseModal}
+        onClick={() => dispatch(modalActions.closeModal())}
       />
       <div className={styles["auth-body"]}>
         <h2 className={styles.title}>Забравена парола</h2>
@@ -80,7 +79,7 @@ export const ForgotPassword = () => {
 
         <Link
           to="#"
-          onClick={() => handleOpenModal("login")}
+          onClick={() => dispatch(modalActions.openModal("login"))}
           className={styles["link-to-login-forgoten-pass"]}
         >
           Вход
@@ -91,7 +90,7 @@ export const ForgotPassword = () => {
         <Link
           to="#"
           className={styles["link-to-login"]}
-          onClick={() => handleOpenModal("register")}
+          onClick={() => dispatch(modalActions.openModal("register"))}
         >
           Регистрация
         </Link>

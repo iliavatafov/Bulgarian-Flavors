@@ -1,12 +1,13 @@
 import ReactDOM from "react-dom";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { updateEmail, updatePassword } from "../../store/authSlice";
+import { modalActions } from "../../store/modalSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
-
-import { useAuth } from "../../cotext/AuthContext";
-import { useModal } from "../../cotext/ModalContext";
 
 import { Backdrop } from "../Modal/Backdrop";
 import { ModalOverlay } from "../Modal/ModalOverlay";
@@ -17,68 +18,44 @@ import styles from "./Auth.module.css";
 
 export const UpdateProfile = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepass, setShowRepass] = useState(false);
 
-  const navigate = useNavigate();
+  const loading = useSelector((state) => state.loading.loading);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
+  const dispatch = useDispatch();
 
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
 
-  const { currentUser, updateEmail, updatePassword } = useAuth();
-  const { handleOpenModal, handleCloseModal } = useModal();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Паролата не съвпада");
     }
 
-    const promises = [];
-    setLoading(true);
     setError("");
 
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
-    }
+    try {
+      const promises = [];
 
-    if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value));
-    }
+      if (emailRef.current.value !== currentUser.currentUser) {
+        promises.push(dispatch(updateEmail(emailRef.current.value)));
+      } else {
+        dispatch(modalActions.closeModal());
+      }
 
-    Promise.all(promises)
-      .then(() => {
-        handleCloseModal();
-        navigate("/");
-      })
-      .catch((error) => {
-        if (
-          error.message ===
-          "Firebase: Password should be at least 6 characters (auth/weak-password)."
-        ) {
-          setError("Паролата трябва да бъде минимум 6 символса");
-        } else if (
-          error.message ===
-          "Firebase: This operation is sensitive and requires recent authentication. Log in again before retrying this request. (auth/requires-recent-login)."
-        ) {
-          setError(
-            "Необходимо е да излезете и влезете отново, т. к. исканата от вас операция е чувствителна"
-          );
-        } else if (
-          error.message ===
-          "Firebase: The email address is badly formatted. (auth/invalid-email)."
-        ) {
-          setError("Грешен формат на e-mail");
-        } else {
-          setError("Неуспешно актуализиране на акаунта");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      if (passwordRef.current.value) {
+        promises.push(dispatch(updatePassword(passwordRef.current.value)));
+      }
+
+      await Promise.all(promises);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleShowPassword = () => {
@@ -94,7 +71,7 @@ export const UpdateProfile = () => {
       <FontAwesomeIcon
         icon={faXmark}
         className={styles.xmark}
-        onClick={handleCloseModal}
+        onClick={() => dispatch(modalActions.closeModal())}
       />
       <div className={styles["auth-body"]}>
         <h2 className={styles.title}>Актуализиране на акаунт</h2>
@@ -109,12 +86,12 @@ export const UpdateProfile = () => {
             id="email"
             label="E-mail"
             reference={emailRef}
-            defaultVal={currentUser.email}
+            defaultVal={currentUser.currentUser}
           />
           <Input
             type={showPassword ? "text" : "password"}
             id="password"
-            label="Парола"
+            label="Нова парола"
             reference={passwordRef}
             icon={
               <FontAwesomeIcon
@@ -127,7 +104,7 @@ export const UpdateProfile = () => {
           <Input
             type={showRepass ? "text" : "password"}
             id="password-confirm"
-            label="Повторете паролата"
+            label="Повторете новата парола"
             reference={passwordConfirmRef}
             icon={
               <FontAwesomeIcon
@@ -137,6 +114,10 @@ export const UpdateProfile = () => {
               />
             }
           />
+          <p className={styles.helpMessage}>
+            <span>*</span> Не е необходимо въвеждане на нова парола при
+            актуализация на e-mail адрес
+          </p>
           <Button
             disabled={loading}
             type="submit"
@@ -149,7 +130,7 @@ export const UpdateProfile = () => {
         <Link
           to={"#"}
           className={styles["link-to-login"]}
-          onClick={() => handleOpenModal("profile")}
+          onClick={() => dispatch(modalActions.openModal("profile"))}
         >
           Затвори
         </Link>

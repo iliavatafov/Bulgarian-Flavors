@@ -21,7 +21,7 @@
 }
 
 .xmark:hover {
-  color: var(--green-cyan-color);
+  color: var(--lightblue-color);
 }
 
 .title {
@@ -158,6 +158,14 @@ input {
   padding: 0.5rem 1rem;
   margin-bottom: 1.3rem;
   font-size: 1rem;
+}
+
+.helpMessage {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.7rem;
+  padding: 0rem 1rem;
+  text-align: center;
 }
 
 @media screen and (max-width: 600px) {

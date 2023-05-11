@@ -61,3 +61,11 @@
     font-size: 0.9rem;
   }
 }
+
+@media screen and (max-width: 300px) {
+  .submit-button-brands svg {
+    top: 0.65rem;
+    left: 1rem;
+    font-size: 1rem;
+  }
+}

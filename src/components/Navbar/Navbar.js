@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { useAuth } from "../../cotext/AuthContext";
-import { useModal } from "../../cotext/ModalContext";
+import { useDispatch, useSelector } from "react-redux";
+import { modalActions } from "../../store/modalSlice";
 
 import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
 
@@ -12,12 +12,13 @@ export const Navbar = () => {
   const [clicked, setClicked] = useState(false);
   const [menuToRender, setMenuToRender] = useState([]);
 
-  const { currentUser } = useAuth();
-  const { handleOpenModal } = useModal();
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentUser) {
-      if (currentUser.email === "iliyavatafov@gmail.com") {
+    if (currentUser?.currentUser) {
+      if (currentUser.currentUser === "iliyavatafov@gmail.com") {
         setMenuToRender(MyLinksAdmin);
       } else {
         setMenuToRender(MyLinksLoggedIn);
@@ -36,7 +37,9 @@ export const Navbar = () => {
             className={({ isActive }) =>
               isActive && url !== "#" ? "active" : ""
             }
-            onClick={isModal && (() => handleOpenModal(modalName))}
+            onClick={
+              isModal && (() => dispatch(modalActions.openModal(modalName)))
+            }
           >
             {title}
           </NavLink>

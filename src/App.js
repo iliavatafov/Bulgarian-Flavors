@@ -1,17 +1,26 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
 
-import { ContactUs } from "./components/Contacts/ContactUs";
-import { ForMe } from "./components/ForMe/ForMe";
-import { Mission } from "./components/Mission/Mission";
+import { useDispatch } from "react-redux";
+import { checkAuthState } from "./store/authSlice";
+
+import { ContactUs } from "./pages/Contacts/ContactUs";
+import { ForMe } from "./pages/ForMe/ForMe";
+import { Mission } from "./pages/Mission/Mission";
 
 import { RootLayout } from "./components/RootLayout/RootLayout";
-import { Home } from "./components/Home/Home";
-import { WineAndFood } from "./components/WineAndFood/WineAndFood";
-import { TourismInitiatives } from "./components/TourismInitiatives/TourismInitiatives";
-import { Destination } from "./components/Destination/Destination";
-import { ModalProvider } from "./cotext/ModalContext";
+import { Home } from "./pages/Home/Home";
+import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
+import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
+import { Destination } from "./pages/Destination/Destination";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuthState());
+  }, [dispatch]);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -28,11 +37,7 @@ function App() {
     },
   ]);
 
-  return (
-    <ModalProvider>
-      <RouterProvider router={router} />
-    </ModalProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

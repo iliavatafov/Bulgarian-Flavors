@@ -2,11 +2,12 @@ import ReactDOM from "react-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { modalActions } from "../../store/modalSlice";
+import { logout } from "../../store/authSlice";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
-import { useAuth } from "../../cotext/AuthContext";
-import { useModal } from "../../cotext/ModalContext";
 
 import { Backdrop } from "../Modal/Backdrop";
 import { ModalOverlay } from "../Modal/ModalOverlay";
@@ -17,16 +18,17 @@ import styles from "./Profile.module.css";
 export const Profile = () => {
   const [error, setError] = useState("");
 
-  const { currentUser, logout } = useAuth();
-  const { handleOpenModal, handleCloseModal } = useModal();
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     setError("");
 
     try {
-      await logout();
-      handleCloseModal();
-      handleOpenModal("login");
+      await dispatch(logout());
+      dispatch(modalActions.closeModal());
+      dispatch(modalActions.openModal("login"));
     } catch (error) {
       setError("Грешка при изход");
     }
@@ -37,7 +39,7 @@ export const Profile = () => {
       <FontAwesomeIcon
         icon={faXmark}
         className={styles.xmark}
-        onClick={handleCloseModal}
+        onClick={() => dispatch(modalActions.closeModal())}
       />
       <div className={styles["profile-body"]}>
         <h2 className={styles["profile-title"]}>Профил</h2>
@@ -47,10 +49,10 @@ export const Profile = () => {
           </div>
         )}
         <div>
-          <strong>E-mail:</strong> {currentUser.email}
+          <strong>E-mail:</strong> {currentUser.currentUser}
         </div>
         <Button
-          handler={() => handleOpenModal("updateProfile")}
+          handler={() => dispatch(modalActions.openModal("updateProfile"))}
           type="button"
           value="Обновяване на профил"
           color="green-cyan"
