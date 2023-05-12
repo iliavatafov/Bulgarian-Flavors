@@ -12,7 +12,7 @@ export const Footer = () => {
             <span className="second">Flavors</span>
           </span>
         </Link>
-        <ul role="list" className={styles["navigation-links"]}>
+        <ul className={styles["navigation-links"]}>
           <li>
             <Link to="/">Начало</Link>
           </li>
@@ -26,7 +26,7 @@ export const Footer = () => {
             <Link to="/tourism-initiatives">Инициативи за туризма</Link>
           </li>
         </ul>
-        <ul role="list" className={styles["navigation-links"]}>
+        <ul className={styles["navigation-links"]}>
           <li>
             <Link to="/for-me">За мен</Link>
           </li>
@@ -40,7 +40,7 @@ export const Footer = () => {
             <Link to="/auth">Вход</Link>
           </li>
         </ul>
-        <ul role="list" className={styles["navigation-links"]}>
+        <ul className={styles["navigation-links"]}>
           <li>
             <Link to="/terms&conditions">Условия за ползване</Link>
           </li>

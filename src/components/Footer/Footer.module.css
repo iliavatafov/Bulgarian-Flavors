@@ -95,6 +95,12 @@
   gap: 0.3rem;
 }
 
+.navigation-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .navigation-links a {
   color: #ffffff;
   font-weight: 300;
