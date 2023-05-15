@@ -64,7 +64,7 @@
   -webkit-box-shadow: inset 0 0 0px 1000px #ffffff;
 }
 
-label {
+.auth-container label {
   font-size: 1rem;
   font-weight: 400;
   color: var(--green-cyan-color);
@@ -76,7 +76,7 @@ label {
   padding: 0rem 0.4rem;
 }
 
-input {
+.auth-container input {
   height: 3rem;
 }
 
@@ -182,23 +182,23 @@ input {
     padding: 2rem;
   }
 
-  input {
+  .auth-container input {
     width: 100%;
   }
 
-  input::placeholder {
+  .auth-container input::placeholder {
     font-size: 0.8rem;
   }
 }
 
 @media screen and (max-width: 400px) {
-  input::placeholder {
+  .auth-container input::placeholder {
     font-size: 0.7rem;
   }
 }
 
 @media screen and (max-width: 360px) {
-  input::placeholder {
+  .auth-container input::placeholder {
     font-size: 0.68rem;
   }
 }
@@ -213,16 +213,16 @@ input {
     font-size: 0.8rem;
   }
 
-  input {
+  .auth-container input {
     height: 2.5rem;
   }
 
-  input,
-  label {
+  .auth-container input,
+  .auth-container label {
     font-size: 0.8rem;
   }
 
-  input::placeholder {
+  .auth-container input::placeholder {
     font-size: 0.56rem;
   }
 

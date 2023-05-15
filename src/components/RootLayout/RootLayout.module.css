@@ -10,9 +10,13 @@
 
 .main {
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-top: 3rem;
   text-align: center;
   max-width: 1600px;
+  padding-bottom: 17.2rem;
 }
 
 .footer {

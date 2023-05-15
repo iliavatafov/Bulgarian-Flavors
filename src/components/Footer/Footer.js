@@ -20,7 +20,7 @@ export const Footer = () => {
             <Link to="/wine&food">Вино и храна</Link>
           </li>
           <li>
-            <Link to="/next-destination">Следваща дестинцатия</Link>
+            <Link to="/next-destination">Следваща дестинация</Link>
           </li>
           <li>
             <Link to="/tourism-initiatives">Инициативи за туризма</Link>

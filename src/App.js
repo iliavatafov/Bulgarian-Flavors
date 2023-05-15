@@ -13,6 +13,8 @@ import { Home } from "./pages/Home/Home";
 import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
 import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
 import { Destination } from "./pages/Destination/Destination";
+import { CreateArticle } from "./pages/CreateArticle/CreateArticle";
+import { PrivateRoute } from "./components/AdminRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +35,14 @@ function App() {
         { path: "/for-me", element: <ForMe /> },
         { path: "/mission", element: <Mission /> },
         { path: "/contact-us", element: <ContactUs /> },
+        {
+          path: "/create-article",
+          element: (
+            <PrivateRoute>
+              <CreateArticle />
+            </PrivateRoute>
+          ),
+        },
       ],
     },
   ]);
