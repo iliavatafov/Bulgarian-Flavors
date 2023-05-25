@@ -14,7 +14,9 @@ import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
 import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
 import { Destination } from "./pages/Destination/Destination";
 import { CreateArticle } from "./pages/CreateArticle/CreateArticle";
-import { PrivateRoute } from "./components/AdminRoute";
+import { AdminRoute } from "./components/AdminRoute";
+
+import "draft-js/dist/Draft.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,9 +40,9 @@ function App() {
         {
           path: "/create-article",
           element: (
-            <PrivateRoute>
+            <AdminRoute>
               <CreateArticle />
-            </PrivateRoute>
+            </AdminRoute>
           ),
         },
       ],

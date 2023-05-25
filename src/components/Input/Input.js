@@ -11,9 +11,10 @@ export const Input = ({
   placeHolder,
   name,
   icon,
+  classes,
 }) => {
   return (
-    <div>
+    <div className={classes}>
       {icon && icon}
       <label htmlFor={type}>{label}</label>
       <input

@@ -1,18 +1,21 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { modalActions } from "../store/modalSlice";
 
-export const PrivateRoute = ({ children }) => {
+export const AdminRoute = ({ children }) => {
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (currentUser?.currentUser !== "iliyavatafov@gmail.com") {
+      navigate("/");
       dispatch(modalActions.openModal("login"));
     }
-  }, [currentUser, dispatch]);
+  }, [currentUser, dispatch, navigate]);
 
   return currentUser ? children : null;
 };
