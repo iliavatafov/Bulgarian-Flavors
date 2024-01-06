@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import { login } from "../../store/authSlice";
 
-import { faGoogle, faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
+// import { faGoogle, faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -87,7 +87,7 @@ export const Login = () => {
             value={loading ? "Вход..." : "Вход"}
             color="green-cyan"
           />
-          <Button
+          {/* <Button
             icon={<FontAwesomeIcon icon={faGoogle} />}
             disabled={loading}
             type="button"
@@ -100,7 +100,7 @@ export const Login = () => {
             type="button"
             value="Влез с Facebook"
             color="brands"
-          />
+          /> */}
           <Button
             type="button"
             value="Регистрирай се"

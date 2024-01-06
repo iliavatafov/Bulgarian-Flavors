@@ -153,7 +153,7 @@ export const checkAuthState = () => {
         }
       });
     } catch (error) {
-      console.log("Error checking authentication state:", error);
+      console.error("Error checking authentication state:", error);
     }
   };
 };
