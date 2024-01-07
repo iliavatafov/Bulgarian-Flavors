@@ -87,7 +87,8 @@ export const updateEmail = (email) => {
     } catch (error) {
       if (error.code === "auth/requires-recent-login") {
         throw new Error(
-          "Необходимо е да излезете и влезете отново, т. к. исканата от вас операция е чувствителна"
+          "Необходимо е да излезете и влезете отново" +
+            ", т. к. исканата от вас операция е чувствителна"
         );
       } else if (error.code === "auth/invalid-email") {
         throw new Error("Грешен формат на e-mail адрес");

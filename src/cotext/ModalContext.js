@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 
-const ModalContext = React.createContext();
+const ModalContext = createContext();
 
 export const useModal = () => {
   return useContext(ModalContext);
 };
 
-const inipitalState = {
+const initialState = {
   login: false,
   register: false,
   resetPassword: false,
@@ -15,60 +16,17 @@ const inipitalState = {
 };
 
 export const ModalProvider = ({ children }) => {
-  const [showModal, setShowModal] = useState(inipitalState);
+  const [showModal, setShowModal] = useState(initialState);
 
   const handleOpenModal = (type) => {
-    switch (type) {
-      case "login":
-        setShowModal(() => ({
-          login: true,
-          register: false,
-          resetPassword: false,
-          profile: false,
-          updateProfile: false,
-        }));
-        break;
-      case "register":
-        setShowModal(() => ({
-          login: false,
-          register: true,
-          resetPassword: false,
-          profile: false,
-          updateProfile: false,
-        }));
-        break;
-      case "resetPassword":
-        setShowModal(() => ({
-          login: false,
-          register: false,
-          resetPassword: true,
-          profile: false,
-          updateProfile: false,
-        }));
-        break;
-      case "profile":
-        setShowModal(() => ({
-          login: false,
-          register: false,
-          resetPassword: false,
-          profile: true,
-          updateProfile: false,
-        }));
-        break;
-      case "updateProfile":
-        setShowModal(() => ({
-          login: false,
-          register: false,
-          resetPassword: false,
-          profile: false,
-          updateProfile: true,
-        }));
-        break;
-    }
+    setShowModal((prevState) => ({
+      ...initialState,
+      [type]: true,
+    }));
   };
 
   const handleCloseModal = () => {
-    setShowModal(inipitalState);
+    setShowModal(initialState);
   };
 
   const value = {
@@ -81,3 +39,9 @@ export const ModalProvider = ({ children }) => {
     <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
   );
 };
+
+ModalProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default ModalContext;

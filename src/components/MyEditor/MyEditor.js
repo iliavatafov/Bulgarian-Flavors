@@ -33,7 +33,9 @@ import { Input } from "../Input/Input";
 import styles from "./MyEditor.module.css";
 
 const Link = ({ contentState, entityKey, children }) => {
+  /* eslint-disable react/prop-types */
   const { url } = contentState.getEntity(entityKey).getData();
+
   return (
     <a
       className={styles.link}
@@ -44,6 +46,7 @@ const Link = ({ contentState, entityKey, children }) => {
       {children}
     </a>
   );
+  /* eslint-enable react/prop-types */
 };
 
 const findLinkEntities = (contentBlock, callback, contentState) => {
@@ -219,6 +222,7 @@ export const MyEditor = () => {
   };
 
   const ImageComponent = ({ block, contentState, blockProps }) => {
+    /* eslint-disable react/prop-types */
     const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
     const { editorState, setEditorState } = blockProps;
 
@@ -246,6 +250,7 @@ export const MyEditor = () => {
             isBackward: false,
           }),
         });
+        /* eslint-enable react/prop-types */
 
         const newEditorState = EditorState.push(
           editorState,
@@ -330,12 +335,14 @@ export const MyEditor = () => {
     const updatedErrorData = {};
 
     for (const fieldKey in fieldsToValidate) {
-      const field = fieldsToValidate[fieldKey];
-      const isValid = field.validator(field.value);
-      updatedErrorData[fieldKey] = {
-        isValid,
-        errorMessage: isValid ? "" : field.errorMessage,
-      };
+      if (Object.prototype.hasOwnProperty.call(fieldsToValidate, fieldKey)) {
+        const field = fieldsToValidate[fieldKey];
+        const isValid = field.validator(field.value);
+        updatedErrorData[fieldKey] = {
+          isValid,
+          errorMessage: isValid ? "" : field.errorMessage,
+        };
+      }
     }
 
     setErrorData(updatedErrorData);
