@@ -23,7 +23,6 @@ export const authActions = authSlice.actions;
 export const register = (email, password) => {
   return async (dispatch) => {
     try {
-      dispatch(loadingActions.toggle());
       await auth.createUserWithEmailAndPassword(email, password);
       dispatch(modalActions.closeModal());
     } catch (error) {
@@ -36,8 +35,6 @@ export const register = (email, password) => {
       } else {
         throw new Error("Грешка при създаване на акаунт");
       }
-    } finally {
-      dispatch(loadingActions.toggle());
     }
   };
 };
@@ -45,13 +42,10 @@ export const register = (email, password) => {
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      dispatch(loadingActions.toggle());
       await auth.signInWithEmailAndPassword(email, password);
       dispatch(modalActions.closeModal());
     } catch (error) {
       throw new Error("Грешен e-mail или парола");
-    } finally {
-      dispatch(loadingActions.toggle());
     }
   };
 };
@@ -68,9 +62,8 @@ export const logout = () => {
 };
 
 export const resetPassword = (email) => {
-  return async (dispatch) => {
+  return async () => {
     try {
-      dispatch(loadingActions.toggle());
       await auth.sendPasswordResetEmail(email);
     } catch (error) {
       if (error.code === "auth/invalid-email") {
@@ -80,8 +73,6 @@ export const resetPassword = (email) => {
       } else {
         throw new Error("Грешка при опит за рестартиране на парола");
       }
-    } finally {
-      dispatch(loadingActions.toggle());
     }
   };
 };
@@ -89,7 +80,6 @@ export const resetPassword = (email) => {
 export const updateEmail = (email) => {
   return async (dispatch) => {
     try {
-      dispatch(loadingActions.toggle());
       await auth.currentUser.updateEmail(email);
       dispatch(checkAuthState());
       dispatch(modalActions.closeModal());
@@ -104,8 +94,6 @@ export const updateEmail = (email) => {
       } else {
         throw new Error("Неуспешно актуализиране на акаунта");
       }
-    } finally {
-      dispatch(loadingActions.toggle());
     }
   };
 };
@@ -113,8 +101,6 @@ export const updateEmail = (email) => {
 export const updatePassword = (password) => {
   return async (dispatch) => {
     try {
-      dispatch(loadingActions.toggle());
-
       await auth.currentUser.updatePassword(password);
       await dispatch(logout());
 
@@ -126,8 +112,6 @@ export const updatePassword = (password) => {
       } else {
         throw new Error("Неуспешно актуализиране на акаунта");
       }
-    } finally {
-      dispatch(loadingActions.toggle());
     }
   };
 };
@@ -135,6 +119,7 @@ export const updatePassword = (password) => {
 export const checkAuthState = () => {
   return async (dispatch) => {
     try {
+      dispatch(loadingActions.setLoadingTrue());
       auth.onAuthStateChanged((user) => {
         if (user) {
           dispatch(
@@ -151,9 +136,12 @@ export const checkAuthState = () => {
             })
           );
         }
+
+        dispatch(loadingActions.setLoadingFalse());
       });
     } catch (error) {
       console.error("Error checking authentication state:", error);
+      dispatch(loadingActions.setLoadingFalse());
     }
   };
 };

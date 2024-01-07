@@ -28,9 +28,8 @@ input {
   height: 3rem;
 }
 
-.inner-input {
-  position: relative;
-  width: 49%;
+.content-error {
+  border-color: red;
 }
 
 .inner-input input {
@@ -44,6 +43,14 @@ input {
 
 .articleTitle input {
   width: 100%;
+}
+
+.error input {
+  border-color: red;
+}
+
+.error label {
+  color: red;
 }
 
 label {

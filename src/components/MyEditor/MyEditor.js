@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import {
   AtomicBlockUtils,
   CompositeDecorator,
@@ -8,7 +9,7 @@ import {
   RichUtils,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-import styles from "./MyEditor.module.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -24,9 +25,12 @@ import {
   faAlignCenter,
   faAlignRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { isValidURL } from "../../utils/validations";
+
+import { isValidURL, validateStrMinLength } from "../../utils/validations";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+
+import styles from "./MyEditor.module.css";
 
 const Link = ({ contentState, entityKey, children }) => {
   const { url } = contentState.getEntity(entityKey).getData();
@@ -59,20 +63,33 @@ const decorator = new CompositeDecorator([
   },
 ]);
 
-const inputInitialState = {
-  title: "",
-  author: "",
-  date: "",
-  imageURL: "",
-  section: "",
-};
-
 export const MyEditor = () => {
   const [textAlignment, setTextAlignment] = useState("left");
-  const [input, setInput] = useState(inputInitialState);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+  const [errorData, setErrorData] = useState({
+    title: {
+      isValid: true,
+      errorMessage: "Заглавието трябва да бъде минимум 5 символа",
+    },
+    author: {
+      isValid: true,
+      errorMessage: "Името на автора трябва да бъде минимум 5 символа",
+    },
+    date: {
+      isValid: true,
+      errorMessage: "Моля въведете дата",
+    },
+    url: {
+      isValid: true,
+      errorMessage: "Моля въведете правилен формат на URL",
+    },
+    content: {
+      isValid: true,
+      errorMessage: "Съдържанието трябва да бъде минимум 2 реда",
+    },
+  });
 
   const titleRef = useRef();
   const authorRef = useRef();
@@ -268,18 +285,60 @@ export const MyEditor = () => {
     return null;
   };
 
-  const getContentAsRawJSON = () => {
-    console.log("titleRef", titleRef);
-    console.log("authorRef", authorRef);
-    console.log("dateRef", dateRef);
-    console.log("imageURLRef", imageURLRef);
-    console.log("sectionRef", sectionRef);
+  const createArticle = () => {
+    const title = titleRef.current.value;
+    const author = authorRef.current.value;
+    const date = dateRef.current.value;
+    const URL = imageURLRef.current.value;
+    const section = sectionRef.current.value;
 
-    console.log();
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
-    console.log(rawContentState);
-    return JSON.stringify(rawContentState);
+
+    validateInput(title, author, URL, rawContentState, date);
+  };
+
+  const validateInput = (title, author, URL, rawContentState, date) => {
+    const fieldsToValidate = {
+      title: {
+        value: title,
+        validator: (value) => validateStrMinLength(value, 5),
+        errorMessage: "Заглавието трябва да бъде минимум 5 символа",
+      },
+      author: {
+        value: author,
+        validator: (value) => validateStrMinLength(value, 5),
+        errorMessage: "Името на автора трябва да бъде минимум 5 символа",
+      },
+      date: {
+        value: date,
+        validator: (value) => validateStrMinLength(value, 1),
+        errorMessage: "Моля въведете дата",
+      },
+      url: {
+        value: URL,
+        validator: isValidURL,
+        errorMessage: "Моля въведете правилен формат на URL",
+      },
+      content: {
+        value: rawContentState.blocks,
+        validator: (value) => value.length > 1,
+        errorMessage: "Съдържанието трябва да бъде минимум 2 реда",
+      },
+    };
+
+    const updatedErrorData = {};
+
+    for (const fieldKey in fieldsToValidate) {
+      const field = fieldsToValidate[fieldKey];
+      const isValid = field.validator(field.value);
+      updatedErrorData[fieldKey] = {
+        isValid,
+        errorMessage: isValid ? "" : field.errorMessage,
+      };
+    }
+
+    setErrorData(updatedErrorData);
   };
 
   const actions = [
@@ -398,50 +457,88 @@ export const MyEditor = () => {
   return (
     <div className={styles["editor-wrapper"]}>
       <div className={styles["inputs-container"]}>
-        <Input
-          type="text"
-          classes="articleTitle"
-          name="articleTitle"
-          label="Заглавие"
-          placeHolder="Въведи заглавие..."
-          reference={titleRef}
-          require={true}
-        />
-        <div className={styles["inner-inputs-container"]}>
+        <div className={styles["title"]}>
           <Input
             type="text"
-            classes="inner-input"
-            name="author"
-            label="Автор"
-            placeHolder="Въведи автор..."
-            reference={authorRef}
-            require={true}
-          />
-          <Input
-            type="date"
-            classes="inner-input"
-            name="date"
-            label="Дата"
+            classes={
+              errorData.title.isValid ? "articleTitle" : "articleTitle error"
+            }
+            name="articleTitle"
+            label="Заглавие"
             placeHolder="Въведи заглавие..."
-            reference={dateRef}
+            reference={titleRef}
             require={true}
           />
+          {!errorData.title.isValid && (
+            <p className={styles["error-message"]}>
+              {errorData.title.errorMessage}
+            </p>
+          )}
         </div>
         <div className={styles["inner-inputs-container"]}>
-          <Input
-            type="text"
-            classes="inner-input"
-            name="author"
-            label="Основна снимка"
-            placeHolder="Въведи URL..."
-            reference={imageURLRef}
-            require={true}
-          />
-          <select className="" name="section" reference={sectionRef}>
-            <option value="wine-and-food">Вино и храна</option>
-            <option value="next-destination">Следваща дестинация</option>
-            <option value="tourism-initiatives">Инициативи за туризма</option>
-          </select>
+          <div className={styles["inner-inputs-container-wrapper"]}>
+            <Input
+              type="text"
+              classes={
+                errorData.author.isValid ? "inner-input" : "inner-input error"
+              }
+              name="author"
+              label="Автор"
+              placeHolder="Въведи автор..."
+              reference={authorRef}
+              require={true}
+            />
+            {!errorData.author.isValid && (
+              <p className={styles["error-message"]}>
+                {errorData.author.errorMessage}
+              </p>
+            )}
+          </div>
+          <div className={styles["inner-inputs-container-wrapper"]}>
+            <Input
+              type="date"
+              classes={
+                errorData.date.isValid ? "inner-input" : "inner-input error"
+              }
+              name="date"
+              label="Дата"
+              placeHolder="Въведи заглавие..."
+              reference={dateRef}
+              require={true}
+            />
+            {!errorData.date.isValid && (
+              <p className={styles["error-message"]}>
+                {errorData.date.errorMessage}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className={styles["inner-inputs-container"]}>
+          <div className={styles["inner-inputs-container-wrapper"]}>
+            <Input
+              type="text"
+              classes={
+                errorData.url.isValid ? "inner-input" : "inner-input error"
+              }
+              name="url"
+              label="Основна снимка"
+              placeHolder="Въведи URL..."
+              reference={imageURLRef}
+              require={true}
+            />
+            {!errorData.url.isValid && (
+              <p className={styles["error-message"]}>
+                {errorData.url.errorMessage}
+              </p>
+            )}
+          </div>
+          <div className={styles["inner-inputs-container-wrapper"]}>
+            <select name="section" ref={sectionRef}>
+              <option value="wine-and-food">Вино и храна</option>
+              <option value="next-destination">Следваща дестинация</option>
+              <option value="tourism-initiatives">Инициативи за туризма</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -450,7 +547,13 @@ export const MyEditor = () => {
           <li key={action.id}>{action.icon}</li>
         ))}
       </ul>
-      <div className={styles["editor-containter"]}>
+      <div
+        className={
+          errorData.content.isValid
+            ? styles["editor-containter"]
+            : styles["editor-containter-error"]
+        }
+      >
         <Editor
           className={styles["editor"]}
           textAlignment={textAlignment}
@@ -462,11 +565,16 @@ export const MyEditor = () => {
           placeholder="Започни статия..."
         />
       </div>
+      {!errorData.content.isValid && (
+        <p className={styles["error-message-content"]}>
+          {errorData.content.errorMessage}
+        </p>
+      )}
       <Button
         type="button"
         value="Създай статия"
         color="green-cyan"
-        handler={getContentAsRawJSON}
+        handler={createArticle}
       />
     </div>
   );
