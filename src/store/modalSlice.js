@@ -6,6 +6,11 @@ const initialModalState = {
   resetPassword: false,
   profile: false,
   updateProfile: false,
+  errorData: {
+    isError: false,
+    message: "",
+    title: "",
+  },
 };
 
 const modalSlice = createSlice({
@@ -15,13 +20,16 @@ const modalSlice = createSlice({
     openModal(state, action) {
       state[action.payload] = true;
       Object.keys(state).forEach((el) => {
-        if (el !== action.payload) {
+        if (el !== action.payload && el !== "errorData") {
           state[el] = false;
         }
       });
     },
     closeModal() {
       return initialModalState;
+    },
+    setErrorData(state, action) {
+      state.errorData = action.payload;
     },
   },
 });

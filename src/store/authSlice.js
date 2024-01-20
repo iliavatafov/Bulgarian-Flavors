@@ -1,3 +1,5 @@
+import UsersAPI from "../services/users";
+
 import { createSlice } from "@reduxjs/toolkit";
 import { auth } from "../firebase";
 import { loadingActions } from "./loadingSlice.js";
@@ -23,7 +25,25 @@ export const authActions = authSlice.actions;
 export const register = (email, password) => {
   return async (dispatch) => {
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
+      const response = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      const { uid, metadata } = response.user;
+
+      if (auth.currentUser) {
+        await UsersAPI.addUser({
+          email,
+          uid,
+          favorites: {},
+          createdAt: metadata.createdAt,
+        });
+      } else {
+        await response.user.delete();
+        throw new Error("Грешка при създаване на акаунт. Моля опитайте отново");
+      }
+
       dispatch(modalActions.closeModal());
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {

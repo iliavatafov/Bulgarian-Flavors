@@ -1,0 +1,81 @@
+.error-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem;
+  padding-top: 3rem;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.xmark {
+  color: #000;
+  font-size: 1.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 0.7rem;
+  cursor: pointer;
+}
+
+.xmark:hover {
+  color: var(--green-cyan-color);
+}
+
+.error-body {
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+}
+
+.link-to-error-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.link-to-error {
+  border-bottom: 1px solid transparent;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  color: var(--lightblue-color);
+  height: 100%;
+}
+
+.link-to-error:hover {
+  border-bottom-color: var(--lightblue-color);
+  padding-bottom: 2px;
+}
+
+@media screen and (max-width: 600px) {
+  .error-container {
+    width: 90%;
+  }
+  .xmark {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .error-container {
+    padding: 1rem;
+    padding-top: 2.2rem;
+    font-size: 0.8rem;
+  }
+
+  .error-body {
+    padding: 1rem;
+  }
+
+  .errorMessage {
+    font-size: 0.8rem;
+  }
+}

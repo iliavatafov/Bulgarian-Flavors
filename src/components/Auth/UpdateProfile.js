@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,10 +8,9 @@ import { modalActions } from "../../store/modalSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { Backdrop } from "../Modal/Backdrop";
-import { ModalOverlay } from "../Modal/ModalOverlay";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+import { Modal } from "../Modals/Modal";
 
 import styles from "./Auth.module.css";
 
@@ -66,88 +64,77 @@ export const UpdateProfile = () => {
     setShowRepass((oldState) => !oldState);
   };
 
-  const updateProfileHTML = (
-    <div className={styles["auth-container"]}>
-      <FontAwesomeIcon
-        icon={faXmark}
-        className={styles.xmark}
-        onClick={() => dispatch(modalActions.closeModal())}
-      />
-      <div className={styles["auth-body"]}>
-        <h2 className={styles.title}>Актуализиране на акаунт</h2>
-        {error && (
-          <div className={styles.errorMessage}>
-            <p>{error}</p>
-          </div>
-        )}
-        <form onSubmit={handleSubmit} className={styles["singup-form"]}>
-          <Input
-            type="email"
-            id="email"
-            label="E-mail"
-            reference={emailRef}
-            defaultVal={currentUser.currentUser}
-          />
-          <Input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            label="Нова парола"
-            reference={passwordRef}
-            icon={
-              <FontAwesomeIcon
-                onClick={handleShowPassword}
-                className="eye"
-                icon={faEye}
-              />
-            }
-          />
-          <Input
-            type={showRepass ? "text" : "password"}
-            id="password-confirm"
-            label="Повторете новата парола"
-            reference={passwordConfirmRef}
-            icon={
-              <FontAwesomeIcon
-                onClick={handleShowRepass}
-                className="eye"
-                icon={faEye}
-              />
-            }
-          />
-          <p className={styles.helpMessage}>
-            <span>*</span> Не е необходимо въвеждане на нова парола при
-            актуализация на e-mail адрес
-          </p>
-          <Button
-            disabled={loading}
-            type="submit"
-            value={loading ? "Обновяване..." : "Обнови"}
-            color="green-cyan"
-          />
-        </form>
-      </div>
-      <div className={styles["link-to-login-container"]}>
-        <Link
-          to={"#"}
-          className={styles["link-to-login"]}
-          onClick={() => dispatch(modalActions.openModal("profile"))}
-        >
-          Затвори
-        </Link>
-      </div>
-    </div>
-  );
-
   return (
-    <>
-      {ReactDOM.createPortal(
-        <Backdrop />,
-        document.getElementById("backdrop-root")
-      )}
-      {ReactDOM.createPortal(
-        <ModalOverlay>{updateProfileHTML}</ModalOverlay>,
-        document.getElementById("overlay-root")
-      )}
-    </>
+    <Modal>
+      <div className={styles["auth-container"]}>
+        <FontAwesomeIcon
+          icon={faXmark}
+          className={styles.xmark}
+          onClick={() => dispatch(modalActions.closeModal())}
+        />
+        <div className={styles["auth-body"]}>
+          <h2 className={styles.title}>Актуализиране на акаунт</h2>
+          {error && (
+            <div className={styles.errorMessage}>
+              <p>{error}</p>
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className={styles["singup-form"]}>
+            <Input
+              type="email"
+              id="email"
+              label="E-mail"
+              reference={emailRef}
+              defaultVal={currentUser.currentUser}
+            />
+            <Input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              label="Нова парола"
+              reference={passwordRef}
+              icon={
+                <FontAwesomeIcon
+                  onClick={handleShowPassword}
+                  className="eye"
+                  icon={faEye}
+                />
+              }
+            />
+            <Input
+              type={showRepass ? "text" : "password"}
+              id="password-confirm"
+              label="Повторете новата парола"
+              reference={passwordConfirmRef}
+              icon={
+                <FontAwesomeIcon
+                  onClick={handleShowRepass}
+                  className="eye"
+                  icon={faEye}
+                />
+              }
+            />
+            <p className={styles.helpMessage}>
+              <span>*</span> Не е необходимо въвеждане на нова парола при
+              актуализация на e-mail адрес
+            </p>
+            <Button
+              disabled={loading}
+              type="submit"
+              value={loading ? "Обновяване..." : "Обнови"}
+              color="green-cyan"
+            />
+          </form>
+        </div>
+        <div className={styles["link-to-login-container"]}>
+          <Link
+            to={"#"}
+            className={styles["link-to-login"]}
+            onClick={() => dispatch(modalActions.openModal("profile"))}
+          >
+            Затвори
+          </Link>
+        </div>
+      </div>
+    </Modal>
   );
 };

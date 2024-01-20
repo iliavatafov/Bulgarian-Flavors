@@ -10,6 +10,7 @@ import { Profile } from "../Auth/Profile";
 import { Register } from "../Auth/Register";
 import { UpdateProfile } from "../Auth/UpdateProfile";
 import CircularProgress from "@mui/material/CircularProgress";
+import { ErrorModal } from "../Modals/ErrorModal";
 
 import styles from "./RootLayout.module.css";
 
@@ -35,6 +36,7 @@ export const RootLayout = () => {
             {modal.resetPassword && <ForgotPassword />}
             {modal.profile && <Profile />}
             {modal.updateProfile && <UpdateProfile />}
+            {modal.errorData.isError && <ErrorModal />}
             <Outlet />
           </main>
           <footer className={styles.footer}>

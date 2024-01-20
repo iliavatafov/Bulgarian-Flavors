@@ -26,9 +26,13 @@ import {
   faAlignRight,
 } from "@fortawesome/free-solid-svg-icons";
 
+import ArticlesAPI from "../../services/articles";
+
 import { isValidURL, validateStrMinLength } from "../../utils/validations";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+import { modalActions } from "../../store/modalSlice";
+import { useDispatch } from "react-redux";
 
 import styles from "./MyEditor.module.css";
 
@@ -93,6 +97,8 @@ export const MyEditor = () => {
       errorMessage: "Съдържанието трябва да бъде минимум 2 реда",
     },
   });
+
+  const dispatch = useDispatch();
 
   const titleRef = useRef();
   const authorRef = useRef();
@@ -290,7 +296,7 @@ export const MyEditor = () => {
     return null;
   };
 
-  const createArticle = () => {
+  const createArticle = async () => {
     const title = titleRef.current.value;
     const author = authorRef.current.value;
     const date = dateRef.current.value;
@@ -300,7 +306,36 @@ export const MyEditor = () => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
 
-    validateInput(title, author, URL, rawContentState, date);
+    const isValidationErrors = validateInput(
+      title,
+      author,
+      URL,
+      rawContentState,
+      date
+    );
+
+    if (!isValidationErrors) {
+      try {
+        const response = await ArticlesAPI.addArticle(section, {
+          title,
+          author,
+          date,
+          URL,
+          section,
+          constent: rawContentState,
+        });
+        console.log(response);
+      } catch (error) {
+        dispatch(
+          modalActions.setErrorData({
+            isError: true,
+            title: "Грешка",
+            message:
+              "Възникна проблем при съсздаване на статията. Моля опитайте отново.",
+          })
+        );
+      }
+    }
   };
 
   const validateInput = (title, author, URL, rawContentState, date) => {
@@ -346,6 +381,9 @@ export const MyEditor = () => {
     }
 
     setErrorData(updatedErrorData);
+    return Object.values(updatedErrorData).some((error) => {
+      return error.isValid === false;
+    });
   };
 
   const actions = [
