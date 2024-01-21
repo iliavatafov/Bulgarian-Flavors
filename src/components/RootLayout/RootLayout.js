@@ -26,7 +26,7 @@ export const RootLayout = () => {
           <CircularProgress />
         </div>
       ) : (
-        <div>
+        <div className={styles["content-containter"]}>
           <header className={styles.header}>
             <Navbar />
           </header>

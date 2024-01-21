@@ -1,3 +1,36 @@
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { articleActions } from "../../store/articlesSlice";
+import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
+
+import ArticlesAPI from "../../services/articles";
+
 export const WineAndFood = () => {
-  return <h1>Wine & Food</h1>;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const fetchArticles = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const articles = await ArticlesAPI.getArticlesBySection("wine-and-food");
+      dispatch(
+        articleActions.setArticles({
+          collection: "wineAndFood",
+          data: articles,
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  });
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  return <ArticleGrid isLoading={isLoading} section={"wineAndFood"} />;
 };

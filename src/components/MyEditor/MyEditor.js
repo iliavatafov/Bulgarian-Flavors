@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
+import { modalActions } from "../../store/modalSlice";
+import { loadingActions } from "../../store/loadingSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   AtomicBlockUtils,
   CompositeDecorator,
@@ -31,8 +35,6 @@ import ArticlesAPI from "../../services/articles";
 import { isValidURL, validateStrMinLength } from "../../utils/validations";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
-import { modalActions } from "../../store/modalSlice";
-import { useDispatch } from "react-redux";
 
 import styles from "./MyEditor.module.css";
 
@@ -316,6 +318,7 @@ export const MyEditor = () => {
 
     if (!isValidationErrors) {
       try {
+        dispatch(loadingActions.setLoadingTrue());
         const response = await ArticlesAPI.addArticle(section, {
           title,
           author,
@@ -335,6 +338,7 @@ export const MyEditor = () => {
           })
         );
       }
+      dispatch(loadingActions.setLoadingFalse());
     }
   };
 
