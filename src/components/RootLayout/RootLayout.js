@@ -13,11 +13,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ErrorModal } from "../Modals/ErrorModal";
 
 import styles from "./RootLayout.module.css";
+import SearchBar from "../Search/SearchBar";
 
 export const RootLayout = () => {
   const modal = useSelector((state) => state.modal);
 
   const loading = useSelector((state) => state.loading.loading);
+  const isSearch = useSelector((state) => state.search.isSearch);
 
   return (
     <>
@@ -29,6 +31,13 @@ export const RootLayout = () => {
         <div className={styles["content-containter"]}>
           <header className={styles.header}>
             <Navbar />
+            {isSearch && (
+              <div className={styles["search-container"]}>
+                <div className={styles["search-animation"]}>
+                  <SearchBar />
+                </div>
+              </div>
+            )}
           </header>
           <main className={styles.main}>
             {modal.login && <Login />}

@@ -3,8 +3,12 @@ import { Link, NavLink } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
+import { searchActions } from "../../store/searchSlice";
 
 import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
+import SearchIcon from "@mui/icons-material/Search";
+
+import { IconButton } from "@mui/material";
 
 import "./Navbar.css";
 
@@ -61,6 +65,20 @@ export const Navbar = () => {
         </span>
       </Link>
       <div className="links">
+        <div className="search-component">
+          <IconButton
+            sx={{
+              p: "10px",
+              color: "#fff",
+              "&:hover": {
+                color: "#00d49a",
+              },
+            }}
+            onClick={() => dispatch(searchActions.toggleSearch())}
+          >
+            <SearchIcon />
+          </IconButton>
+        </div>
         <div className="nav-icon" onClick={navbarClickHandler}>
           <i className={clicked ? "fa fa-times" : "fa fa-bars"}></i>
         </div>
@@ -69,6 +87,20 @@ export const Navbar = () => {
           className={clicked ? "nav-list" : "nav-list close"}
         >
           {myLinks}
+          <div>
+            <IconButton
+              sx={{
+                p: "10px",
+                color: "#fff",
+                "&:hover": {
+                  color: "#00d49a",
+                },
+              }}
+              onClick={() => dispatch(searchActions.toggleSearch())}
+            >
+              <SearchIcon />
+            </IconButton>
+          </div>
         </ul>
       </div>
     </nav>

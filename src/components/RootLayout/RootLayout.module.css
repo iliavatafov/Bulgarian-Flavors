@@ -8,6 +8,30 @@
   z-index: 1000;
 }
 
+.search-container {
+  background-color: rgb(240 242 245);
+}
+
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-animation {
+  animation: fadeInFromTop 0.5s ease;
+}
+
+.search-container div {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
 .main {
   margin: 0 auto;
   display: flex;
