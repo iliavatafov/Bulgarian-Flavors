@@ -19,12 +19,27 @@ const pageTitles = {
 export const ArticleGrid = ({ isLoading, section }) => {
   const [page, setPage] = useState(2);
   const [articlesToRender, setArticlesToRender] = useState([]);
+  const [searchArticles, seatSearchArticles] = useState([]);
 
   const articles = useSelector((state) => state.articles.articles);
+  const searchInput = useSelector((state) => state.search.searchInput);
 
   useEffect(() => {
-    setArticlesToRender(articles[section].slice(0, pageSize));
-  }, [articles]);
+    let matchedArticles = articles[section];
+
+    if (window.location.href.includes("/search")) {
+      const lowerCaseSearchInput = searchInput.toLowerCase();
+      matchedArticles = articles[section].filter((article) => {
+        const lowerCaseTitle = article.title.toLowerCase();
+
+        return lowerCaseTitle.includes(lowerCaseSearchInput);
+      });
+    }
+
+    setArticlesToRender(matchedArticles.slice(0, pageSize));
+    seatSearchArticles(matchedArticles);
+    setPage(2);
+  }, [articles, searchInput]);
 
   const handleScroll = () => {
     const scrollTop = document.documentElement.scrollTop;
@@ -39,10 +54,17 @@ export const ArticleGrid = ({ isLoading, section }) => {
       const startIndex = (page - 1) * pageSize;
       const endIndex = page * pageSize;
 
-      setArticlesToRender((prevArticles) => [
-        ...prevArticles,
-        ...articles[section].slice(startIndex, endIndex),
-      ]);
+      if (searchArticles.length) {
+        setArticlesToRender((prevArticles) => [
+          ...prevArticles,
+          ...searchArticles.slice(startIndex, endIndex),
+        ]);
+      } else {
+        setArticlesToRender((prevArticles) => [
+          ...prevArticles,
+          ...articles[section].slice(startIndex, endIndex),
+        ]);
+      }
     }
   };
 
@@ -61,7 +83,9 @@ export const ArticleGrid = ({ isLoading, section }) => {
         </div>
       ) : (
         <>
-          <GridHeader title={pageTitles[section]} />
+          {section !== "allArticles" && (
+            <GridHeader title={pageTitles[section]} />
+          )}
           <Grid
             container
             style={{ margin: 0, gap: "3rem" }}

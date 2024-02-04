@@ -1,6 +1,11 @@
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector } from "react-redux";
+import { articleActions } from "../../store/articlesSlice";
+import ArticlesAPI from "../../services/articles";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
@@ -9,17 +14,37 @@ import { Login } from "../Auth/Login";
 import { Profile } from "../Auth/Profile";
 import { Register } from "../Auth/Register";
 import { UpdateProfile } from "../Auth/UpdateProfile";
-import CircularProgress from "@mui/material/CircularProgress";
 import { ErrorModal } from "../Modals/ErrorModal";
+import SearchBar from "../Search/SearchBar";
 
 import styles from "./RootLayout.module.css";
-import SearchBar from "../Search/SearchBar";
 
 export const RootLayout = () => {
   const modal = useSelector((state) => state.modal);
-
   const loading = useSelector((state) => state.loading.loading);
   const isSearch = useSelector((state) => state.search.isSearch);
+  const allArticles = useSelector(
+    (state) => state.articles.articles.allArticles
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const articles = await ArticlesAPI.getAllArticles();
+
+      dispatch(
+        articleActions.setArticles({
+          collection: "allArticles",
+          data: articles,
+        })
+      );
+    };
+
+    if (isSearch && !allArticles.length) {
+      fetchArticles();
+    }
+  }, [isSearch]);
 
   return (
     <>

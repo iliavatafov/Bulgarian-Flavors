@@ -5,6 +5,7 @@ const initialModalState = {
     wineAndFood: [],
     nextDestination: [],
     tourismInitiatives: [],
+    allArticles: [],
   },
 };
 

@@ -14,6 +14,7 @@ import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
 import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
 import { Destination } from "./pages/Destination/Destination";
 import { CreateArticle } from "./pages/CreateArticle/CreateArticle";
+import { AllArticles } from "./pages/AllArticles/AllArticles";
 import { AdminRoute } from "./components/AdminRoute";
 
 import "draft-js/dist/Draft.css";
@@ -37,6 +38,7 @@ function App() {
         { path: "/for-me", element: <ForMe /> },
         { path: "/mission", element: <Mission /> },
         { path: "/contact-us", element: <ContactUs /> },
+        { path: "/search", element: <AllArticles /> },
         {
           path: "/create-article",
           element: (

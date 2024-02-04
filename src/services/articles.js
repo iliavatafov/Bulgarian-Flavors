@@ -41,6 +41,40 @@ class ArticlesAPI {
       throw error;
     }
   }
+
+  static async getAllArticles() {
+    const articleSections = [
+      "wine-and-food",
+      "next-destination",
+      "tourism-initiatives",
+    ];
+
+    try {
+      const promises = articleSections.map(async (section) => {
+        const articlesCollection = this.firestore.collection(
+          `articles/${section}/articles`
+        );
+
+        const snapshot = await articlesCollection
+          .orderBy("createdAt", "desc")
+          .get();
+
+        return snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt.toDate().getTime(),
+        }));
+      });
+
+      const result = await Promise.all(promises);
+      const flattenedResult = result.flat();
+
+      return flattenedResult;
+    } catch (error) {
+      console.error("Error getting articles:", error);
+      throw error;
+    }
+  }
 }
 
 export default ArticlesAPI;

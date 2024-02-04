@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import { searchActions } from "../../store/searchSlice";
 
-import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { IconButton } from "@mui/material";
+
+import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
 
 import "./Navbar.css";
 
