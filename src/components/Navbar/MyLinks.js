@@ -6,7 +6,7 @@ export const MyLinks = [
   },
   {
     title: "Вино и храна",
-    url: "/wine&food",
+    url: "/wine-and-food",
     isModal: false,
   },
   {
@@ -51,7 +51,7 @@ export const MyLinksLoggedIn = [
   },
   {
     title: "Вино и храна",
-    url: "/wine&food",
+    url: "/wine-and-food",
     isModal: false,
   },
   {
@@ -95,7 +95,7 @@ export const MyLinksAdmin = [
   },
   {
     title: "Вино и храна",
-    url: "/wine&food",
+    url: "/wine-and-food",
     isModal: false,
   },
   {

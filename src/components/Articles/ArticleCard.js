@@ -2,23 +2,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import { Tooltip } from "@mui/material";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { ActionBar } from "../ActionBar/ActionBar";
 
 export const ArticleCard = ({ item }) => {
-  const [isHovered, setIsHovered] = useState({
-    facebook: false,
-    twitter: false,
-    pinterest: false,
-    copy: false,
-  });
   const text = item.constent.blocks[0].text.slice(0, 200);
+
+  const navigate = useNavigate();
 
   const customTheme = createTheme({
     palette: {
@@ -28,25 +21,14 @@ export const ArticleCard = ({ item }) => {
     },
   });
 
-  const handleShareFacebook = () => {
-    console.log("facebook share");
-  };
-
-  const handleShareTwitter = () => {
-    console.log("twiter share");
-  };
-
-  const handleSharePinterest = () => {
-    console.log("pinterest share");
-  };
-
-  const handleCopyLink = () => {
-    console.log("copy url");
+  const navigateToDetailsPage = () => {
+    navigate(`/${item.section}/${item.id}`);
   };
 
   return (
     <ThemeProvider theme={customTheme}>
       <Card
+        onClick={navigateToDetailsPage}
         sx={{
           cursor: "pointer",
           "&:hover": {
@@ -86,98 +68,11 @@ export const ArticleCard = ({ item }) => {
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ textAlign: "left" }}
+            sx={{ textAlign: "left", marginBottom: "8px" }}
           >
             {text + " ..."}
           </Typography>
-          <div style={{ marginTop: "8px", textAlign: "right" }}>
-            <Tooltip title="Сподели в Facebook">
-              <IconButton onClick={handleShareFacebook}>
-                <FacebookIcon
-                  onMouseEnter={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      facebook: true,
-                    }))
-                  }
-                  onMouseLeave={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      facebook: false,
-                    }))
-                  }
-                  sx={{
-                    color: isHovered.facebook
-                      ? customTheme.palette.primary.main
-                      : undefined,
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Сподели в Twitter">
-              <IconButton onClick={handleShareTwitter}>
-                <TwitterIcon
-                  onMouseEnter={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      twitter: true,
-                    }))
-                  }
-                  onMouseLeave={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      twitter: false,
-                    }))
-                  }
-                  sx={{
-                    color: isHovered.twitter
-                      ? customTheme.palette.primary.main
-                      : undefined,
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Сподели в Pinterest">
-              <IconButton onClick={handleSharePinterest}>
-                <PinterestIcon
-                  onMouseEnter={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      pinterest: true,
-                    }))
-                  }
-                  onMouseLeave={() =>
-                    setIsHovered((prevState) => ({
-                      ...prevState,
-                      pinterest: false,
-                    }))
-                  }
-                  sx={{
-                    color: isHovered.pinterest
-                      ? customTheme.palette.primary.main
-                      : undefined,
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Копирай линк">
-              <IconButton onClick={handleCopyLink}>
-                <FileCopyIcon
-                  onMouseEnter={() =>
-                    setIsHovered((prevState) => ({ ...prevState, copy: true }))
-                  }
-                  onMouseLeave={() =>
-                    setIsHovered((prevState) => ({ ...prevState, copy: false }))
-                  }
-                  sx={{
-                    color: isHovered.copy
-                      ? customTheme.palette.primary.main
-                      : undefined,
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <ActionBar />
         </CardContent>
       </Card>
     </ThemeProvider>

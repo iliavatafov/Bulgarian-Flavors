@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { modalActions } from "../../store/modalSlice";
 import { loadingActions } from "../../store/loadingSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
   AtomicBlockUtils,
@@ -37,6 +37,7 @@ import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 
 import styles from "./MyEditor.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Link = ({ contentState, entityKey, children }) => {
   /* eslint-disable react/prop-types */
@@ -101,13 +102,13 @@ export const MyEditor = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const titleRef = useRef();
   const authorRef = useRef();
   const dateRef = useRef();
   const imageURLRef = useRef();
   const sectionRef = useRef();
-
   const editor = useRef(null);
 
   useEffect(() => {
@@ -327,7 +328,10 @@ export const MyEditor = () => {
           section,
           constent: rawContentState,
         });
-        console.log(response);
+
+        const articleId = response.id;
+        if (articleId) window.location.href = `${section}/${articleId}`;
+        else throw new Error("Грешка при публикуване на статия");
       } catch (error) {
         dispatch(
           modalActions.setErrorData({

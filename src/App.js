@@ -18,6 +18,7 @@ import { AllArticles } from "./pages/AllArticles/AllArticles";
 import { AdminRoute } from "./components/AdminRoute";
 
 import "draft-js/dist/Draft.css";
+import { ArticleDetails } from "./components/Articles/ArticleDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function App() {
       element: <RootLayout />,
       children: [
         { index: true, element: <Home /> },
-        { path: "/wine&food", element: <WineAndFood /> },
+        { path: "/wine-and-food", element: <WineAndFood /> },
         { path: "/next-destination", element: <Destination /> },
         { path: "/tourism-initiatives", element: <TourismInitiatives /> },
         { path: "/for-me", element: <ForMe /> },
@@ -47,6 +48,7 @@ function App() {
             </AdminRoute>
           ),
         },
+        { path: "/:section/:articleId", element: <ArticleDetails /> },
       ],
     },
   ]);

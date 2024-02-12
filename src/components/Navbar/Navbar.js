@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useFetcher } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
@@ -17,6 +17,7 @@ export const Navbar = () => {
   const [menuToRender, setMenuToRender] = useState([]);
 
   const currentUser = useSelector((state) => state.auth.currentUser);
+  const isSearch = useSelector((state) => state.search.isSearch);
 
   const dispatch = useDispatch();
 
@@ -31,6 +32,10 @@ export const Navbar = () => {
       setMenuToRender(MyLinks);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (isSearch) setClicked(false);
+  }, [isSearch]);
 
   const myLinks = menuToRender.map(
     ({ title, url, isModal, modalName }, index) => {
@@ -54,6 +59,7 @@ export const Navbar = () => {
 
   const navbarClickHandler = () => {
     setClicked(!clicked);
+    if (isSearch) dispatch(searchActions.toggleSearch());
   };
 
   return (
@@ -87,7 +93,7 @@ export const Navbar = () => {
           className={clicked ? "nav-list" : "nav-list close"}
         >
           {myLinks}
-          <div>
+          <div className="disktop-search">
             <IconButton
               sx={{
                 p: "10px",
@@ -96,7 +102,10 @@ export const Navbar = () => {
                   color: "#00d49a",
                 },
               }}
-              onClick={() => dispatch(searchActions.toggleSearch())}
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(searchActions.toggleSearch());
+              }}
             >
               <SearchIcon />
             </IconButton>

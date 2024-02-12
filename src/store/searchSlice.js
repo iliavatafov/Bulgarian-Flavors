@@ -5,6 +5,7 @@ const searchSlice = createSlice({
   initialState: { isSearch: false, searchInput: "" },
   reducers: {
     toggleSearch(state) {
+      console.log("search");
       state.isSearch = !state.isSearch;
     },
     setSearchInput(state, action) {

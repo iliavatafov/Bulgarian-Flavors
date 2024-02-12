@@ -1,6 +1,9 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
+import { store } from "../store/index";
+import { modalActions } from "../store/modalSlice";
+
 class ArticlesAPI {
   static firestore = firebase.firestore();
 
@@ -15,7 +18,13 @@ class ArticlesAPI {
       return response;
     } catch (error) {
       console.error("Error adding article:", error);
-      throw error;
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Грешка",
+          message: "Грешка при създаване на статия. Моля опитайте по-късно.",
+        })
+      );
     }
   }
 
@@ -29,6 +38,10 @@ class ArticlesAPI {
         .orderBy("createdAt", "desc")
         .get();
 
+      if (snapshot.empty) {
+        throw new Error("No articles found");
+      }
+
       const articles = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -38,7 +51,14 @@ class ArticlesAPI {
       return articles;
     } catch (error) {
       console.error("Error getting articles:", error);
-      throw error;
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Грешка",
+          message:
+            "Грешка при зареждане на страницата. Моля опитайте по-късно.",
+        })
+      );
     }
   }
 
@@ -73,6 +93,37 @@ class ArticlesAPI {
     } catch (error) {
       console.error("Error getting articles:", error);
       throw error;
+    }
+  }
+
+  static async getArticleById(section, id) {
+    try {
+      const articleRef = this.firestore
+        .collection(`articles/${section}/articles`)
+        .doc(id);
+      const doc = await articleRef.get();
+
+      if (!doc.exists) {
+        throw new Error("Article not found");
+      }
+
+      const articleData = doc.data();
+      const article = {
+        id: doc.id,
+        ...articleData,
+        createdAt: articleData.createdAt.toDate().getTime(),
+      };
+
+      return article;
+    } catch (error) {
+      console.error("Error getting article by ID:", error);
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Грешка",
+          message: "Грешка при зареждане на статията. Моля опитайте по-късно.",
+        })
+      );
     }
   }
 }

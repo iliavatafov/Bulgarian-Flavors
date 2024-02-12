@@ -13,6 +13,10 @@ nav {
   display: none;
 }
 
+.disktop-search {
+  display: block;
+}
+
 .fa {
   cursor: pointer;
 }
@@ -154,6 +158,10 @@ nav {
   }
   .search-component {
     display: block;
+  }
+
+  .disktop-search {
+    display: none;
   }
   .nav-list {
     flex-direction: column;
