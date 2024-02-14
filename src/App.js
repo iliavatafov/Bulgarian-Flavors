@@ -48,6 +48,14 @@ function App() {
             </AdminRoute>
           ),
         },
+        {
+          path: "/edit-article/:section/:articleId",
+          element: (
+            <AdminRoute>
+              <CreateArticle />
+            </AdminRoute>
+          ),
+        },
         { path: "/:section/:articleId", element: <ArticleDetails /> },
       ],
     },

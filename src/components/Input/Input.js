@@ -12,6 +12,8 @@ export const Input = ({
   name,
   icon,
   classes,
+  changeHandler = null,
+  value,
 }) => {
   return (
     <div className={classes}>
@@ -26,6 +28,8 @@ export const Input = ({
         disabled={disable}
         placeholder={placeHolder}
         name={name}
+        onChange={changeHandler}
+        value={value}
       />
     </div>
   );

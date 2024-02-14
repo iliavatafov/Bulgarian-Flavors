@@ -20,3 +20,16 @@
   display: flex;
   justify-content: center;
 }
+
+.admin-actions {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.admin-actions button {
+  width: 8rem;
+  height: 1rem;
+  min-height: 2rem;
+  font-size: 1rem;
+}

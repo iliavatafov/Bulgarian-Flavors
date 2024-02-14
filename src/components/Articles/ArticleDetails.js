@@ -1,15 +1,16 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ArticlesAPI from "../../services/articles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
 import styles from "./ArticleDetails.module.css";
 import { ActionBar } from "../ActionBar/ActionBar";
+import { Button } from "../Button/Button";
 
 const parseContent = (content) => {
   const parsedContent = content.blocks.map((block, index) => {
@@ -140,7 +141,10 @@ export const ArticleDetails = () => {
   const [rawData, setRawData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const params = useParams();
   const { section, articleId } = params;
 
@@ -159,12 +163,37 @@ export const ArticleDetails = () => {
     getArticle();
   }, [dispatch]);
 
+  const deleteArticle = async () => {
+    await ArticlesAPI.deleteArticle(section, articleId);
+    navigate(`/${section}`);
+  };
+
+  const editArticle = () => {
+    navigate(`/edit-article/${section}/${articleId}`);
+  };
+
   return isLoading ? (
     <div className={styles.loader}>
       <CircularProgress />
     </div>
   ) : (
     <div className={styles["article-wrapper"]}>
+      {currentUser?.currentUser === "iliyavatafov@gmail.com" && (
+        <div className={styles["admin-actions"]}>
+          <Button
+            handler={editArticle}
+            type="submit"
+            value="Редактирай"
+            color="green-cyan"
+          />
+          <Button
+            handler={deleteArticle}
+            type="submit"
+            value="Изтрий"
+            color="dark-blue"
+          />
+        </div>
+      )}
       <Typography
         gutterBottom
         variant="h4"
@@ -207,6 +236,7 @@ export const ArticleDetails = () => {
         </div>
         <ActionBar />
       </div>
+
       <ImageList cols={1}>
         <ImageListItem>
           <img src={rawData.URL} alt={rawData.title} />

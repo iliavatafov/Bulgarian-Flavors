@@ -126,6 +126,26 @@ class ArticlesAPI {
       );
     }
   }
+
+  static async deleteArticle(section, id) {
+    try {
+      const articleRef = this.firestore
+        .collection(`articles/${section}/articles`)
+        .doc(id);
+
+      await articleRef.delete();
+    } catch (error) {
+      console.error("Error deleting article:", error);
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Error",
+          message:
+            "Възникна грешка при изтриване на статията. Моля опитайте по-късно.",
+        })
+      );
+    }
+  }
 }
 
 export default ArticlesAPI;
