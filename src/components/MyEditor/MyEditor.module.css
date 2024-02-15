@@ -159,8 +159,27 @@ select {
   transform: translate(-50%, -50%);
 }
 
+@media screen and (max-width: 750px) {
+  .inner-inputs-container-wrapper {
+    width: 100%;
+  }
+  .inner-inputs-container {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .actions-wrapper {
+    justify-content: center;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .actions-wrapper {
     gap: 0.5rem;
+    width: 100%;
+  }
+
+  .editor-wrapper {
+    width: 90%;
+    padding: 1rem;
   }
 }

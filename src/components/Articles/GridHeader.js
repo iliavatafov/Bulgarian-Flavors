@@ -22,7 +22,8 @@ export const GridHeader = ({ title }) => {
           color="#000"
           style={{
             borderBottom: "1px solid #000",
-            width: isLargeScreen ? "30%" : "80%", // Adjust width based on screen size
+            width: isLargeScreen ? "30%" : "80%",
+            paddingBottom: "0.5rem",
           }}
         >
           {title}
