@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+
 import { auth } from "../firebase";
+
+import PropTypes from "prop-types";
 
 const AuthContext = React.createContext();
 

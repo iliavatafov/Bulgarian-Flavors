@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import "./firebase";
-
 import { Provider } from "react-redux";
 import { store } from "./store";
 
 import reportWebVitals from "./reportWebVitals";
 
 import App from "./App";
+
+import "./firebase";
 
 import "./index.css";
 

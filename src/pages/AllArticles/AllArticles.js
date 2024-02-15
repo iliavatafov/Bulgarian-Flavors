@@ -1,9 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
-import ArticlesAPI from "../../services/articles";
-import { articleActions } from "../../store/articlesSlice";
 import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { articleActions } from "../../store/articlesSlice";
 import { loadingActions } from "../../store/loadingSlice.js";
+
+import ArticlesAPI from "../../services/articles";
+
+import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
 
 export const AllArticles = () => {
   const allArticles = useSelector(

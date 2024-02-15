@@ -4,21 +4,21 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { checkAuthState } from "./store/authSlice";
 
+import { Home } from "./pages/Home/Home";
 import { ContactUs } from "./pages/Contacts/ContactUs";
 import { ForMe } from "./pages/ForMe/ForMe";
 import { Mission } from "./pages/Mission/Mission";
-
-import { RootLayout } from "./components/RootLayout/RootLayout";
-import { Home } from "./pages/Home/Home";
 import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
 import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
 import { Destination } from "./pages/Destination/Destination";
 import { CreateArticle } from "./pages/CreateArticle/CreateArticle";
 import { AllArticles } from "./pages/AllArticles/AllArticles";
+
+import { RootLayout } from "./components/RootLayout/RootLayout";
+import { ArticleDetails } from "./components/Articles/ArticleDetails";
 import { AdminRoute } from "./components/AdminRoute";
 
 import "draft-js/dist/Draft.css";
-import { ArticleDetails } from "./components/Articles/ArticleDetails";
 
 function App() {
   const dispatch = useDispatch();

@@ -1,7 +1,9 @@
 import React from "react";
+
 import { Grid } from "@mui/material";
-import SearchInputComponent from "./SearchInputComponent";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+import SearchInputComponent from "./SearchInputComponent";
 
 const SearchBar = () => {
   const theme = createTheme({

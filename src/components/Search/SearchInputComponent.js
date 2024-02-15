@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import { searchActions } from "../../store/searchSlice";
-import { useNavigate } from "react-router-dom";
+
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const SearchInputComponent = ({ autoFocus }) => {
   const inputRef = useRef(null);
