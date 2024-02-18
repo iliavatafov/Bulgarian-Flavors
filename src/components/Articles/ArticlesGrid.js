@@ -33,11 +33,12 @@ export const ArticleGrid = ({ isLoading, section }) => {
   const searchInput = useSelector((state) => state.search.searchInput);
 
   const isHomePage = section === "allArticles";
+  const isSearchView = window.location.href.includes("/search");
 
   useEffect(() => {
     let matchedArticles = articles[section];
 
-    if (window.location.href.includes("/search")) {
+    if (isSearchView) {
       const lowerCaseSearchInput = searchInput.toLowerCase();
       matchedArticles = articles[section].filter((article) => {
         const lowerCaseTitle = article.title.toLowerCase();
@@ -127,7 +128,7 @@ export const ArticleGrid = ({ isLoading, section }) => {
           </>
         )
       )}
-      {articlesToRender.length === 0 && !isLoading && (
+      {articlesToRender.length === 0 && !isLoading && isSearchView && (
         <EmptyState text="Не са намерени статии с посоченото име." />
       )}
     </div>

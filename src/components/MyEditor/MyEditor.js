@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { modalActions } from "../../store/modalSlice";
@@ -40,6 +40,9 @@ export const MyEditor = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const editor = useRef(null);
+  const navigate = useNavigate();
+
+  const isEdit = params.articleId && params.section;
 
   useEffect(() => {
     if (editor) {
@@ -47,7 +50,7 @@ export const MyEditor = () => {
     }
 
     const getArticles = async () => {
-      if (params.articleId && params.section) {
+      if (isEdit) {
         setIsLoading(true);
         const article = await ArticlesAPI.getArticleById(
           params.section,
@@ -102,23 +105,34 @@ export const MyEditor = () => {
       date
     );
 
+    const newData = {
+      title,
+      author,
+      date,
+      URL: imageURL,
+      section,
+      constent: rawContentState,
+    };
+
     if (!isValidationErrors) {
+      dispatch(loadingActions.setLoadingTrue());
       try {
-        dispatch(loadingActions.setLoadingTrue());
-        const response = await ArticlesAPI.addArticle(section, {
-          title,
-          author,
-          date,
-          URL: imageURL,
-          section,
-          constent: rawContentState,
-        });
+        let response = [];
+        if (isEdit) {
+          response = await ArticlesAPI.updateArticleData(
+            params.articleId,
+            params.section,
+            newData
+          );
+        } else {
+          response = await ArticlesAPI.addArticle(section, newData);
+        }
 
         const articleId = response.id;
 
         if (articleId) {
           trackArticleView(articleId);
-          window.location.href = `${section}/${articleId}`;
+          navigate(`/${params.section}/${params.articleId}`);
         } else {
           throw new Error("Грешка при публикуване на статия");
         }
@@ -131,8 +145,9 @@ export const MyEditor = () => {
               "Възникна проблем при съсздаване на статията. Моля опитайте отново.",
           })
         );
+      } finally {
+        dispatch(loadingActions.setLoadingFalse());
       }
-      dispatch(loadingActions.setLoadingFalse());
     }
   }, [validateInput, inputValues, editorState]);
 
@@ -231,6 +246,7 @@ export const MyEditor = () => {
                 <select
                   name="section"
                   value={inputValues.section}
+                  disabled={isEdit}
                   onChange={handleChange}
                 >
                   <option value="wine-and-food">Вино и храна</option>
@@ -273,7 +289,7 @@ export const MyEditor = () => {
           )}
           <Button
             type="button"
-            value="Създай статия"
+            value={isEdit ? "Обнови статия" : "Създай статия"}
             color="green-cyan"
             handler={createArticle}
           />

@@ -146,6 +146,34 @@ class ArticlesAPI {
       );
     }
   }
+
+  static async updateArticleData(articleId, section, newData) {
+    try {
+      const articleRef = this.firestore
+        .collection("articles")
+        .doc(section)
+        .collection("articles")
+        .doc(articleId);
+
+      await articleRef.update(newData);
+
+      const updatedData = await articleRef.get();
+
+      return {
+        id: articleId,
+        data: updatedData.data(),
+      };
+    } catch (error) {
+      console.error("Error updating article data:", error);
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Грешка",
+          message: "Грешка при обновяване на статия. Моля опитайте по-късно.",
+        })
+      );
+    }
+  }
 }
 
 export default ArticlesAPI;
