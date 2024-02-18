@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
@@ -20,6 +20,7 @@ export const Navbar = () => {
   const isSearch = useSelector((state) => state.search.isSearch);
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     if (currentUser?.currentUser) {
@@ -44,7 +45,7 @@ export const Navbar = () => {
           <NavLink
             to={url}
             className={({ isActive }) =>
-              isActive && url !== "#" ? "active" : ""
+              isActive && location.pathname === url ? "active" : ""
             }
             onClick={
               isModal && (() => dispatch(modalActions.openModal(modalName)))

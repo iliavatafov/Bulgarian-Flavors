@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +28,7 @@ export const RootLayout = () => {
   );
 
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -45,6 +46,10 @@ export const RootLayout = () => {
       fetchArticles();
     }
   }, [isSearch]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <>

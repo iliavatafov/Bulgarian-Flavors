@@ -1,16 +1,8 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  ScrollRestoration,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { checkAuthState } from "./store/authSlice";
-
-import { ContactUs } from "./pages/Contacts/ContactUs";
-import { ForMe } from "./pages/ForMe/ForMe";
-import { Mission } from "./pages/Mission/Mission";
 
 import { RootLayout } from "./components/RootLayout/RootLayout";
 import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
@@ -61,11 +53,7 @@ function App() {
     },
   ]);
 
-  return (
-    <RouterProvider router={router}>
-      <ScrollRestoration />
-    </RouterProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
