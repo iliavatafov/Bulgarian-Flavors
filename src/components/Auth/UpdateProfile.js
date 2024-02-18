@@ -18,8 +18,8 @@ export const UpdateProfile = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRepass, setShowRepass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const loading = useSelector((state) => state.loading.loading);
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   const dispatch = useDispatch();
@@ -38,6 +38,7 @@ export const UpdateProfile = () => {
     setError("");
 
     try {
+      setIsLoading(true);
       const promises = [];
 
       if (emailRef.current.value !== currentUser.currentUser) {
@@ -53,6 +54,8 @@ export const UpdateProfile = () => {
       await Promise.all(promises);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -118,9 +121,9 @@ export const UpdateProfile = () => {
               актуализация на e-mail адрес
             </p>
             <Button
-              disabled={loading}
+              disabled={isLoading}
               type="submit"
-              value={loading ? "Обновяване..." : "Обнови"}
+              value={isLoading ? "Обновяване..." : "Обнови"}
               color="green-cyan"
             />
           </form>

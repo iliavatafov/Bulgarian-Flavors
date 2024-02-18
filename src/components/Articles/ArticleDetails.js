@@ -1,16 +1,18 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { useNavigate, useParams } from "react-router-dom";
 import ArticlesAPI from "../../services/articles";
 import { useDispatch, useSelector } from "react-redux";
+
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
-import styles from "./ArticleDetails.module.css";
 import { ActionBar } from "../ActionBar/ActionBar";
 import { Button } from "../Button/Button";
+
+import styles from "./ArticleDetails.module.css";
 
 const parseContent = (content) => {
   const parsedContent = content.blocks.map((block, index) => {

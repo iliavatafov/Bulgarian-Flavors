@@ -27,12 +27,12 @@ export const WineAndFood = () => {
     } finally {
       setIsLoading(false);
     }
-  });
+  }, [dispatch]);
 
   useEffect(() => {
     fetchArticles();
     firebaseAnalytics.logEvent("wine_and_food_page_visited");
-  }, []);
+  }, [fetchArticles]);
 
   return <ArticleGrid isLoading={isLoading} section={"wineAndFood"} />;
 };

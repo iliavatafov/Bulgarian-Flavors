@@ -29,12 +29,12 @@ export const TourismInitiatives = () => {
     } finally {
       setIsLoading(false);
     }
-  });
+  }, [dispatch]);
 
   useEffect(() => {
     fetchArticles();
     firebaseAnalytics.logEvent("tourism_iniciatives_page_visited");
-  }, []);
+  }, [fetchArticles]);
 
   return <ArticleGrid isLoading={isLoading} section={"tourismInitiatives"} />;
 };

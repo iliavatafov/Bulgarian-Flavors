@@ -18,8 +18,7 @@ export const Register = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRepass, setShowRepass] = useState(false);
-
-  const loading = useSelector((state) => state.loading.loading);
+  const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -34,6 +33,7 @@ export const Register = () => {
       return setError("Паролата не съвпада");
     }
 
+    setIsLoading(true);
     try {
       setError("");
       await dispatch(
@@ -41,6 +41,8 @@ export const Register = () => {
       );
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,9 +110,9 @@ export const Register = () => {
             />
 
             <Button
-              disabled={loading}
+              disabled={isLoading}
               type="submit"
-              value={loading ? "Акаунтът се създава..." : "Регистрация"}
+              value={isLoading ? "Акаунтът се създава..." : "Регистрация"}
               color="green-cyan"
             />
           </form>

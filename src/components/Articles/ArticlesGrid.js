@@ -21,7 +21,7 @@ const pageTitles = {
 export const ArticleGrid = ({ isLoading, section }) => {
   const [page, setPage] = useState(2);
   const [articlesToRender, setArticlesToRender] = useState([]);
-  const [searchArticles, seatSearchArticles] = useState([]);
+  const [searchArticles, setSearchArticles] = useState([]);
   const [articleAspect, setArticleAspect] = useState({
     xs: 12,
     md: 6,
@@ -57,7 +57,7 @@ export const ArticleGrid = ({ isLoading, section }) => {
     }
 
     setArticlesToRender(matchedArticles.slice(0, pageSize));
-    seatSearchArticles(matchedArticles);
+    setSearchArticles(matchedArticles);
     setPage(2);
   }, [articles, searchInput]);
 
@@ -93,7 +93,7 @@ export const ArticleGrid = ({ isLoading, section }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, [isLoading, handleScroll]);
 
   return (
     <div className={styles.container}>

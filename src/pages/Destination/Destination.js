@@ -29,12 +29,12 @@ export const Destination = () => {
     } finally {
       setIsLoading(false);
     }
-  });
+  }, [dispatch]);
 
   useEffect(() => {
     fetchArticles();
     firebaseAnalytics.logEvent("destination_page_visited");
-  }, []);
+  }, [fetchArticles]);
 
   return <ArticleGrid isLoading={isLoading} section={"nextDestination"} />;
 };

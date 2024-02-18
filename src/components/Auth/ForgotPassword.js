@@ -17,8 +17,7 @@ import styles from "./Auth.module.css";
 export const ForgotPassword = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState(false);
-
-  const loading = useSelector((state) => state.loading.loading);
+  const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef();
 
@@ -26,7 +25,7 @@ export const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       setMessage("");
       setError("");
@@ -36,8 +35,13 @@ export const ForgotPassword = () => {
       );
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const openModal = () => dispatch(modalActions.openModal("register"));
+  const closeModal = () => dispatch(modalActions.closeModal());
 
   return (
     <Modal>
@@ -45,7 +49,7 @@ export const ForgotPassword = () => {
         <FontAwesomeIcon
           icon={faXmark}
           className={styles.xmark}
-          onClick={() => dispatch(modalActions.closeModal())}
+          onClick={closeModal}
         />
         <div className={styles["auth-body"]}>
           <h2 className={styles.title}>Забравена парола</h2>
@@ -69,9 +73,9 @@ export const ForgotPassword = () => {
               require={true}
             />
             <Button
-              disabled={loading}
+              disabled={isLoading}
               type="submit"
-              value={loading ? "Изпращане..." : "Изпрати"}
+              value={isLoading ? "Изпращане..." : "Изпрати"}
               color="green-cyan"
             />
           </form>
@@ -86,11 +90,7 @@ export const ForgotPassword = () => {
         </div>
         <div className={styles["link-to-login-container"]}>
           Все още нямаш акаунт?
-          <Link
-            to="#"
-            className={styles["link-to-login"]}
-            onClick={() => dispatch(modalActions.openModal("register"))}
-          >
+          <Link to="#" className={styles["link-to-login"]} onClick={openModal}>
             Регистрация
           </Link>
         </div>

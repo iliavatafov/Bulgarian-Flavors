@@ -8,8 +8,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { ActionBar } from "../ActionBar/ActionBar";
 
+import styles from "./ArticleCard.module.css";
+
 export const ArticleCard = ({ item }) => {
-  const text = item.constent.blocks[0].text.slice(0, 200);
+  const text = item.constent.blocks[0]?.text?.slice(0, 200);
 
   const navigate = useNavigate();
 
@@ -73,7 +75,9 @@ export const ArticleCard = ({ item }) => {
           >
             {text + " ..."}
           </Typography>
-          <ActionBar />
+          <div className={styles["action-bar"]}>
+            <ActionBar />
+          </div>
         </CardContent>
       </Card>
     </ThemeProvider>

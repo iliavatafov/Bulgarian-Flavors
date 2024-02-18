@@ -24,8 +24,8 @@ export const ErrorModal = () => {
         />
         <div className={styles["error-body"]}>
           <div className={styles.errorMessage}>
-            <h2>{errorData.title}</h2>
-            <p>{errorData.message}</p>
+            <h2>{errorData?.title}</h2>
+            <p>{errorData?.message}</p>
           </div>
         </div>
         <div className={styles["link-to-error-container"]}>

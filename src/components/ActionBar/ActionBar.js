@@ -1,27 +1,15 @@
 import { useState } from "react";
-
-import IconButton from "@mui/material/IconButton";
+import { IconButton, Tooltip } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import { Tooltip, createTheme } from "@mui/material";
 
 export const ActionBar = () => {
-  const [isHovered, setIsHovered] = useState({
-    facebook: false,
-    twitter: false,
-    pinterest: false,
-    copy: false,
-  });
-
-  const customTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#00d49a",
-      },
-    },
-  });
+  const [isFacebookHovered, setIsFacebookHovered] = useState(false);
+  const [isTwitterHovered, setIsTwitterHovered] = useState(false);
+  const [isPinterestHovered, setIsPinterestHovered] = useState(false);
+  const [isCopyHovered, setIsCopyHovered] = useState(false);
 
   const handleShareFacebook = () => {
     console.log("facebook share");
@@ -40,92 +28,46 @@ export const ActionBar = () => {
   };
 
   return (
-    <div>
-      <div style={{ textAlign: "right" }}>
+    <div className="action-bar">
+      <div className="action-bar-icons">
         <Tooltip title="Сподели в Facebook">
-          <IconButton onClick={handleShareFacebook}>
-            <FacebookIcon
-              onMouseEnter={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  facebook: true,
-                }))
-              }
-              onMouseLeave={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  facebook: false,
-                }))
-              }
-              sx={{
-                color: isHovered.facebook
-                  ? customTheme.palette.primary.main
-                  : undefined,
-              }}
-            />
+          <IconButton
+            onClick={handleShareFacebook}
+            onMouseEnter={() => setIsFacebookHovered(true)}
+            onMouseLeave={() => setIsFacebookHovered(false)}
+            sx={{ color: isFacebookHovered ? "#00d49a" : undefined }}
+          >
+            <FacebookIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Сподели в Twitter">
-          <IconButton onClick={handleShareTwitter}>
-            <TwitterIcon
-              onMouseEnter={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  twitter: true,
-                }))
-              }
-              onMouseLeave={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  twitter: false,
-                }))
-              }
-              sx={{
-                color: isHovered.twitter
-                  ? customTheme.palette.primary.main
-                  : undefined,
-              }}
-            />
+          <IconButton
+            onClick={handleShareTwitter}
+            onMouseEnter={() => setIsTwitterHovered(true)}
+            onMouseLeave={() => setIsTwitterHovered(false)}
+            sx={{ color: isTwitterHovered ? "#00d49a" : undefined }}
+          >
+            <TwitterIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Сподели в Pinterest">
-          <IconButton onClick={handleSharePinterest}>
-            <PinterestIcon
-              onMouseEnter={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  pinterest: true,
-                }))
-              }
-              onMouseLeave={() =>
-                setIsHovered((prevState) => ({
-                  ...prevState,
-                  pinterest: false,
-                }))
-              }
-              sx={{
-                color: isHovered.pinterest
-                  ? customTheme.palette.primary.main
-                  : undefined,
-              }}
-            />
+          <IconButton
+            onClick={handleSharePinterest}
+            onMouseEnter={() => setIsPinterestHovered(true)}
+            onMouseLeave={() => setIsPinterestHovered(false)}
+            sx={{ color: isPinterestHovered ? "#00d49a" : undefined }}
+          >
+            <PinterestIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Копирай линк">
-          <IconButton onClick={handleCopyLink}>
-            <FileCopyIcon
-              onMouseEnter={() =>
-                setIsHovered((prevState) => ({ ...prevState, copy: true }))
-              }
-              onMouseLeave={() =>
-                setIsHovered((prevState) => ({ ...prevState, copy: false }))
-              }
-              sx={{
-                color: isHovered.copy
-                  ? customTheme.palette.primary.main
-                  : undefined,
-              }}
-            />
+          <IconButton
+            onClick={handleCopyLink}
+            onMouseEnter={() => setIsCopyHovered(true)}
+            onMouseLeave={() => setIsCopyHovered(false)}
+            sx={{ color: isCopyHovered ? "#00d49a" : undefined }}
+          >
+            <FileCopyIcon />
           </IconButton>
         </Tooltip>
       </div>

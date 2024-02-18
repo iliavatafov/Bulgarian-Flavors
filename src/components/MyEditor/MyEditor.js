@@ -38,9 +38,9 @@ export const MyEditor = () => {
   } = useEditorActions();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const params = useParams();
   const editor = useRef(null);
-  const navigate = useNavigate();
 
   const isEdit = params.articleId && params.section;
 

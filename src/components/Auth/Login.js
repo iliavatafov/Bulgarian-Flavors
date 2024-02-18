@@ -18,8 +18,7 @@ import styles from "./Auth.module.css";
 export const Login = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const loading = useSelector((state) => state.loading.loading);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -28,18 +27,24 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       setError("");
       await dispatch(login(emailRef.current.value, passwordRef.current.value));
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleShowPassword = () => {
     setShowPassword((oldState) => !oldState);
   };
+
+  const openRegisterModal = () => dispatch(modalActions.openModal("register"));
+  const openResetPasswordModal = () =>
+    dispatch(modalActions.openModal("resetPassword"));
 
   return (
     <Modal>
@@ -81,21 +86,21 @@ export const Login = () => {
               }
             />
             <Button
-              disabled={loading}
+              disabled={isLoading}
               type="submit"
-              value={loading ? "Вход..." : "Вход"}
+              value={isLoading ? "Вход..." : "Вход"}
               color="green-cyan"
             />
             {/* <Button
           icon={<FontAwesomeIcon icon={faGoogle} />}
-          disabled={loading}
+          disabled={isLoading}
           type="button"
           value="Влез с Google"
           color="brands"
         />
         <Button
           icon={<FontAwesomeIcon icon={faSquareFacebook} />}
-          disabled={loading}
+          disabled={isLoading}
           type="button"
           value="Влез с Facebook"
           color="brands"
@@ -104,13 +109,13 @@ export const Login = () => {
               type="button"
               value="Регистрирай се"
               color="dark-blue"
-              handler={() => dispatch(modalActions.openModal("register"))}
+              handler={openRegisterModal}
             />
           </form>
 
           <Link
             to="#"
-            onClick={() => dispatch(modalActions.openModal("resetPassword"))}
+            onClick={openResetPasswordModal}
             className={styles["link-to-forgoten-password"]}
           >
             Забравена парола?
