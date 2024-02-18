@@ -20,22 +20,6 @@ export const MyLinks = [
     isModal: false,
   },
   {
-    title: "За мен",
-    url: "/for-me",
-    isModal: false,
-  },
-  {
-    title: "Мисия и цели",
-    url: "/mission",
-    isModal: false,
-  },
-  {
-    title: "Контакти",
-    url: "/contact-us",
-    isModal: false,
-  },
-
-  {
     title: "Влез в профила си",
     url: "#",
     isModal: true,
@@ -62,21 +46,6 @@ export const MyLinksLoggedIn = [
   {
     title: "Инициативи за туризма",
     url: "/tourism-initiatives",
-    isModal: false,
-  },
-  {
-    title: "За мен",
-    url: "/for-me",
-    isModal: false,
-  },
-  {
-    title: "Мисия и цели",
-    url: "/mission",
-    isModal: false,
-  },
-  {
-    title: "Контакти",
-    url: "/contact-us",
     isModal: false,
   },
   {

@@ -17,6 +17,7 @@ import useEditorActions from "../../hooks/myEditor.js";
 
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+import { trackArticleView } from "../../analitics/firebase-analitics.js";
 
 import { inputInitialState } from "../../constants/myEditor.js";
 
@@ -114,8 +115,13 @@ export const MyEditor = () => {
         });
 
         const articleId = response.id;
-        if (articleId) window.location.href = `${section}/${articleId}`;
-        else throw new Error("Грешка при публикуване на статия");
+
+        if (articleId) {
+          trackArticleView(articleId);
+          window.location.href = `${section}/${articleId}`;
+        } else {
+          throw new Error("Грешка при публикуване на статия");
+        }
       } catch (error) {
         dispatch(
           modalActions.setErrorData({

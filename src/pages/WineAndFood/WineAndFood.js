@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { articleActions } from "../../store/articlesSlice";
 import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
+import { firebaseAnalytics } from "../../firebase";
 
 import ArticlesAPI from "../../services/articles";
 
@@ -30,6 +31,7 @@ export const WineAndFood = () => {
 
   useEffect(() => {
     fetchArticles();
+    firebaseAnalytics.logEvent("wine_and_food_page_visited");
   }, []);
 
   return <ArticleGrid isLoading={isLoading} section={"wineAndFood"} />;

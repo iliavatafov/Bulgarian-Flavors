@@ -5,6 +5,7 @@ import ArticlesAPI from "../../services/articles";
 import { articleActions } from "../../store/articlesSlice";
 
 import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
+import { firebaseAnalytics } from "../../firebase";
 
 export const Destination = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +33,7 @@ export const Destination = () => {
 
   useEffect(() => {
     fetchArticles();
+    firebaseAnalytics.logEvent("destination_page_visited");
   }, []);
 
   return <ArticleGrid isLoading={isLoading} section={"nextDestination"} />;

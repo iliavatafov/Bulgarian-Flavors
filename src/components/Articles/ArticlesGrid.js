@@ -14,15 +14,24 @@ const pageTitles = {
   wineAndFood: "Вино и храна",
   tourismInitiatives: "Инициативи за туризма",
   nextDestination: "Следваща дестицания",
+  allArticles: "Новини",
 };
 
 export const ArticleGrid = ({ isLoading, section }) => {
   const [page, setPage] = useState(2);
   const [articlesToRender, setArticlesToRender] = useState([]);
   const [searchArticles, seatSearchArticles] = useState([]);
+  const [articleAspect, setArticleAspect] = useState({
+    xs: 12,
+    md: 6,
+    lg: 5.7,
+    mid: false,
+  });
 
   const articles = useSelector((state) => state.articles.articles);
   const searchInput = useSelector((state) => state.search.searchInput);
+
+  const isHomePage = section === "allArticles";
 
   useEffect(() => {
     let matchedArticles = articles[section];
@@ -33,6 +42,15 @@ export const ArticleGrid = ({ isLoading, section }) => {
         const lowerCaseTitle = article.title.toLowerCase();
 
         return lowerCaseTitle.includes(lowerCaseSearchInput);
+      });
+    }
+
+    if (!isHomePage) {
+      setArticleAspect({
+        xs: 16,
+        md: 6,
+        lg: 8,
+        mid: true,
       });
     }
 
@@ -82,23 +100,21 @@ export const ArticleGrid = ({ isLoading, section }) => {
           <CircularProgress />
         </div>
       ) : (
-        <>
-          {section !== "allArticles" && (
+        articlesToRender.length > 0 && (
+          <>
             <GridHeader title={pageTitles[section]} />
-          )}
-          <Grid
-            container
-            style={{ margin: 0, gap: "3rem" }}
-            className={styles["grid-container"]}
-          >
-            {articlesToRender.length > 0 &&
-              articlesToRender.map((item) => (
+            <Grid
+              container
+              style={{ margin: 0, gap: "3rem" }}
+              className={styles[`grid-container${articleAspect.mid && "-mid"}`]}
+            >
+              {articlesToRender.map((item) => (
                 <Grid
                   key={item.id}
                   item
-                  xs={12}
-                  md={6}
-                  lg={4}
+                  xs={articleAspect.xs}
+                  md={articleAspect.md}
+                  lg={articleAspect.lg}
                   container
                   alignItems="center"
                   justifyContent="center"
@@ -106,8 +122,9 @@ export const ArticleGrid = ({ isLoading, section }) => {
                   <ArticleCard item={item} />
                 </Grid>
               ))}
-          </Grid>
-        </>
+            </Grid>
+          </>
+        )
       )}
     </div>
   );

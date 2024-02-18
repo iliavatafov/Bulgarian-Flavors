@@ -6,11 +6,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
-import { ActionBar } from "../ActionBar/ActionBar";
 
-export const ArticleCard = ({ item }) => {
-  const text = item.constent.blocks[0].text.slice(0, 200);
-
+export const CarouselCard = ({ item }) => {
   const navigate = useNavigate();
 
   const customTheme = createTheme({
@@ -39,41 +36,29 @@ export const ArticleCard = ({ item }) => {
           borderRadius: "0",
         }}
       >
-        <CardMedia sx={{ height: 250 }} image={item.URL} title={item.title} />
+        <CardMedia
+          component="img"
+          sx={{
+            objectFit: "cover",
+            height: "350px",
+          }}
+          image={item.URL}
+          title={item.title}
+        />
         <CardContent>
           <Typography
             gutterBottom
-            variant="h5"
+            variant="h4"
             component="div"
             sx={{
               textAlign: "left",
-              minHeight: 80,
+              minHeight: 50,
               display: "flex",
               alignItems: "center",
             }}
           >
             {item.title}
           </Typography>
-          <Typography
-            variant="author"
-            component="div"
-            sx={{
-              textAlign: "left",
-              fontStyle: "italic",
-              fontSize: "small",
-              marginBottom: 1,
-            }}
-          >
-            Автор: {item.author}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "left", marginBottom: "8px" }}
-          >
-            {text + " ..."}
-          </Typography>
-          <ActionBar />
         </CardContent>
       </Card>
     </ThemeProvider>

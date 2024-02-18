@@ -5,6 +5,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 export const GridHeader = ({ title }) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isHomeView = ["Новини", "Най-четени"].includes(title);
+  const width = isHomeView ? "100%" : isLargeScreen ? "30%" : "80%";
 
   return (
     <AppBar
@@ -12,18 +14,25 @@ export const GridHeader = ({ title }) => {
       style={{
         backgroundColor: "rgba(240, 242, 245, 0.8)",
         boxShadow: "none",
-        paddingBottom: "2rem",
+        paddingBottom: "1rem",
       }}
     >
-      <Toolbar style={{ display: "flex", justifyContent: "center" }}>
+      <Toolbar
+        style={{ display: "flex", justifyContent: "center", padding: "0" }}
+      >
         <Typography
           variant="h4"
           component="div"
           color="#000"
-          style={{
-            borderBottom: "1px solid #000",
-            width: isLargeScreen ? "30%" : "80%",
-            paddingBottom: "0.5rem",
+          sx={{
+            borderBottom: "1px solid #00d49a",
+            width: width,
+            paddingBottom: "0.3rem",
+            textAlign: isHomeView ? "left" : "center",
+            paddingLeft: isHomeView ? "2rem" : "0",
+            color: "#000",
+            fontSize: "1.4rem",
+            fontStyle: "italic",
           }}
         >
           {title}

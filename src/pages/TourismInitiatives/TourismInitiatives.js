@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { firebaseAnalytics } from "../../firebase";
 
 import { useDispatch } from "react-redux";
 import { articleActions } from "../../store/articlesSlice";
@@ -32,6 +33,7 @@ export const TourismInitiatives = () => {
 
   useEffect(() => {
     fetchArticles();
+    firebaseAnalytics.logEvent("tourism_iniciatives_page_visited");
   }, []);
 
   return <ArticleGrid isLoading={isLoading} section={"tourismInitiatives"} />;
