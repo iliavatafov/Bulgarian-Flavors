@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { GridHeader } from "./GridHeader";
 import { ArticleCard } from "../../components/Articles/ArticleCard";
+import EmptyState from "../EmptyState/EmptyState";
 
 import styles from "./ArticlesGrid.module.css";
 
@@ -125,6 +126,9 @@ export const ArticleGrid = ({ isLoading, section }) => {
             </Grid>
           </>
         )
+      )}
+      {articlesToRender.length === 0 && !isLoading && (
+        <EmptyState text="Не са намерени статии с посоченото име." />
       )}
     </div>
   );
