@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { debounce } from "lodash";
+
 import { GridHeader } from "./GridHeader";
 import { ArticleCard } from "../../components/Articles/ArticleCard";
 import EmptyState from "../EmptyState/EmptyState";
@@ -22,6 +24,8 @@ export const ArticleGrid = ({ isLoading, section }) => {
   const [page, setPage] = useState(2);
   const [articlesToRender, setArticlesToRender] = useState([]);
   const [searchArticles, setSearchArticles] = useState([]);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [articleAspect, setArticleAspect] = useState({
     xs: 12,
     md: 6,
@@ -36,6 +40,22 @@ export const ArticleGrid = ({ isLoading, section }) => {
   const isSearchView = window.location.href.includes("/search");
 
   useEffect(() => {
+    const handleResize = debounce(() => {
+      setScreenWidth(window.innerWidth);
+    }, 200);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsMobileView(screenWidth <= 1200);
+  }, [screenWidth]);
+
+  useEffect(() => {
     let matchedArticles = articles[section];
 
     if (isSearchView) {
@@ -47,19 +67,16 @@ export const ArticleGrid = ({ isLoading, section }) => {
       });
     }
 
-    if (!isHomePage) {
-      setArticleAspect({
-        xs: 16,
-        md: 6,
-        lg: 8,
-        mid: true,
-      });
-    }
+    const aspect =
+      !isHomePage || isMobileView
+        ? { xs: 16, md: 6, lg: 8, mid: true }
+        : { xs: 12, md: 6, lg: 5.7, mid: false };
+    setArticleAspect(aspect);
 
     setArticlesToRender(matchedArticles.slice(0, pageSize));
     setSearchArticles(matchedArticles);
     setPage(2);
-  }, [articles, searchInput]);
+  }, [articles, searchInput, isHomePage, isMobileView, isSearchView]);
 
   const handleScroll = () => {
     const scrollTop = document.documentElement.scrollTop;
@@ -70,21 +87,16 @@ export const ArticleGrid = ({ isLoading, section }) => {
 
     if (scrollTop + windowHeight >= loadPoint && !isLoading) {
       setPage((prevPage) => prevPage + 1);
-
       const startIndex = (page - 1) * pageSize;
       const endIndex = page * pageSize;
 
-      if (searchArticles.length) {
-        setArticlesToRender((prevArticles) => [
-          ...prevArticles,
-          ...searchArticles.slice(startIndex, endIndex),
-        ]);
-      } else {
-        setArticlesToRender((prevArticles) => [
-          ...prevArticles,
-          ...articles[section].slice(startIndex, endIndex),
-        ]);
-      }
+      const itemsToAppend = searchArticles.length
+        ? searchArticles.slice(startIndex, endIndex)
+        : articles[section].slice(startIndex, endIndex);
+      setArticlesToRender((prevArticles) => [
+        ...prevArticles,
+        ...itemsToAppend,
+      ]);
     }
   };
 
