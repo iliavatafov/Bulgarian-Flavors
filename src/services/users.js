@@ -34,6 +34,26 @@ class UsersAPI {
       throw error;
     }
   }
+
+  static async getUserByUid(uid) {
+    try {
+      const usersCollection = this.firestore.collection("users");
+      const querySnapshot = await usersCollection.where("uid", "==", uid).get();
+
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        return {
+          id: querySnapshot.docs[0].id,
+          ...userData,
+        };
+      } else {
+        throw new Error("User not found");
+      }
+    } catch (error) {
+      console.error("Error fetching user by UID:", error);
+      throw error;
+    }
+  }
 }
 
 export default UsersAPI;

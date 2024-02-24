@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../store/modalSlice";
+import UsersAPI from "../services/users";
 
 export const AdminRoute = ({ children }) => {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -11,10 +12,18 @@ export const AdminRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser?.currentUser !== "iliyavatafov@gmail.com") {
-      navigate("/");
-      dispatch(modalActions.openModal("login"));
-    }
+    const redirectIfNotAdmin = async () => {
+      const userData = currentUser?.uid
+        ? await UsersAPI.getUserByUid(currentUser.uid)
+        : [];
+
+      if (!Object.keys(userData).length || !userData.isAdmin) {
+        navigate("/");
+        dispatch(modalActions.openModal("login"));
+      }
+    };
+
+    redirectIfNotAdmin();
   }, [currentUser, dispatch, navigate]);
 
   return currentUser ? children : null;
