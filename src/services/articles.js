@@ -97,6 +97,7 @@ class ArticlesAPI {
   }
 
   static async getArticleById(section, id) {
+    console.log(section, id);
     try {
       const articleRef = this.firestore
         .collection(`articles/${section}/articles`)

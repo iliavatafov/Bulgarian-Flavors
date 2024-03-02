@@ -132,7 +132,7 @@ export const MyEditor = () => {
 
         if (articleId) {
           trackArticleView(articleId);
-          navigate(`/${params.section}/${params.articleId}`);
+          navigate(`/${section}/${articleId}`);
         } else {
           throw new Error("Грешка при публикуване на статия");
         }
