@@ -9,6 +9,9 @@ import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
+import { articleActions } from "../../store/articlesSlice";
+
+import EmptyState from "../EmptyState/EmptyState";
 import { ActionBar } from "../ActionBar/ActionBar";
 import { Button } from "../Button/Button";
 
@@ -165,8 +168,20 @@ export const ArticleDetails = () => {
     getArticle();
   }, [dispatch]);
 
+  const updateAllArticles = async () => {
+    const articles = await ArticlesAPI.getAllArticles();
+
+    dispatch(
+      articleActions.setArticles({
+        collection: "allArticles",
+        data: articles,
+      })
+    );
+  };
+
   const deleteArticle = async () => {
     await ArticlesAPI.deleteArticle(section, articleId);
+    await updateAllArticles();
     navigate(`/${section}`);
   };
 
@@ -178,7 +193,7 @@ export const ArticleDetails = () => {
     <div className={styles.loader}>
       <CircularProgress />
     </div>
-  ) : (
+  ) : articleData.length ? (
     <div className={styles["article-wrapper"]}>
       {currentUser?.currentUser === "iliyavatafov@gmail.com" && (
         <div className={styles["admin-actions"]}>
@@ -255,5 +270,7 @@ export const ArticleDetails = () => {
         <ActionBar />
       </div>
     </div>
+  ) : (
+    <EmptyState text="Възникна грешка. Моля опитайте по-късно." />
   );
 };

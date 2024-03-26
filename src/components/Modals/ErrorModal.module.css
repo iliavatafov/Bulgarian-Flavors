@@ -32,7 +32,7 @@
   justify-content: center;
 }
 
-h2 {
+.errorMessage h2 {
   margin-bottom: 0.5rem;
 }
 

@@ -10,6 +10,8 @@ import "draft-js/dist/Draft.css";
 
 import { CircularProgress } from "@mui/material";
 
+import { articleActions } from "../../store/articlesSlice";
+
 import ArticlesAPI from "../../services/articles";
 
 import useInputValidation from "../../hooks/useInputValidation.js";
@@ -91,6 +93,17 @@ export const MyEditor = () => {
     }
   }, []);
 
+  const updateAllArticles = async () => {
+    const articles = await ArticlesAPI.getAllArticles();
+
+    dispatch(
+      articleActions.setArticles({
+        collection: "allArticles",
+        data: articles,
+      })
+    );
+  };
+
   const createArticle = useCallback(async () => {
     const { title, author, date, imageURL, section } = inputValues;
 
@@ -131,6 +144,7 @@ export const MyEditor = () => {
         const articleId = response.id;
 
         if (articleId) {
+          await updateAllArticles();
           trackArticleView(articleId);
           navigate(`/${section}/${articleId}`);
         } else {

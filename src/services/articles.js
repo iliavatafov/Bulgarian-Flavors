@@ -92,12 +92,18 @@ class ArticlesAPI {
       return flattenedResult;
     } catch (error) {
       console.error("Error getting articles:", error);
-      throw error;
+      store.dispatch(
+        modalActions.setErrorData({
+          isError: true,
+          title: "Грешка",
+          message:
+            "Грешка при зареждане на страницата. Моля опитайте по-късно.",
+        })
+      );
     }
   }
 
   static async getArticleById(section, id) {
-    console.log(section, id);
     try {
       const articleRef = this.firestore
         .collection(`articles/${section}/articles`)
