@@ -34,13 +34,14 @@ export const CarouselCard = ({ item }) => {
             transition: "transform 0.3s ease, box-shadow 0.3s ease",
           },
           borderRadius: "0",
+          height: "33rem",
         }}
       >
         <CardMedia
           component="img"
           sx={{
             objectFit: "cover",
-            height: "350px",
+            height: "360px",
           }}
           image={item.URL}
           title={item.title}
@@ -48,16 +49,29 @@ export const CarouselCard = ({ item }) => {
         <CardContent>
           <Typography
             gutterBottom
-            variant="h4"
+            variant="h5"
             component="div"
             sx={{
               textAlign: "left",
               minHeight: 50,
               display: "flex",
               alignItems: "center",
+              height: "6rem",
             }}
           >
             {item.title}
+          </Typography>
+          <Typography
+            variant="author"
+            component="div"
+            sx={{
+              textAlign: "left",
+              fontStyle: "italic",
+              fontSize: "small",
+              marginBottom: 1,
+            }}
+          >
+            Автор: {item.author}
           </Typography>
         </CardContent>
       </Card>

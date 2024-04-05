@@ -19,7 +19,6 @@ import styles from "./AllArticles.module.css";
 
 export const AllArticles = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isCarouselReady, setIsCarouselReady] = useState(false);
   const allArticles = useSelector(
     (state) => state.articles.articles.allArticles
   );
@@ -48,14 +47,6 @@ export const AllArticles = () => {
     firebaseAnalytics.logEvent("home_page_visited");
   }, []);
 
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      setIsCarouselReady(true);
-    }, 300);
-
-    return () => clearTimeout(delay);
-  }, [allArticles]);
-
   return (
     <div className={styles.wrapper}>
       {isLoading && (
@@ -70,14 +61,7 @@ export const AllArticles = () => {
               <div className={styles.header}>
                 <GridHeader title={"Най-четени"} />
               </div>
-              {!isCarouselReady && (
-                <div className={styles.loader}>
-                  <CircularProgress />
-                </div>
-              )}
-              {isCarouselReady && (
-                <CarouselComponent articles={allArticles.slice(0, 5)} />
-              )}
+              <CarouselComponent articles={allArticles.slice(0, 5)} />
             </>
           )}
           <ArticleGrid section={"allArticles"} />
