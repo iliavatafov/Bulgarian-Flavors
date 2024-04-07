@@ -76,7 +76,7 @@ export const ArticleCard = ({ item }) => {
             {text + " ..."}
           </Typography>
           <div className={styles["action-bar"]}>
-            <ActionBar />
+            <ActionBar articleUrl={window.location.href + `/${item.id}`} />
           </div>
         </CardContent>
       </Card>

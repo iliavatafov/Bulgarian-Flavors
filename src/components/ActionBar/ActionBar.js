@@ -1,13 +1,16 @@
 import { useState } from "react";
+
 import { IconButton, Tooltip } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
+import { CheckCircleOutline } from "@mui/icons-material";
 
-export const ActionBar = () => {
+export const ActionBar = ({ articleUrl }) => {
   const [isFacebookHovered, setIsFacebookHovered] = useState(false);
   const [isTwitterHovered, setIsTwitterHovered] = useState(false);
   const [isCopyHovered, setIsCopyHovered] = useState(false);
+  const [isLinkCopied, setIsLinkCopied] = useState(false); // New state variable
 
   const handleShareFacebook = (event) => {
     event.stopPropagation();
@@ -15,7 +18,7 @@ export const ActionBar = () => {
       navigator
         .share({
           title: document.title,
-          url: window.location.href,
+          url: articleUrl ? articleUrl : window.location.href,
         })
         .then(() => console.log("Shared to Facebook"))
         .catch((error) => console.error("Error sharing to Facebook:", error));
@@ -29,7 +32,7 @@ export const ActionBar = () => {
         .share({
           title: document.title,
           text: "Check out this link!",
-          url: window.location.href,
+          url: articleUrl ? articleUrl : window.location.href,
         })
         .then(() => console.log("Shared to Twitter"))
         .catch((error) => console.error("Error sharing to Twitter:", error));
@@ -39,8 +42,11 @@ export const ActionBar = () => {
   const handleCopyLink = (event) => {
     event.stopPropagation();
     navigator.clipboard
-      .writeText(window.location.href)
-      .then(() => console.log("URL copied to clipboard"))
+      .writeText(articleUrl ? articleUrl : window.location.href)
+      .then(() => {
+        console.log("URL copied to clipboard");
+        setIsLinkCopied(true);
+      })
       .catch((error) => console.error("Error copying to clipboard:", error));
   };
 
@@ -72,9 +78,11 @@ export const ActionBar = () => {
             onClick={handleCopyLink}
             onMouseEnter={() => setIsCopyHovered(true)}
             onMouseLeave={() => setIsCopyHovered(false)}
-            sx={{ color: isCopyHovered ? "#00d49a" : undefined }}
+            sx={{
+              color: isCopyHovered || isLinkCopied ? "#00d49a" : undefined,
+            }}
           >
-            <FileCopyIcon />
+            {isLinkCopied ? <CheckCircleOutline /> : <FileCopyIcon />}
           </IconButton>
         </Tooltip>
       </div>
