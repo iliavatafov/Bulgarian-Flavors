@@ -9,7 +9,7 @@ import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
-import { articleActions } from "../../store/articlesSlice";
+import { modalActions } from "../../store/modalSlice";
 
 import EmptyState from "../EmptyState/EmptyState";
 import { ActionBar } from "../ActionBar/ActionBar";
@@ -168,21 +168,16 @@ export const ArticleDetails = () => {
     getArticle();
   }, [dispatch]);
 
-  const updateAllArticles = async () => {
-    const articles = await ArticlesAPI.getAllArticles();
-
+  const openDeleteModal = () => {
     dispatch(
-      articleActions.setArticles({
-        collection: "allArticles",
-        data: articles,
+      modalActions.setDeleteModal({
+        isDelete: true,
+        title: "Изтрий статия",
+        message: "Сигурни ли сте, че желаете да изтриете статията?",
+        section,
+        articleId,
       })
     );
-  };
-
-  const deleteArticle = async () => {
-    await ArticlesAPI.deleteArticle(section, articleId);
-    await updateAllArticles();
-    navigate(`/${section}`);
   };
 
   const editArticle = () => {
@@ -204,7 +199,7 @@ export const ArticleDetails = () => {
             color="green-cyan"
           />
           <Button
-            handler={deleteArticle}
+            handler={openDeleteModal}
             type="submit"
             value="Изтрий"
             color="dark-blue"

@@ -15,6 +15,7 @@ import { Profile } from "../Auth/Profile";
 import { Register } from "../Auth/Register";
 import { UpdateProfile } from "../Auth/UpdateProfile";
 import { ErrorModal } from "../Modals/ErrorModal";
+import { DeleteModal } from "../Modals/DeleteModal";
 import SearchBar from "../Search/SearchBar";
 
 import styles from "./RootLayout.module.css";
@@ -76,6 +77,7 @@ export const RootLayout = () => {
             {modal.profile && <Profile />}
             {modal.updateProfile && <UpdateProfile />}
             {modal.errorData.isError && <ErrorModal />}
+            {modal.delete.isDelete && <DeleteModal />}
             <Outlet />
           </main>
           <footer className={styles.footer}>
