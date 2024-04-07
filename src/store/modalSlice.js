@@ -27,7 +27,7 @@ const modalSlice = createSlice({
     openModal(state, action) {
       state[action.payload] = true;
       Object.keys(state).forEach((el) => {
-        if ((el !== action.payload && el !== "errorData") || el !== "delete") {
+        if (el !== action.payload && (el !== "errorData" || el !== "delete")) {
           state[el] = false;
         }
       });
