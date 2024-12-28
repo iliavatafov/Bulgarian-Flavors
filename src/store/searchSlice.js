@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const searchSlice = createSlice({
   name: "search",
-  initialState: { isSearch: false, searchInput: "" },
+  initialState: {
+    isSearch: false,
+    searchInput: "",
+  },
   reducers: {
     toggleSearch(state) {
       state.isSearch = !state.isSearch;

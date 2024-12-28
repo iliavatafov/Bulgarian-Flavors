@@ -33,6 +33,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -60,6 +65,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "redux-mock-store": "^1.5.4"
   }
 }
