@@ -10,7 +10,7 @@ export const ActionBar = ({ articleUrl }) => {
   const [isFacebookHovered, setIsFacebookHovered] = useState(false);
   const [isTwitterHovered, setIsTwitterHovered] = useState(false);
   const [isCopyHovered, setIsCopyHovered] = useState(false);
-  const [isLinkCopied, setIsLinkCopied] = useState(false); // New state variable
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
 
   const handleShareFacebook = (event) => {
     event.stopPropagation();
