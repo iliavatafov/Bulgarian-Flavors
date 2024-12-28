@@ -12,7 +12,7 @@ import Link from "@mui/material/Link";
 import { modalActions } from "../../store/modalSlice";
 
 import EmptyState from "../EmptyState/EmptyState";
-import { ActionBar } from "../ActionBar/ActionBar";
+import { ActionBar } from "../ActionBar/index.tsx";
 import { Button } from "../Button/Button";
 
 import styles from "./ArticleDetails.module.css";

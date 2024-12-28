@@ -49,6 +49,7 @@ function App() {
           ),
         },
         { path: "/:section/:articleId", element: <ArticleDetails /> },
+        { path: "*", element: <AllArticles /> },
       ],
     },
   ]);

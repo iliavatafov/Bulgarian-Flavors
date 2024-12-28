@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
-import { ActionBar } from "../ActionBar/ActionBar";
+import { ActionBar } from "../ActionBar/index.tsx";
 
 import styles from "./ArticleCard.module.css";
 
@@ -76,7 +76,9 @@ export const ArticleCard = ({ item }) => {
             {text + " ..."}
           </Typography>
           <div className={styles["action-bar"]}>
-            <ActionBar articleUrl={window.location.href + `/${item.id}`} />
+            <ActionBar
+              articleUrl={window.location.href + `${item.section}/${item.id}`}
+            />
           </div>
         </CardContent>
       </Card>
