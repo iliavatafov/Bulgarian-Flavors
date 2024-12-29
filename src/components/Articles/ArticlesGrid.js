@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { debounce } from "lodash";
@@ -120,15 +120,15 @@ export const ArticleGrid = ({ isLoading, section }) => {
             <Grid
               container
               style={{ margin: 0, gap: "3rem" }}
-              className={styles[`grid-container${articleAspect.mid && "-mid"}`]}
+              className={
+                styles[`grid-container${articleAspect.mid ? "-mid" : ""}`]
+              }
             >
               {articlesToRender.map((item) => (
                 <Grid
                   key={item.id}
                   item
-                  xs={articleAspect.xs}
-                  md={articleAspect.md}
-                  lg={articleAspect.lg}
+                  size={articleAspect}
                   container
                   alignItems="center"
                   justifyContent="center"
