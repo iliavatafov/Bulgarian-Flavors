@@ -9,10 +9,10 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import {
-  bodySxStyles,
-  cardSxStyles,
-  subTitleSxStyles,
-  titleSxStyles,
+  BODY_SX_STYLES,
+  CARD_SX_STYLES,
+  SUBTITLE_SX_STYLES,
+  TITLE_SX_STYLES,
 } from "../../constants/articleCard.ts";
 
 import { ActionBar } from "../ActionBar/index.tsx";
@@ -55,26 +55,26 @@ export const ArticleCard: FC<ArticleCardProps> = ({ item }) => {
   );
 
   const titleElement = (
-    <Typography gutterBottom variant="h5" component="div" sx={titleSxStyles}>
+    <Typography gutterBottom variant="h5" component="div" sx={TITLE_SX_STYLES}>
       {title}
     </Typography>
   );
 
   const authorElement = (
-    <Typography variant="subtitle2" component="div" sx={subTitleSxStyles}>
+    <Typography variant="subtitle2" component="div" sx={SUBTITLE_SX_STYLES}>
       Автор: {author}
     </Typography>
   );
 
   const bodyElement = (
-    <Typography variant="body2" color="text.secondary" sx={bodySxStyles}>
+    <Typography variant="body2" color="text.secondary" sx={BODY_SX_STYLES}>
       {text + " ..."}
     </Typography>
   );
 
   return (
     <ThemeProvider theme={memoizedTheme}>
-      <Card onClick={navigateToDetailsPage} sx={cardSxStyles}>
+      <Card onClick={navigateToDetailsPage} sx={CARD_SX_STYLES}>
         <CardMedia sx={{ height: 250 }} image={URL} title={title} />
         <CardContent>
           {titleElement}

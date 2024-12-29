@@ -1,4 +1,4 @@
-export const cardSxStyles = {
+export const CARD_SX_STYLES = {
   cursor: "pointer",
   "&:hover": {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -9,18 +9,18 @@ export const cardSxStyles = {
   width: "100%",
 };
 
-export const titleSxStyles = {
+export const TITLE_SX_STYLES = {
   textAlign: "left",
   minHeight: 80,
   display: "flex",
   alignItems: "center",
 };
 
-export const subTitleSxStyles = {
+export const SUBTITLE_SX_STYLES = {
   textAlign: "left",
   fontStyle: "italic",
   fontSize: "small",
   marginBottom: 1,
 };
 
-export const bodySxStyles = { textAlign: "left", marginBottom: "8px" };
+export const BODY_SX_STYLES = { textAlign: "left", marginBottom: "8px" };
