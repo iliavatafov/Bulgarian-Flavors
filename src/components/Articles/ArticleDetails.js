@@ -21,6 +21,7 @@ export const ArticleDetails = () => {
   const [articleData, setArticleData] = useState([]);
   const [rawData, setRawData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const test = "";
 
   const currentUser = useSelector((state) => state.auth.currentUser);
 
