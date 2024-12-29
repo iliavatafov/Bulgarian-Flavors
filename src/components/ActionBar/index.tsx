@@ -1,11 +1,11 @@
-import { FC, HTMLAttributes, useState } from "react";
+import { FC, HTMLAttributes, useCallback, useState } from "react";
 
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
 
-import { handleShare } from "../../utils/actionBarUtils.ts";
+import { handleShare as handleShareUtil } from "../../utils/actionBarUtils";
 
 import { IconButtonWithTooltip } from "../IconButtonWithTooltip/index.tsx";
 
@@ -19,20 +19,36 @@ export const ActionBar: FC<ActionBarProps> = ({ articleUrl, ...rest }) => {
   const [isCopyHovered, setIsCopyHovered] = useState(false);
   const [isLinkCopied, setIsLinkCopied] = useState(false);
 
-  const urlToShare = articleUrl ? articleUrl : window.location.href;
+  const urlToShare = articleUrl ?? window.location.href;
 
-  const handleCopyLink = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    navigator.clipboard
-      .writeText(urlToShare)
-      .then(() => {
-        console.log("URL copied to clipboard");
-        setIsLinkCopied(true);
-      })
-      .catch((error) => console.error("Error copying to clipboard:", error));
-  };
+  const handleCopyLink = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
 
-  const buttons = [
+      navigator.clipboard
+        .writeText(urlToShare)
+        .then(() => {
+          console.log("URL copied to clipboard");
+          setIsLinkCopied(true);
+        })
+        .catch((error) => console.error("Error copying to clipboard:", error));
+    },
+    [urlToShare]
+  );
+
+  const handleShare = useCallback(
+    (
+      event: React.MouseEvent,
+      platform: string,
+      urlToShare: string,
+      text?: string
+    ) => {
+      handleShareUtil(event, platform, urlToShare, text);
+    },
+    [urlToShare]
+  );
+
+  const getButtonsConfig = () => [
     {
       key: "Facebook",
       title: "Сподели във Facebook",
@@ -67,7 +83,7 @@ export const ActionBar: FC<ActionBarProps> = ({ articleUrl, ...rest }) => {
   return (
     <div className="action-bar" {...rest}>
       <div className="action-bar-icons">
-        {buttons.map((button) => (
+        {getButtonsConfig().map((button) => (
           <IconButtonWithTooltip
             key={button.key}
             title={button.title}
