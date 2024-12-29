@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 
 import { modalActions } from "../../store/modalSlice";
 
@@ -16,130 +15,7 @@ import { ActionBar } from "../ActionBar/index.tsx";
 import { Button } from "../Button/Button";
 
 import styles from "./ArticleDetails.module.css";
-
-const parseContent = (content) => {
-  const parsedContent = content.blocks.map((block, index) => {
-    let text = block.text;
-    const components = [];
-    let currentPosition = 0;
-
-    while (currentPosition < text.length) {
-      if (block.type === "unstyled" && text[currentPosition] === "\n") {
-        components.push(<br key={`br-${index}-${currentPosition}`} />);
-        currentPosition++;
-      } else {
-        const entity = block.entityRanges.find(
-          (range) => range.offset === currentPosition
-        );
-
-        if (entity && content.entityMap[entity.key].type === "LINK") {
-          const url = content.entityMap[entity.key].data.url;
-          const target = content.entityMap[entity.key].data.target || "_blank";
-          const entityLength = entity.length;
-
-          components.push(
-            <Link
-              key={`link-${index}-${currentPosition}`}
-              href={url}
-              target={target}
-              style={{ textAlign: block.data.alignment || "left" }}
-            >
-              {text.substr(currentPosition, entityLength)}
-            </Link>
-          );
-
-          currentPosition += entityLength;
-        } else {
-          const imageEntity = block.entityRanges.find(
-            (range) =>
-              range.offset === currentPosition &&
-              content.entityMap[range.key].type === "IMAGE"
-          );
-
-          if (imageEntity) {
-            const src = content.entityMap[imageEntity.key].data.src;
-            const imageLength = imageEntity.length;
-
-            components.push(
-              <ImageList
-                key={`image-list-${index}`}
-                cols={1}
-                style={{ textAlign: block.data.alignment || "left" }}
-              >
-                <ImageListItem
-                  key={`image-${index}-${currentPosition}`}
-                  style={{ textAlign: block.data.alignment || "left" }}
-                >
-                  <img src={src} alt="Image" />
-                </ImageListItem>
-              </ImageList>
-            );
-
-            currentPosition += imageLength;
-          } else {
-            let styleRanges = block.inlineStyleRanges.filter(
-              (range) => range.offset === currentPosition
-            );
-
-            let styleComponent = null;
-
-            if (styleRanges.length > 0) {
-              const style = styleRanges[0].style.toLowerCase();
-              const styleLength = styleRanges[0].length;
-
-              if (style === "bold") {
-                styleComponent = (
-                  <Typography
-                    key={`bold-${index}-${currentPosition}`}
-                    component="span"
-                    fontWeight="bold"
-                    style={{ textAlign: block.data.alignment || "left" }}
-                  >
-                    {text.substr(currentPosition, styleLength)}
-                  </Typography>
-                );
-              } else if (style === "italic") {
-                styleComponent = (
-                  <Typography
-                    key={`italic-${index}-${currentPosition}`}
-                    component="span"
-                    fontStyle="italic"
-                    style={{
-                      textAlign: block.data.alignment || "left",
-                    }}
-                  >
-                    {text.substr(currentPosition, styleLength)}
-                  </Typography>
-                );
-              }
-
-              currentPosition += styleLength;
-            }
-
-            if (styleComponent) {
-              components.push(styleComponent);
-            } else {
-              components.push(
-                <Typography
-                  key={`text-${index}-${currentPosition}`}
-                  component="span"
-                  style={{ textAlign: block.data.alignment || "left" }}
-                >
-                  {text[currentPosition]}
-                </Typography>
-              );
-              currentPosition++;
-            }
-          }
-        }
-      }
-    }
-
-    return components;
-  });
-
-  return parsedContent;
-};
+import { useParseContent } from "../../hooks/useParseContent.tsx";
 
 export const ArticleDetails = () => {
   const [articleData, setArticleData] = useState([]);
@@ -158,7 +34,7 @@ export const ArticleDetails = () => {
       setIsLoading(true);
       const response = await ArticlesAPI.getArticleById(section, articleId);
       if (response) {
-        const parsedData = parseContent(response.constent);
+        const parsedData = useParseContent(response.constent);
         setRawData(response);
         setArticleData(parsedData);
       }
