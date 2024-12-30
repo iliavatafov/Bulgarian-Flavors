@@ -1,8 +1,6 @@
-import { cloneElement, FC, ReactElement } from "react";
+import { cloneElement, FC } from "react";
 
-interface ArticleContentProps {
-  articleData: ReactElement[][];
-}
+import type { ArticleContentProps } from "../../../types/articlesTypes";
 
 export const ArticleContent: FC<ArticleContentProps> = ({ articleData }) => (
   <>

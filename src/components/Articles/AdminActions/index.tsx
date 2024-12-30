@@ -1,13 +1,14 @@
 import { FC } from "react";
 
-import { ThemedButton } from "../common/Button";
+import {
+  DELETE_ACTION_TEXT,
+  EDIT_ACTION_TEXT,
+} from "../../../constants/adminActions";
+import type { AdminActionsProps } from "../../../types/articlesTypes";
 
-import styles from "./ArticleDetails.module.css";
+import { ThemedButton } from "../../common/Button";
 
-interface AdminActionsProps {
-  editArticle: () => void;
-  openDeleteModal: () => void;
-}
+import styles from "./styles.module.css";
 
 export const AdminActions: FC<AdminActionsProps> = ({
   editArticle,
@@ -16,10 +17,10 @@ export const AdminActions: FC<AdminActionsProps> = ({
   return (
     <div className={styles["admin-actions"]}>
       <ThemedButton onClick={editArticle} variant="contained" color="greenCyan">
-        Редактирай
+        {EDIT_ACTION_TEXT}
       </ThemedButton>
       <ThemedButton onClick={openDeleteModal} variant="contained" color="error">
-        Изтрий
+        {DELETE_ACTION_TEXT}
       </ThemedButton>
     </div>
   );

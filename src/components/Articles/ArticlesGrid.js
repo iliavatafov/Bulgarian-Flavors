@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { debounce } from "lodash";
 
 import { GridHeader } from "./GridHeader";
-import { ArticleCard } from "../../components/Articles/ArticleCard";
+import { ArticleCard } from "./ArticleCard/index";
 import EmptyState from "../EmptyState/EmptyState";
 
 import styles from "./ArticlesGrid.module.css";

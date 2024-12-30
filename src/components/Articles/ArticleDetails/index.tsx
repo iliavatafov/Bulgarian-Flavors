@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useFetchArticle } from "../../hooks/useFetchArticle";
+import { useFetchArticle } from "../../../hooks/useFetchArticle";
 
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 
@@ -9,22 +9,19 @@ import {
   DELETE_MODAL_MESSAGE,
   DELETE_MODAL_TITLE,
   ERROR_MESSAGE,
-} from "../../constants/articleDetails";
+} from "../../../constants/articleDetails";
 
-import { modalActions } from "../../store/modalSlice";
+import { modalActions } from "../../../store/modalSlice";
 
-import { ActionBar } from "../ActionBar";
-import { AdminActions } from "./AdminActions";
-import { ArticleHeader } from "./ArticleHeader";
-import { ArticleContent } from "./ArticleContent";
-import EmptyState from "../EmptyState/EmptyState";
+import type { CurrentUser } from "../../../types/articlesTypes";
 
-import styles from "./ArticleDetails.module.css";
+import { ActionBar } from "../../ActionBar";
+import { AdminActions } from "../AdminActions/index";
+import { ArticleHeader } from "../ArticleHeader/index";
+import { ArticleContent } from "../ArticleContent/index";
+import EmptyState from "../../EmptyState/EmptyState";
 
-export interface CurrentUser {
-  currentUser: string;
-  uid: string;
-}
+import styles from "./styles.module.css";
 
 export const ArticleDetails: React.FC = () => {
   const currentUser = useSelector(

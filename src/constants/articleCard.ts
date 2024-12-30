@@ -24,3 +24,11 @@ export const SUBTITLE_SX_STYLES = {
 };
 
 export const BODY_SX_STYLES = { textAlign: "left", marginBottom: "8px" };
+
+export const CARD_THEME = {
+  palette: {
+    primary: {
+      main: "#00d49a",
+    },
+  },
+};

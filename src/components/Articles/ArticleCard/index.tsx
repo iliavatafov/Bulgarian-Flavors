@@ -11,26 +11,15 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   BODY_SX_STYLES,
   CARD_SX_STYLES,
+  CARD_THEME,
   SUBTITLE_SX_STYLES,
   TITLE_SX_STYLES,
-} from "../../constants/articleCard.ts";
+} from "../../../constants/articleCard.ts";
+import type { ArticleCardProps } from "../../../types/articlesTypes.ts";
 
-import { ActionBar } from "../ActionBar/index.tsx";
+import { ActionBar } from "../../ActionBar/index.tsx";
 
-import styles from "./ArticleCard.module.css";
-
-interface ArticleCardProps {
-  item: {
-    section: string;
-    id: string;
-    URL: string;
-    title: string;
-    author: string;
-    constent: {
-      blocks: { text: string }[];
-    };
-  };
-}
+import styles from "./styles.module.css";
 
 export const ArticleCard: FC<ArticleCardProps> = ({ item }) => {
   const { section, id, URL, title, author, constent } = item;
@@ -38,21 +27,12 @@ export const ArticleCard: FC<ArticleCardProps> = ({ item }) => {
   const articleUrl = `/${section}/${id}`;
 
   const navigate = useNavigate();
+
   const navigateToDetailsPage = useCallback(() => {
     navigate(articleUrl);
   }, [navigate, articleUrl]);
 
-  const memoizedTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          primary: {
-            main: "#00d49a",
-          },
-        },
-      }),
-    []
-  );
+  const memoizedTheme = useMemo(() => createTheme(CARD_THEME), []);
 
   const titleElement = (
     <Typography gutterBottom variant="h5" component="div" sx={TITLE_SX_STYLES}>

@@ -13,7 +13,7 @@ import { AllArticles } from "./pages/AllArticles/AllArticles";
 import { AdminRoute } from "./components/AdminRoute";
 
 import "draft-js/dist/Draft.css";
-import { ArticleDetails } from "./components/Articles/ArticleDetails.tsx";
+import { ArticleDetails } from "./components/Articles/ArticleDetails/index";
 
 function App() {
   const dispatch = useDispatch();
