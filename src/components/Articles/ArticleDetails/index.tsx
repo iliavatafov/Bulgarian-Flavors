@@ -85,7 +85,7 @@ export const ArticleDetails: React.FC = () => {
       />
       <ImageList cols={1}>
         <ImageListItem>
-          <img src={rawData?.URL ?? ""} alt={rawData?.title ?? ""} />
+          <img src={rawData?.URL ?? "#"} alt={rawData?.title ?? ""} />
         </ImageListItem>
       </ImageList>
       <ArticleContent articleData={articleData} />
