@@ -12,7 +12,7 @@ import ArticlesAPI from "../../services/articles";
 
 import EmptyState from "../../components/EmptyState/EmptyState.js";
 import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
-import { GridHeader } from "../../components/Articles/GridHeader.js";
+import { GridHeader } from "../../components/Articles/ArticlesGrid/GridHeader";
 import { CarouselComponent } from "../../components/Carousel/Carousel.js";
 
 import styles from "./AllArticles.module.css";

@@ -7,10 +7,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { debounce } from "lodash";
 
 import { GridHeader } from "./GridHeader";
-import { ArticleCard } from "./ArticleCard/index";
-import EmptyState from "../EmptyState/EmptyState";
+import { ArticleCard } from "../ArticleCard/index";
+import EmptyState from "../../EmptyState/EmptyState";
 
-import styles from "./ArticlesGrid.module.css";
+import styles from "./styles.module.css";
 
 const pageSize = 10;
 const pageTitles = {
