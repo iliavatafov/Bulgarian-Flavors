@@ -14,6 +14,7 @@ import {
   SUCCESS_MESSAGE,
 } from "../../../constants/auth";
 import type { FormValues } from "../../../types/authTypes";
+import type { AppDispatch } from "../../../store";
 
 import { Button } from "../../Button";
 
@@ -24,7 +25,7 @@ const validationSchema = Yup.object({
 });
 
 export const ForgotPasswordForm = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleSubmit = useCallback(
     async (
@@ -34,7 +35,6 @@ export const ForgotPasswordForm = () => {
       setStatus({ error: null, success: null });
 
       try {
-        // @ts-ignore
         await dispatch(resetPassword(values.email));
         setStatus({ success: SUCCESS_MESSAGE + values.email });
       } catch (error: any) {

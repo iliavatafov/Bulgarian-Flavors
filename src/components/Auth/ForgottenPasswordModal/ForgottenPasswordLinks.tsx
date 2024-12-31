@@ -14,19 +14,25 @@ import styles from "../Auth.module.css";
 export const ForgottenPasswordLinks = () => {
   const dispatch = useDispatch();
 
-  const openModal = () => dispatch(modalActions.openModal("register"));
+  const openLoginModal = () => dispatch(modalActions.openModal("login"));
+  const openRegisterModal = () => dispatch(modalActions.openModal("register"));
+
   return (
     <>
       <Link
         to="#"
-        onClick={() => dispatch(modalActions.openModal("login"))}
+        onClick={openLoginModal}
         className={styles["link-to-login-forgoten-pass"]}
       >
         {LOGIN_TEXT}
       </Link>
       <div className={styles["link-to-login-container"]}>
         {NO_ACCOUNT_LINK_TEXT}
-        <Link to="#" className={styles["link-to-login"]} onClick={openModal}>
+        <Link
+          to="#"
+          className={styles["link-to-login"]}
+          onClick={openRegisterModal}
+        >
           {REGISTRATION_LINK_TEXT}
         </Link>
       </div>

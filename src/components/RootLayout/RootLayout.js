@@ -11,7 +11,7 @@ import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
 import { ForgottenPasswordModal } from "../Auth/ForgottenPasswordModal/index";
 import { Login } from "../Auth/Login";
-import { Profile } from "../Auth/Profile";
+import { ProfileModal } from "../Auth/ProfileModal";
 import { Register } from "../Auth/Register";
 import { UpdateProfile } from "../Auth/UpdateProfile";
 import { ErrorModal } from "../Modals/ErrorModal";
@@ -74,7 +74,7 @@ export const RootLayout = () => {
             {modal.login && <Login />}
             {modal.register && <Register />}
             {modal.resetPassword && <ForgottenPasswordModal />}
-            {modal.profile && <Profile />}
+            {modal.profile && <ProfileModal />}
             {modal.updateProfile && <UpdateProfile />}
             {modal.errorData.isError && <ErrorModal />}
             {modal.delete.isDelete && <DeleteModal />}

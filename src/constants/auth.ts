@@ -16,3 +16,11 @@ export const SUBMITTING_BUTTON_TEXT = "Изпращане...";
 export const SUBMIT_BUTTON_TEXT = "Изпрати";
 
 export const LOGIN_TEXT = "Вход";
+
+export const PROFILE_TITLE = "Профил";
+
+export const PROFILE_UPDATE_BUTTON_TEXT = "Обновяване на профил";
+
+export const LOGOUT_BUTTON_TEXT = "Изход";
+
+export const EXIT_ERROR_MESSAGE = "Грешка при изход";

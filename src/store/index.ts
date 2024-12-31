@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice.js";
-import loadingSlice from "./loadingSlice.js";
-import modalSlice from "./modalSlice";
+import loadingSlice from "./loadingSlice.js.js";
+import modalSlice from "./modalSlice.js";
 import articlesSlice from "./articlesSlice.js";
 import searchSlice from "./searchSlice.js";
 
@@ -14,3 +14,6 @@ export const store = configureStore({
     search: searchSlice,
   },
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

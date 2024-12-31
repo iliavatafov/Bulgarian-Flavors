@@ -7,3 +7,16 @@ export interface AuthModalWrapperProps {
 export interface FormValues {
   email: string;
 }
+
+export interface ProfileModalContentProps {
+  error?: string;
+}
+
+export interface CurrentUser {
+  currentUser: string;
+  uid: string;
+}
+
+export interface ExitLinkProps {
+  handleLogout: () => void;
+}
