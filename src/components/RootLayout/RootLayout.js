@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
-import { ForgotPassword } from "../Auth/ForgotPassword";
+import { ForgotPassword } from "../Auth/ForgotPassword/index";
 import { Login } from "../Auth/Login";
 import { Profile } from "../Auth/Profile";
 import { Register } from "../Auth/Register";

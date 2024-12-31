@@ -82,7 +82,7 @@ export const UpdateProfile = () => {
               <p>{error}</p>
             </div>
           )}
-          <form onSubmit={handleSubmit} className={styles["singup-form"]}>
+          <form onSubmit={handleSubmit} className={styles["signup-form"]}>
             <Input
               type="email"
               id="email"

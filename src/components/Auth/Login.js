@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import { login } from "../../store/authSlice";
 
@@ -61,7 +61,7 @@ export const Login = () => {
               <p>{error}</p>
             </div>
           )}
-          <form onSubmit={handleSubmit} className={styles["singup-form"]}>
+          <form onSubmit={handleSubmit} className={styles["signup-form"]}>
             <Input
               type="email"
               id="email"
