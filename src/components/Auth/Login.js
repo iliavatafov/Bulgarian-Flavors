@@ -7,7 +7,7 @@ import { login } from "../../store/authSlice";
 
 // import { faGoogle, faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../Button";
 import { Input } from "../Input/Input";

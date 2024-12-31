@@ -11,7 +11,7 @@ const ForgottenPasswordTitle = () => (
   <h2 className={styles.title}>{FORGOTTEN_PASSWORD_TITLE}</h2>
 );
 
-export const ForgotPasswordModal = () => {
+export const ForgottenPasswordModal = () => {
   return (
     <Modal>
       <AuthModalWrapper>
