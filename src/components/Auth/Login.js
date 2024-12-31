@@ -14,6 +14,7 @@ import { Input } from "../Input/Input";
 import { Modal } from "../Modals/Modal";
 
 import styles from "./Auth.module.css";
+import { AuthModalWrapper } from "./AuthModalWrapper";
 
 export const Login = () => {
   const [error, setError] = useState("");
@@ -48,50 +49,44 @@ export const Login = () => {
 
   return (
     <Modal>
-      <div className={styles["auth-container"]}>
-        <FontAwesomeIcon
-          icon={faXmark}
-          className={styles.xmark}
-          onClick={() => dispatch(modalActions.closeModal())}
-        />
-        <div className={styles["auth-body"]}>
-          <h2 className={styles.title}>Вход</h2>
-          {error && (
-            <div className={styles.errorMessage}>
-              <p>{error}</p>
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className={styles["signup-form"]}>
-            <Input
-              type="email"
-              id="email"
-              name={"email"}
-              label="E-mail"
-              reference={emailRef}
-              require={true}
-            />
-            <Input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name={"password"}
-              label="Парола"
-              reference={passwordRef}
-              require={true}
-              icon={
-                <FontAwesomeIcon
-                  onClick={handleShowPassword}
-                  className="eye"
-                  icon={faEye}
-                />
-              }
-            />
-            <Button
-              disabled={isLoading}
-              type="submit"
-              value={isLoading ? "Вход..." : "Вход"}
-              color="green-cyan"
-            />
-            {/* <Button
+      <AuthModalWrapper>
+        <h2 className={styles.title}>Вход</h2>
+        {error && (
+          <div className={styles.errorMessage}>
+            <p>{error}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className={styles["signup-form"]}>
+          <Input
+            type="email"
+            id="email"
+            name={"email"}
+            label="E-mail"
+            reference={emailRef}
+            require={true}
+          />
+          <Input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name={"password"}
+            label="Парола"
+            reference={passwordRef}
+            require={true}
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowPassword}
+                className="eye"
+                icon={faEye}
+              />
+            }
+          />
+          <Button
+            disabled={isLoading}
+            type="submit"
+            value={isLoading ? "Вход..." : "Вход"}
+            color="green-cyan"
+          />
+          {/* <Button
           icon={<FontAwesomeIcon icon={faGoogle} />}
           disabled={isLoading}
           type="button"
@@ -105,23 +100,22 @@ export const Login = () => {
           value="Влез с Facebook"
           color="brands"
         /> */}
-            <Button
-              type="button"
-              value="Регистрирай се"
-              color="dark-blue"
-              handler={openRegisterModal}
-            />
-          </form>
+          <Button
+            type="button"
+            value="Регистрирай се"
+            color="dark-blue"
+            handler={openRegisterModal}
+          />
+        </form>
 
-          <Link
-            to="#"
-            onClick={openResetPasswordModal}
-            className={styles["link-to-forgoten-password"]}
-          >
-            Забравена парола?
-          </Link>
-        </div>
-      </div>
+        <Link
+          to="#"
+          onClick={openResetPasswordModal}
+          className={styles["link-to-forgoten-password"]}
+        >
+          Забравена парола?
+        </Link>
+      </AuthModalWrapper>
     </Modal>
   );
 };

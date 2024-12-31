@@ -7,11 +7,9 @@ import { resetPassword } from "../../../store/authSlice";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
 import { Button } from "../../Button/Button";
 import { Modal } from "../../Modals/Modal";
+import { AuthModalWrapper } from "../AuthModalWrapper";
 
 import {
   FORGOTTEN_PASSWORD_TITLE,
@@ -45,65 +43,56 @@ export const ForgotPassword = () => {
   });
 
   const openModal = () => dispatch(modalActions.openModal("register"));
-  const closeModal = () => dispatch(modalActions.closeModal());
 
   return (
     <Modal>
-      <div className={styles["auth-container"]}>
-        <FontAwesomeIcon
-          icon={faXmark}
-          className={styles.xmark}
-          onClick={closeModal}
-          aria-label="Close"
-        />
-        <div className={styles["auth-body"]}>
-          <h2 className={styles.title}>{FORGOTTEN_PASSWORD_TITLE}</h2>
-          <Formik
-            initialValues={{ email: "" }}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting, status, setFieldValue, setStatus }) => (
-              <Form className={styles["signup-form"]}>
-                {status && status.error && (
-                  <div className={styles.errorMessage} role="alert">
-                    <p>{status.error}</p>
-                  </div>
-                )}
-                {status && status.success && (
-                  <div className={styles.message} role="status">
-                    <p>{status.success}</p>
-                  </div>
-                )}
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className={styles.errorMessage}
-                />
-                <div>
-                  <label htmlFor="email">E-mail</label>
-                  <Field
-                    type="email"
-                    name="email"
-                    placeholder="E-mail"
-                    className={styles.input}
-                    onChange={(e) => {
-                      setFieldValue("email", e.target.value);
-                      setStatus({ error: null, success: null });
-                    }}
-                  />
+      <AuthModalWrapper>
+        <h2 className={styles.title}>{FORGOTTEN_PASSWORD_TITLE}</h2>
+        <Formik
+          initialValues={{ email: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, status, setFieldValue, setStatus }) => (
+            <Form className={styles["signup-form"]}>
+              {status && status.error && (
+                <div className={styles.errorMessage} role="alert">
+                  <p>{status.error}</p>
                 </div>
-
-                <Button
-                  disabled={isSubmitting}
-                  type="submit"
-                  value={isSubmitting ? "Изпращане..." : "Изпрати"}
-                  color="green-cyan"
+              )}
+              {status && status.success && (
+                <div className={styles.message} role="status">
+                  <p>{status.success}</p>
+                </div>
+              )}
+              <ErrorMessage
+                name="email"
+                component="div"
+                className={styles.errorMessage}
+              />
+              <div>
+                <label htmlFor="email">E-mail</label>
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="E-mail"
+                  className={styles.input}
+                  onChange={(e) => {
+                    setFieldValue("email", e.target.value);
+                    setStatus({ error: null, success: null });
+                  }}
                 />
-              </Form>
-            )}
-          </Formik>
-        </div>
+              </div>
+
+              <Button
+                disabled={isSubmitting}
+                type="submit"
+                value={isSubmitting ? "Изпращане..." : "Изпрати"}
+                color="green-cyan"
+              />
+            </Form>
+          )}
+        </Formik>
         <Link
           to="#"
           onClick={() => dispatch(modalActions.openModal("login"))}
@@ -117,7 +106,7 @@ export const ForgotPassword = () => {
             {REGISTRATION_LINK_TEXT}
           </Link>
         </div>
-      </div>
+      </AuthModalWrapper>
     </Modal>
   );
 };

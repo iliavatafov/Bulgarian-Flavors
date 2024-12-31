@@ -1,16 +1,17 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import { register } from "../../store/authSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { Modal } from "../Modals/Modal";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+import { AuthModalWrapper } from "./AuthModalWrapper";
 
 import styles from "./Auth.module.css";
 
@@ -56,67 +57,60 @@ export const Register = () => {
 
   return (
     <Modal>
-      <div className={styles["auth-container"]}>
-        <FontAwesomeIcon
-          icon={faXmark}
-          className={styles.xmark}
-          onClick={() => dispatch(modalActions.closeModal())}
-        />
-        <div className={styles["auth-body"]}>
-          <h2 className={styles.title}>Регистрация</h2>
-          {error && (
-            <div className={styles.errorMessage}>
-              <p>{error}</p>
-            </div>
-          )}
-          <form onSubmit={handleSubmit} className={styles["signup-form"]}>
-            <Input
-              type="email"
-              id="email"
-              name={"email"}
-              label="E-mail"
-              reference={emailRef}
-              require={true}
-            />
-            <Input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name={"password"}
-              label="Парола"
-              reference={passwordRef}
-              require={true}
-              icon={
-                <FontAwesomeIcon
-                  onClick={handleShowPassword}
-                  className="eye"
-                  icon={faEye}
-                />
-              }
-            />
-            <Input
-              type={showRepass ? "text" : "password"}
-              id="password-confirm"
-              name={"confirmPassword"}
-              label="Повторете паролата"
-              reference={passwordConfirmRef}
-              require={true}
-              icon={
-                <FontAwesomeIcon
-                  onClick={handleShowRepass}
-                  className="eye"
-                  icon={faEye}
-                />
-              }
-            />
+      <AuthModalWrapper>
+        <h2 className={styles.title}>Регистрация</h2>
+        {error && (
+          <div className={styles.errorMessage}>
+            <p>{error}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className={styles["signup-form"]}>
+          <Input
+            type="email"
+            id="email"
+            name={"email"}
+            label="E-mail"
+            reference={emailRef}
+            require={true}
+          />
+          <Input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name={"password"}
+            label="Парола"
+            reference={passwordRef}
+            require={true}
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowPassword}
+                className="eye"
+                icon={faEye}
+              />
+            }
+          />
+          <Input
+            type={showRepass ? "text" : "password"}
+            id="password-confirm"
+            name={"confirmPassword"}
+            label="Повторете паролата"
+            reference={passwordConfirmRef}
+            require={true}
+            icon={
+              <FontAwesomeIcon
+                onClick={handleShowRepass}
+                className="eye"
+                icon={faEye}
+              />
+            }
+          />
 
-            <Button
-              disabled={isLoading}
-              type="submit"
-              value={isLoading ? "Акаунтът се създава..." : "Регистрация"}
-              color="green-cyan"
-            />
-          </form>
-        </div>
+          <Button
+            disabled={isLoading}
+            type="submit"
+            value={isLoading ? "Акаунтът се създава..." : "Регистрация"}
+            color="green-cyan"
+          />
+        </form>
         <div className={styles["link-to-login-container"]}>
           Вече имаш профил?
           <Link
@@ -127,7 +121,7 @@ export const Register = () => {
             Вход
           </Link>
         </div>
-      </div>
+      </AuthModalWrapper>
     </Modal>
   );
 };
