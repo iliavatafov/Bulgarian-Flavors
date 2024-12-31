@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import { resetPassword } from "../../store/authSlice";
 
@@ -13,10 +13,16 @@ import { Input } from "../Input/Input";
 import { Modal } from "../Modals/Modal";
 
 import styles from "./Auth.module.css";
+import {
+  FORGOTTEN_PASSWORD_TITLE,
+  NO_ACCOUNT_LINK_TEXT,
+  REGISTRATION_LINK_TEXT,
+  SUCCESS_MESSAGE,
+} from "../../constants/auth";
 
 export const ForgotPassword = () => {
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef();
@@ -25,16 +31,17 @@ export const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setSuccessMessage(null);
+    setErrorMessage(null);
+
     setIsLoading(true);
+
     try {
-      setMessage("");
-      setError("");
       await dispatch(resetPassword(emailRef.current.value));
-      setMessage(
-        `Изпратени са инструкции за промяна на парола на ${emailRef.current.value}`
-      );
+      setSuccessMessage(SUCCESS_MESSAGE + emailRef.current.value);
     } catch (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -52,15 +59,15 @@ export const ForgotPassword = () => {
           onClick={closeModal}
         />
         <div className={styles["auth-body"]}>
-          <h2 className={styles.title}>Забравена парола</h2>
-          {error && (
+          <h2 className={styles.title}>{FORGOTTEN_PASSWORD_TITLE}</h2>
+          {errorMessage && (
             <div className={styles.errorMessage}>
-              <p>{error}</p>
+              <p>{errorMessage}</p>
             </div>
           )}
-          {message && (
+          {successMessage && (
             <div className={styles.message}>
-              <p>{message}</p>
+              <p>{successMessage}</p>
             </div>
           )}
           <form onSubmit={handleSubmit} className={styles["singup-form"]}>
@@ -89,9 +96,9 @@ export const ForgotPassword = () => {
           </Link>
         </div>
         <div className={styles["link-to-login-container"]}>
-          Все още нямаш акаунт?
+          {NO_ACCOUNT_LINK_TEXT}
           <Link to="#" className={styles["link-to-login"]} onClick={openModal}>
-            Регистрация
+            {REGISTRATION_LINK_TEXT}
           </Link>
         </div>
       </div>
