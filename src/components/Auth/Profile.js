@@ -8,7 +8,7 @@ import { logout } from "../../store/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { Modal } from "../Modals/Modal";
 
 import styles from "./Profile.module.css";

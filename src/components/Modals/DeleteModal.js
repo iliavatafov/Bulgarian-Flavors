@@ -6,7 +6,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import ArticlesAPI from "../../services/articles";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { Modal } from "../Modals/Modal";
 
 import { modalActions } from "../../store/modalSlice";

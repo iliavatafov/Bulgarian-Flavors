@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { Modal } from "../Modals/Modal";
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { Input } from "../Input/Input";
 import { AuthModalWrapper } from "./AuthModalWrapper";
 

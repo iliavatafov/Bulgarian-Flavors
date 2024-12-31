@@ -17,7 +17,7 @@ import ArticlesAPI from "../../services/articles";
 import useInputValidation from "../../hooks/useInputValidation.js";
 import useEditorActions from "../../hooks/myEditor.js";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/index";
 import { Input } from "../Input/Input";
 import { trackArticleView } from "../../analitics/firebase-analitics.js";
 

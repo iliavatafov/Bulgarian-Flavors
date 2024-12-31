@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
-import { ForgotPassword } from "../Auth/ForgotPassword/index";
+import { ForgotPasswordModal } from "../Auth/ForgotPasswordModal/index";
 import { Login } from "../Auth/Login";
 import { Profile } from "../Auth/Profile";
 import { Register } from "../Auth/Register";
@@ -73,7 +73,7 @@ export const RootLayout = () => {
           <main className={styles.main}>
             {modal.login && <Login />}
             {modal.register && <Register />}
-            {modal.resetPassword && <ForgotPassword />}
+            {modal.resetPassword && <ForgotPasswordModal />}
             {modal.profile && <Profile />}
             {modal.updateProfile && <UpdateProfile />}
             {modal.errorData.isError && <ErrorModal />}

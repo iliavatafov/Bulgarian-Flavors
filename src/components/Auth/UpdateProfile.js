@@ -8,7 +8,7 @@ import { modalActions } from "../../store/modalSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button";
 import { Input } from "../Input/Input";
 import { Modal } from "../Modals/Modal";
 
