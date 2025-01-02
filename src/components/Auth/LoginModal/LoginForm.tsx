@@ -7,17 +7,15 @@ import * as Yup from "yup";
 import { login } from "../../../store/authSlice";
 
 import {
-  INVALID_EMAIL_MESSAGE,
-  REQUIRED_FIELD_MESSAGE,
-} from "../../../constants/auth";
-import type { AppDispatch } from "../../../store";
-import {
+  INVALID_EMAIL_TEXT,
+  REQUIRED_FIELD_TEXT,
   EMAIL_LABEL,
-  LOADING_BUTTON_TEXT,
+  LOGIN_LOADING_BUTTON_TEXT,
   LOGIN_BUTTON_TEXT,
   PASSWORD_LABEL,
-  type LoginFormValues,
-} from "../../../types/authTypes";
+} from "../../../constants/auth";
+import type { AppDispatch } from "../../../store";
+import { type LoginFormValues } from "../../../types/authTypes";
 
 import { TextInput } from "../common/TextInput";
 import { Button } from "../../Button";
@@ -25,10 +23,8 @@ import { Button } from "../../Button";
 import styles from "../Auth.module.css";
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email(INVALID_EMAIL_MESSAGE)
-    .required(REQUIRED_FIELD_MESSAGE),
-  password: Yup.string().required(REQUIRED_FIELD_MESSAGE),
+  email: Yup.string().email(INVALID_EMAIL_TEXT).required(REQUIRED_FIELD_TEXT),
+  password: Yup.string().required(REQUIRED_FIELD_TEXT),
 });
 
 export const LoginForm = () => {
@@ -92,7 +88,7 @@ export const LoginForm = () => {
           />
           <Button
             type="submit"
-            value={isSubmitting ? LOADING_BUTTON_TEXT : LOGIN_BUTTON_TEXT}
+            value={isSubmitting ? LOGIN_LOADING_BUTTON_TEXT : LOGIN_BUTTON_TEXT}
             color="green-cyan"
             disabled={isSubmitting}
           />

@@ -33,7 +33,7 @@ export const TextInput = ({
       className={styles.input}
       onChange={onChange}
     />
-    {["password", "confirmPassword"].includes(name) && (
+    {showPassword !== undefined && handleShowPassword && (
       <FontAwesomeIcon
         onClick={handleShowPassword}
         className={showPassword ? styles.eyeclicked : styles.eye}

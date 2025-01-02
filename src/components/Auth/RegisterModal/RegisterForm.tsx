@@ -6,11 +6,11 @@ import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import {
-  INVALID_EMAIL_FORMAT_MESSAGE,
+  INVALID_EMAIL_TEXT,
   LOADING_BUTTON_TEXT,
   PASSWORDS_DONT_MATCH_MESSAGE,
-  REGISTER_BUTTON_TEXT,
-  REQUIRED_FIELD_MESSAGE,
+  REGISTER_TEXT,
+  REQUIRED_FIELD_TEXT,
 } from "../../../constants/auth";
 import type { AppDispatch } from "../../../store";
 import type { RegisterFormValues } from "../../../types/authTypes";
@@ -21,13 +21,11 @@ import { TextInput } from "../common/TextInput";
 import styles from "../Auth.module.css";
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email(INVALID_EMAIL_FORMAT_MESSAGE)
-    .required(REQUIRED_FIELD_MESSAGE),
-  password: Yup.string().required(REQUIRED_FIELD_MESSAGE),
+  email: Yup.string().email(INVALID_EMAIL_TEXT).required(REQUIRED_FIELD_TEXT),
+  password: Yup.string().required(REQUIRED_FIELD_TEXT),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), undefined], PASSWORDS_DONT_MATCH_MESSAGE)
-    .required(REQUIRED_FIELD_MESSAGE),
+    .required(REQUIRED_FIELD_TEXT),
 });
 
 export const RegisterForm = () => {
@@ -107,7 +105,7 @@ export const RegisterForm = () => {
           />
           <Button
             type="submit"
-            value={isSubmitting ? LOADING_BUTTON_TEXT : REGISTER_BUTTON_TEXT}
+            value={isSubmitting ? LOADING_BUTTON_TEXT : REGISTER_TEXT}
             color="green-cyan"
             disabled={isSubmitting}
           />

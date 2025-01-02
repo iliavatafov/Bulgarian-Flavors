@@ -1,17 +1,16 @@
-import { AuthModalWrapper } from "../AuthModalWrapper";
+import { AuthModalWrapper } from "../common/AuthModalWrapper";
 import { Modal } from "../../Modals/Modal";
 import { LoginForm } from "./LoginForm";
 import { LoginFormLinks } from "./LoginFormLinks";
+import { ModalTitle } from "../common/ModalTitle";
 
-import styles from "../Auth.module.css";
-
-const LoginModalHeader = () => <h2 className={styles.title}>Вход</h2>;
+import { LOGIN_TEXT } from "../../../constants/auth";
 
 export const LoginModal = () => {
   return (
     <Modal>
       <AuthModalWrapper>
-        <LoginModalHeader />
+        <ModalTitle text={LOGIN_TEXT} />
         <LoginForm />
         <LoginFormLinks />
       </AuthModalWrapper>

@@ -32,10 +32,21 @@ export interface RegisterFormValues {
   confirmPassword: string;
 }
 
-export const EMAIL_LABEL = "E-mail";
+export interface ModalTitleProps {
+  text: string;
+}
 
-export const PASSWORD_LABEL = "Парола";
+export type PasswordVisibilityKeys = "password" | "confirmPassword";
 
-export const LOADING_BUTTON_TEXT = "Влизане...";
+export interface PasswordVisibility {
+  password: boolean;
+  confirmPassword: boolean;
+}
 
-export const LOGIN_BUTTON_TEXT = "Влез";
+export interface Field {
+  label: string;
+  name: string;
+  type: string;
+  placeholder: string;
+  showPassword?: boolean;
+}

@@ -130,6 +130,10 @@ export const updatePassword = (password) => {
     } catch (error) {
       if (error.code === "auth/weak-password") {
         throw new Error("Паролата трябва да бъде минимум 6 символа");
+      } else if (error.code === "auth/requires-recent-login") {
+        throw new Error(
+          "Тази операция е чувствителна и изисква скорошно удостоверяване. Влезте отново, преди да опитате отново."
+        );
       } else {
         throw new Error("Неуспешно актуализиране на акаунта");
       }

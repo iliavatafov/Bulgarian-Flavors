@@ -1,17 +1,16 @@
+import { REGISTER_TEXT } from "../../../constants/auth";
+
 import { Modal } from "../../Modals/Modal";
-import { AuthModalWrapper } from "../AuthModalWrapper";
+import { AuthModalWrapper } from "../common/AuthModalWrapper";
 import { RegisterForm } from "./RegisterForm";
 import { RegisterFormLinks } from "./RegisterFormLinks";
-
-import styles from "../Auth.module.css";
-
-const RegisterModalHeader = () => <h2 className={styles.title}>Регистрация</h2>;
+import { ModalTitle } from "../common/ModalTitle";
 
 export const RegisterModal = () => {
   return (
     <Modal>
       <AuthModalWrapper>
-        <RegisterModalHeader />
+        <ModalTitle text={REGISTER_TEXT} />
         <RegisterForm />
         <RegisterFormLinks />
       </AuthModalWrapper>

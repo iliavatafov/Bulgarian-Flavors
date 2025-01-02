@@ -13,7 +13,7 @@ import { ForgottenPasswordModal } from "../Auth/ForgottenPasswordModal/index";
 import { LoginModal } from "../Auth/LoginModal";
 import { ProfileModal } from "../Auth/ProfileModal";
 import { RegisterModal } from "../Auth/RegisterModal";
-import { UpdateProfile } from "../Auth/UpdateProfile";
+import { UpdateProfileModal } from "../Auth/UpdateProfileModal";
 import { ErrorModal } from "../Modals/ErrorModal";
 import { DeleteModal } from "../Modals/DeleteModal";
 import SearchBar from "../Search/SearchBar";
@@ -75,7 +75,7 @@ export const RootLayout = () => {
             {modal.register && <RegisterModal />}
             {modal.resetPassword && <ForgottenPasswordModal />}
             {modal.profile && <ProfileModal />}
-            {modal.updateProfile && <UpdateProfile />}
+            {modal.updateProfile && <UpdateProfileModal />}
             {modal.errorData.isError && <ErrorModal />}
             {modal.delete.isDelete && <DeleteModal />}
             <Outlet />
