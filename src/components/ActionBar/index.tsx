@@ -1,12 +1,9 @@
-import { FC, HTMLAttributes } from "react";
-
+import { FC } from "react";
 import { useActionBar } from "../../hooks/useActionBar.tsx";
 
-import { IconButtonWithTooltip } from "../IconButtonWithTooltip/index.tsx";
+import type { ActionBarProps } from "../../types/actionBarTypes";
 
-interface ActionBarProps extends HTMLAttributes<HTMLDivElement> {
-  articleUrl?: string;
-}
+import { IconButtonWithTooltip } from "../IconButtonWithTooltip/index";
 
 export const ActionBar: FC<ActionBarProps> = ({ articleUrl, ...rest }) => {
   const { getButtonsConfig } = useActionBar(articleUrl);

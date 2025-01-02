@@ -1,4 +1,4 @@
-export const APPBAR_STYLES = {
+export const APP_BAR_STYLES = {
   backgroundColor: "rgba(240, 242, 245, 0.8)",
   boxShadow: "none",
   paddingBottom: "1rem",
@@ -31,4 +31,4 @@ export const MOBILE_LOAD_POINT_OFFSET = 2000;
 export const DESKTOP_LOAD_POINT_OFFSET = 1400;
 export const MOBILE_BREAKPOINT = 801;
 
-export const TOME_VIEW_TITLES = ["Новини", "Най-четени"];
+export const HOME_VIEW_TITLES = ["Новини", "Най-четени"];

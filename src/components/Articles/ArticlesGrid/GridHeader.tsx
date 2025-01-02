@@ -7,8 +7,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getHeaderStyles } from "../../../utils/gridHeaderUtils";
 
 import {
-  APPBAR_STYLES,
-  TOME_VIEW_TITLES,
+  APP_BAR_STYLES,
+  HOME_VIEW_TITLES,
   TOOLBAR_STYLES,
 } from "../../../constants/articlesGrid";
 import type { GridHeaderProps } from "../../../types/articlesGridTypes";
@@ -16,10 +16,10 @@ import type { GridHeaderProps } from "../../../types/articlesGridTypes";
 export const GridHeader: FC<GridHeaderProps> = ({ title }) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const isHomeView = TOME_VIEW_TITLES.includes(title);
+  const isHomeView = HOME_VIEW_TITLES.includes(title);
 
   return (
-    <AppBar position="static" style={APPBAR_STYLES}>
+    <AppBar position="static" style={APP_BAR_STYLES}>
       <Toolbar style={TOOLBAR_STYLES}>
         <Typography
           variant="h4"

@@ -32,3 +32,24 @@ export interface ArticleHeaderProps {
   author: string;
   date: string;
 }
+
+export interface TitleProps {
+  title: string;
+}
+
+export interface AuthorProps {
+  author: string;
+}
+
+export interface TextProps {
+  text: string;
+}
+
+export interface TitleProps {
+  title: string;
+}
+
+export interface HeaderSubtitleProps {
+  author: string;
+  date: string;
+}

@@ -9,14 +9,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
-import { ForgottenPasswordModal } from "../Auth/ForgottenPasswordModal/index";
-import { LoginModal } from "../Auth/LoginModal";
-import { ProfileModal } from "../Auth/ProfileModal";
-import { RegisterModal } from "../Auth/RegisterModal";
-import { UpdateProfileModal } from "../Auth/UpdateProfileModal";
+import { ForgottenPasswordModal } from "../UserProfile/ForgottenPasswordModal/index";
+import { LoginModal } from "../UserProfile/LoginModal";
+import { ProfileModal } from "../UserProfile/ProfileModal";
+import { RegisterModal } from "../UserProfile/RegisterModal";
+import { UpdateProfileModal } from "../UserProfile/UpdateProfileModal";
 import { ErrorModal } from "../Modals/ErrorModal";
 import { DeleteModal } from "../Modals/DeleteModal";
-import SearchBar from "../Search/SearchBar";
+import { SearchBar } from "../Search/SearchBar";
 
 import styles from "./RootLayout.module.css";
 

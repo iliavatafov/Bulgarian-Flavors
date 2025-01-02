@@ -5,7 +5,6 @@ import { ForgottenPasswordLinks } from "./ForgottenPasswordLinks";
 
 import { FORGOTTEN_PASSWORD_TITLE } from "../../../constants/auth";
 
-import styles from "../Auth.module.css";
 import { ModalTitle } from "../common/ModalTitle";
 
 export const ForgottenPasswordModal = () => {

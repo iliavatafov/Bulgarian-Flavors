@@ -12,30 +12,27 @@ import {
   DELETE_MODAL_TITLE,
   ERROR_MESSAGE,
 } from "../../../constants/articleDetails";
+import type { CurrentUser } from "../../../types/articlesTypes";
 
 import { modalActions } from "../../../store/modalSlice";
 
-import type { CurrentUser } from "../../../types/articlesTypes";
-
-import { ActionBar } from "../../ActionBar";
 import { AdminActions } from "../AdminActions/index";
-import { ArticleHeader } from "../ArticleHeader/index";
-import { ArticleContent } from "../ArticleContent/index";
+import { ArticleHeader } from "./ArticleHeader/index";
+import { ArticleContent } from "./ArticleContent";
 import EmptyState from "../../EmptyState/EmptyState";
 
 import styles from "./styles.module.css";
+import { ArticleFooter } from "./ArticleFooter";
 
 export const ArticleDetails: FC = () => {
-  const currentUser = useSelector(
-    (state: { auth: { currentUser: CurrentUser | null } }) =>
-      state.auth.currentUser
-  );
-
   const { section, articleId } = useParams<{
     section: string;
     articleId: string;
   }>();
 
+  const currentUser = useSelector(
+    (state: { auth: { currentUser: CurrentUser } }) => state.auth.currentUser
+  );
   const { articleData, rawData, isLoading, error } = useFetchArticle(
     section || "",
     articleId || ""
@@ -50,8 +47,8 @@ export const ArticleDetails: FC = () => {
         isDelete: true,
         title: DELETE_MODAL_TITLE,
         message: DELETE_MODAL_MESSAGE,
-        section: section || "",
-        articleId: articleId || "",
+        section: section,
+        articleId: articleId,
       })
     );
   };
@@ -60,7 +57,7 @@ export const ArticleDetails: FC = () => {
     navigate(`/edit-article/${section}/${articleId}`);
   };
 
-  const getTitle = useCallback(
+  const getItemData = useCallback(
     (key: string) => {
       return get(rawData, key, "");
     },
@@ -88,19 +85,17 @@ export const ArticleDetails: FC = () => {
         />
       )}
       <ArticleHeader
-        title={getTitle("title")}
-        author={getTitle("author")}
-        date={getTitle("date")}
+        title={getItemData("title")}
+        author={getItemData("author")}
+        date={getItemData("date")}
       />
       <ImageList cols={1}>
         <ImageListItem>
-          <img src={getTitle("URL") ?? "#"} alt={getTitle("title")} />
+          <img src={getItemData("URL") ?? "#"} alt={getItemData("title")} />
         </ImageListItem>
       </ImageList>
       <ArticleContent articleData={articleData} />
-      <div className={styles["footer"]}>
-        <ActionBar />
-      </div>
+      <ArticleFooter />
     </div>
   );
 };

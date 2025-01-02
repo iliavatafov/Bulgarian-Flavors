@@ -1,11 +1,9 @@
-import React from "react";
-
 import { Grid } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import SearchInputComponent from "./SearchInputComponent";
 
-const SearchBar = () => {
+export const SearchBar = () => {
   const theme = createTheme({
     palette: {
       primary: {
@@ -27,5 +25,3 @@ const SearchBar = () => {
     </ThemeProvider>
   );
 };
-
-export default SearchBar;
