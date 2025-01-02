@@ -35,10 +35,6 @@ export const REGISTER_TEXT = "Регистрация";
 
 export const ALREADY_HAVE_ACCOUNT = "Вече имаш профил?";
 
-export const EMAIL_LABEL = "E-mail";
-
-export const PASSWORD_LABEL = "Парола";
-
 export const LOGIN_LOADING_BUTTON_TEXT = "Влизане...";
 
 export const LOGIN_BUTTON_TEXT = "Влез";

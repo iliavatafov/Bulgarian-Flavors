@@ -1,4 +1,4 @@
-import { pageSize } from "../constants/articlesGrid";
+import { PAGE_SIZE } from "../constants/articlesGrid";
 
 import type { ArticleItem } from "../types/articlesGridTypes";
 
@@ -30,8 +30,8 @@ export const handlePagination = (
   setArticlesToRender: React.Dispatch<React.SetStateAction<ArticleItem[]>>
 ): number => {
   const newPage = prevPage + 1;
-  const startIndex = (newPage - 1) * pageSize;
-  const endIndex = newPage * pageSize;
+  const startIndex = (newPage - 1) * PAGE_SIZE;
+  const endIndex = newPage * PAGE_SIZE;
 
   if (
     startIndex >= searchArticles.length ||

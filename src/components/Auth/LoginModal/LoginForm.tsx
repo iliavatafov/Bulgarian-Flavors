@@ -2,30 +2,25 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Formik, Form, FormikHelpers } from "formik";
-import * as Yup from "yup";
 
+import type { AppDispatch } from "../../../store";
 import { login } from "../../../store/authSlice";
 
 import {
-  INVALID_EMAIL_TEXT,
-  REQUIRED_FIELD_TEXT,
-  EMAIL_LABEL,
+  loginFormSchema,
+  loginValidationSchema,
+} from "../../../constants/schemas/authSchemas";
+
+import {
   LOGIN_LOADING_BUTTON_TEXT,
   LOGIN_BUTTON_TEXT,
-  PASSWORD_LABEL,
 } from "../../../constants/auth";
-import type { AppDispatch } from "../../../store";
 import { type LoginFormValues } from "../../../types/authTypes";
 
 import { TextInput } from "../common/TextInput";
 import { Button } from "../../Button";
 
 import styles from "../Auth.module.css";
-
-const validationSchema = Yup.object({
-  email: Yup.string().email(INVALID_EMAIL_TEXT).required(REQUIRED_FIELD_TEXT),
-  password: Yup.string().required(REQUIRED_FIELD_TEXT),
-});
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +49,7 @@ export const LoginForm = () => {
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
-      validationSchema={validationSchema}
+      validationSchema={loginValidationSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
@@ -64,28 +59,25 @@ export const LoginForm = () => {
               <p>{status.error}</p>
             </div>
           )}
-          <TextInput
-            label={EMAIL_LABEL}
-            name="email"
-            type="email"
-            placeholder="E-mail"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setFieldValue("email", e.target.value);
-              setStatus({ error: null });
-            }}
-          />
-          <TextInput
-            label={PASSWORD_LABEL}
-            name="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Парола"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setFieldValue("password", e.target.value);
-              setStatus({ error: null });
-            }}
-            showPassword={showPassword}
-            handleShowPassword={handleShowPassword}
-          />
+          {loginFormSchema.map((field) => (
+            <TextInput
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              type={
+                field.name === "password" && showPassword ? "text" : field.type
+              }
+              placeholder={field.placeholder}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setFieldValue(field.name, e.target.value);
+                setStatus({ error: null });
+              }}
+              showPassword={field.showPassword && showPassword}
+              handleShowPassword={
+                field.showPassword ? handleShowPassword : undefined
+              }
+            />
+          ))}
           <Button
             type="submit"
             value={isSubmitting ? LOGIN_LOADING_BUTTON_TEXT : LOGIN_BUTTON_TEXT}

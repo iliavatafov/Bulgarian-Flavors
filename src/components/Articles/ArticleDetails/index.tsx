@@ -1,6 +1,8 @@
+import { FC, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetchArticle } from "../../../hooks/useFetchArticle";
+import { get } from "lodash";
 
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 
@@ -23,7 +25,7 @@ import EmptyState from "../../EmptyState/EmptyState";
 
 import styles from "./styles.module.css";
 
-export const ArticleDetails: React.FC = () => {
+export const ArticleDetails: FC = () => {
   const currentUser = useSelector(
     (state: { auth: { currentUser: CurrentUser | null } }) =>
       state.auth.currentUser
@@ -58,6 +60,13 @@ export const ArticleDetails: React.FC = () => {
     navigate(`/edit-article/${section}/${articleId}`);
   };
 
+  const getTitle = useCallback(
+    (key: string) => {
+      return get(rawData, key, "");
+    },
+    [rawData]
+  );
+
   if (isLoading) {
     return (
       <div className={styles.loader}>
@@ -79,13 +88,13 @@ export const ArticleDetails: React.FC = () => {
         />
       )}
       <ArticleHeader
-        title={rawData?.title ?? ""}
-        author={rawData?.author ?? ""}
-        date={rawData?.date ?? ""}
+        title={getTitle("title")}
+        author={getTitle("author")}
+        date={getTitle("date")}
       />
       <ImageList cols={1}>
         <ImageListItem>
-          <img src={rawData?.URL ?? "#"} alt={rawData?.title ?? ""} />
+          <img src={getTitle("URL") ?? "#"} alt={getTitle("title")} />
         </ImageListItem>
       </ImageList>
       <ArticleContent articleData={articleData} />

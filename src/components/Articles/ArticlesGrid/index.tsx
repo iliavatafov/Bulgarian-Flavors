@@ -8,13 +8,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import {
   DESKTOP_LOAD_POINT_OFFSET,
-  desktopArticleAspect,
+  DESKTOP_ARTICLE_ASPECT,
   EMPTY_STATE_TEXT,
   MOBILE_BREAKPOINT,
   MOBILE_LOAD_POINT_OFFSET,
-  mobileArticleAspect,
+  MOBILE_ARTICLE_ASPECT,
   PAGE_TITLES,
-  pageSize,
+  PAGE_SIZE,
 } from "../../../constants/articlesGrid";
 import type {
   ArticleGridProps,
@@ -51,7 +51,9 @@ export const ArticleGrid: FC<ArticleGridProps> = ({ isLoading, section }) => {
 
   const articleAspect = useMemo(
     () =>
-      !isHomePage || isMobileView ? mobileArticleAspect : desktopArticleAspect,
+      !isHomePage || isMobileView
+        ? MOBILE_ARTICLE_ASPECT
+        : DESKTOP_ARTICLE_ASPECT,
     [isHomePage, isMobileView]
   );
 
@@ -62,7 +64,7 @@ export const ArticleGrid: FC<ArticleGridProps> = ({ isLoading, section }) => {
       section,
       isSearchView
     );
-    setArticlesToRender(matchedArticles.slice(0, pageSize));
+    setArticlesToRender(matchedArticles.slice(0, PAGE_SIZE));
     setSearchArticles(matchedArticles);
     setPage(1);
   }, [articles, searchInput, isHomePage, isMobileView, isSearchView]);

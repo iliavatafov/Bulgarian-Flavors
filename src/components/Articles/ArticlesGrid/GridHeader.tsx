@@ -4,31 +4,28 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import { getHeaderStyles } from "../../../utils/gridHeaderUtils";
+
 import {
-  appBarStyles,
-  toolbarStyles,
-  typographyStyles,
+  APPBAR_STYLES,
+  TOME_VIEW_TITLES,
+  TOOLBAR_STYLES,
 } from "../../../constants/articlesGrid";
 import type { GridHeaderProps } from "../../../types/articlesGridTypes";
 
 export const GridHeader: FC<GridHeaderProps> = ({ title }) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const isHomeView = ["Новини", "Най-четени"].includes(title);
+  const isHomeView = TOME_VIEW_TITLES.includes(title);
 
   return (
-    <AppBar position="static" style={appBarStyles}>
-      <Toolbar style={toolbarStyles}>
+    <AppBar position="static" style={APPBAR_STYLES}>
+      <Toolbar style={TOOLBAR_STYLES}>
         <Typography
           variant="h4"
           component="div"
           color="#000"
-          sx={{
-            ...typographyStyles,
-            width: isHomeView ? "100%" : isLargeScreen ? "30%" : "80%",
-            textAlign: isHomeView ? "left" : "center",
-            paddingLeft: isHomeView ? "2rem" : "0",
-          }}
+          sx={getHeaderStyles(isHomeView, isLargeScreen)}
         >
           {title}
         </Typography>

@@ -24,13 +24,13 @@ import styles from "./styles.module.css";
 export const ArticleCard: FC<ArticleCardProps> = ({ item }) => {
   const { section, id, URL, title, author, constent } = item;
   const text = get(constent, "blocks[0].text", "").slice(0, 200);
-  const articleUrl = `/${section}/${id}`;
+  const articlePath = `${section}/${id}`;
 
   const navigate = useNavigate();
 
   const navigateToDetailsPage = useCallback(() => {
-    navigate(articleUrl);
-  }, [navigate, articleUrl]);
+    navigate(articlePath);
+  }, [navigate, articlePath]);
 
   const memoizedTheme = useMemo(() => createTheme(CARD_THEME), []);
 
@@ -61,7 +61,7 @@ export const ArticleCard: FC<ArticleCardProps> = ({ item }) => {
           {authorElement}
           {bodyElement}
           <div className={styles["action-bar"]}>
-            <ActionBar articleUrl={window.location.href + articleUrl} />
+            <ActionBar articleUrl={window.location.href + articlePath} />
           </div>
         </CardContent>
       </Card>
