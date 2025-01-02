@@ -53,7 +53,20 @@ export const ForgotPasswordForm = () => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
-        <Form className={styles["signup-form"]}>
+        <Form className={styles["form"]}>
+          <div>
+            <label htmlFor="email">E-mail</label>
+            <Field
+              type="email"
+              name="email"
+              placeholder="E-mail"
+              className={styles.input}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setFieldValue("email", e.target.value);
+                setStatus({ error: null, success: null });
+              }}
+            />
+          </div>
           {status && status.error && (
             <div className={styles.errorMessage} role="alert">
               <p>{status.error}</p>
@@ -69,19 +82,6 @@ export const ForgotPasswordForm = () => {
             component="div"
             className={styles.errorMessage}
           />
-          <div>
-            <label htmlFor="email">E-mail</label>
-            <Field
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              className={styles.input}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setFieldValue("email", e.target.value);
-                setStatus({ error: null, success: null });
-              }}
-            />
-          </div>
           <Button
             disabled={isSubmitting}
             type="submit"

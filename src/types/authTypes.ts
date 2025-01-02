@@ -20,3 +20,16 @@ export interface CurrentUser {
 export interface ExitLinkProps {
   handleLogout: () => void;
 }
+
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+export const EMAIL_LABEL = "E-mail";
+
+export const PASSWORD_LABEL = "Парола";
+
+export const LOADING_BUTTON_TEXT = "Влизане...";
+
+export const LOGIN_BUTTON_TEXT = "Влез";

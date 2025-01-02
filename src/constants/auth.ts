@@ -24,3 +24,9 @@ export const PROFILE_UPDATE_BUTTON_TEXT = "Обновяване на профи�
 export const LOGOUT_BUTTON_TEXT = "Изход";
 
 export const EXIT_ERROR_MESSAGE = "Грешка при изход";
+
+export const INVALID_EMAIL_MESSAGE = "Невалиден формат на e-mail адрес";
+
+export const REQUIRED_FIELD_MESSAGE = "Полето е задължително";
+
+export const FORGOTTEN_PASSWORD_LINK_TITLE = "Забравена парола?";
