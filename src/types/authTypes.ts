@@ -26,6 +26,12 @@ export interface LoginFormValues {
   password: string;
 }
 
+export interface RegisterFormValues {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export const EMAIL_LABEL = "E-mail";
 
 export const PASSWORD_LABEL = "Парола";

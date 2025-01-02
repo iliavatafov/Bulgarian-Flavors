@@ -30,3 +30,13 @@ export const INVALID_EMAIL_MESSAGE = "Невалиден формат на e-mai
 export const REQUIRED_FIELD_MESSAGE = "Полето е задължително";
 
 export const FORGOTTEN_PASSWORD_LINK_TITLE = "Забравена парола?";
+
+export const INVALID_EMAIL_FORMAT_MESSAGE = "Невалиден формат на e-mail адрес";
+
+export const PASSWORDS_DONT_MATCH_MESSAGE = "Паролата не съвпада";
+
+export const LOADING_BUTTON_TEXT = "Акаунтът се създава...";
+
+export const REGISTER_BUTTON_TEXT = "Регистрация";
+
+export const ALREADY_HAVE_ACCOUNT = "Вече имаш профил?";

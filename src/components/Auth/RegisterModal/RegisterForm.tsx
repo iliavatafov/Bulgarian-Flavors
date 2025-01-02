@@ -1,49 +1,48 @@
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { register } from "../../../store/authSlice";
 
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { login } from "../../../store/authSlice";
-
 import {
-  INVALID_EMAIL_MESSAGE,
+  INVALID_EMAIL_FORMAT_MESSAGE,
+  LOADING_BUTTON_TEXT,
+  PASSWORDS_DONT_MATCH_MESSAGE,
+  REGISTER_BUTTON_TEXT,
   REQUIRED_FIELD_MESSAGE,
 } from "../../../constants/auth";
 import type { AppDispatch } from "../../../store";
-import {
-  EMAIL_LABEL,
-  LOADING_BUTTON_TEXT,
-  LOGIN_BUTTON_TEXT,
-  PASSWORD_LABEL,
-  type LoginFormValues,
-} from "../../../types/authTypes";
+import type { RegisterFormValues } from "../../../types/authTypes";
 
-import { TextInput } from "../common/TextInput";
 import { Button } from "../../Button";
+import { TextInput } from "../common/TextInput";
 
 import styles from "../Auth.module.css";
 
 const validationSchema = Yup.object({
   email: Yup.string()
-    .email(INVALID_EMAIL_MESSAGE)
+    .email(INVALID_EMAIL_FORMAT_MESSAGE)
     .required(REQUIRED_FIELD_MESSAGE),
   password: Yup.string().required(REQUIRED_FIELD_MESSAGE),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), undefined], PASSWORDS_DONT_MATCH_MESSAGE)
+    .required(REQUIRED_FIELD_MESSAGE),
 });
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showRepass, setShowRepass] = useState(false);
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmit = async (
-    values: LoginFormValues,
-    { setSubmitting, setStatus }: FormikHelpers<LoginFormValues>
+    values: RegisterFormValues,
+    { setSubmitting, setStatus }: FormikHelpers<RegisterFormValues>
   ) => {
-    const { email, password } = values;
     setStatus({ error: null });
 
     try {
-      await dispatch(login(email, password));
+      await dispatch(register(values.email, values.password));
     } catch (error: any) {
       setStatus({ error: error.message });
     } finally {
@@ -55,21 +54,25 @@ export const LoginForm = () => {
     setShowPassword((prevState) => !prevState);
   }, []);
 
+  const handleShowRepass = useCallback(() => {
+    setShowRepass((prevState) => !prevState);
+  }, []);
+
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ email: "", password: "", confirmPassword: "" }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
-        <Form className={styles.form}>
+        <Form className={styles["form"]}>
           {status && status.error && (
-            <div className={styles.errorMessage} role="alert">
+            <div className={styles.errorMessage}>
               <p>{status.error}</p>
             </div>
           )}
           <TextInput
-            label={EMAIL_LABEL}
+            label="E-mail"
             name="email"
             type="email"
             placeholder="E-mail"
@@ -79,7 +82,7 @@ export const LoginForm = () => {
             }}
           />
           <TextInput
-            label={PASSWORD_LABEL}
+            label="Парола"
             name="password"
             type={showPassword ? "text" : "password"}
             placeholder="Парола"
@@ -90,9 +93,21 @@ export const LoginForm = () => {
             showPassword={showPassword}
             handleShowPassword={handleShowPassword}
           />
+          <TextInput
+            label="Повторете паролата"
+            name="confirmPassword"
+            type={showRepass ? "text" : "password"}
+            placeholder="Повторете паролата"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setFieldValue("confirmPassword", e.target.value);
+              setStatus({ error: null });
+            }}
+            showPassword={showRepass}
+            handleShowPassword={handleShowRepass}
+          />
           <Button
             type="submit"
-            value={isSubmitting ? LOADING_BUTTON_TEXT : LOGIN_BUTTON_TEXT}
+            value={isSubmitting ? LOADING_BUTTON_TEXT : REGISTER_BUTTON_TEXT}
             color="green-cyan"
             disabled={isSubmitting}
           />

@@ -24,7 +24,7 @@ export const TextInput = ({
   showPassword?: boolean;
   handleShowPassword?: () => void;
 }) => (
-  <div className={styles["form-group"]}>
+  <div className={styles["form"]}>
     <label htmlFor={name}>{label}</label>
     <Field
       type={type}
@@ -33,7 +33,7 @@ export const TextInput = ({
       className={styles.input}
       onChange={onChange}
     />
-    {name === "password" && (
+    {["password", "confirmPassword"].includes(name) && (
       <FontAwesomeIcon
         onClick={handleShowPassword}
         className={showPassword ? styles.eyeclicked : styles.eye}

@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import { resetPassword } from "../../../store/authSlice";
@@ -16,6 +16,7 @@ import {
 import type { FormValues } from "../../../types/authTypes";
 import type { AppDispatch } from "../../../store";
 
+import { TextInput } from "../common/TextInput";
 import { Button } from "../../Button";
 
 import styles from "../Auth.module.css";
@@ -54,19 +55,16 @@ export const ForgotPasswordForm = () => {
     >
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
         <Form className={styles["form"]}>
-          <div>
-            <label htmlFor="email">E-mail</label>
-            <Field
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              className={styles.input}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setFieldValue("email", e.target.value);
-                setStatus({ error: null, success: null });
-              }}
-            />
-          </div>
+          <TextInput
+            label="E-mail"
+            name="email"
+            type="email"
+            placeholder="E-mail"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setFieldValue("email", e.target.value);
+              setStatus({ error: null, success: null });
+            }}
+          />
           {status && status.error && (
             <div className={styles.errorMessage} role="alert">
               <p>{status.error}</p>
@@ -77,11 +75,6 @@ export const ForgotPasswordForm = () => {
               <p>{status.success}</p>
             </div>
           )}
-          <ErrorMessage
-            name="email"
-            component="div"
-            className={styles.errorMessage}
-          />
           <Button
             disabled={isSubmitting}
             type="submit"

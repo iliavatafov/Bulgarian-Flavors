@@ -12,7 +12,7 @@ import { Footer } from "../Footer/Footer";
 import { ForgottenPasswordModal } from "../Auth/ForgottenPasswordModal/index";
 import { LoginModal } from "../Auth/LoginModal";
 import { ProfileModal } from "../Auth/ProfileModal";
-import { Register } from "../Auth/Register";
+import { RegisterModal } from "../Auth/RegisterModal";
 import { UpdateProfile } from "../Auth/UpdateProfile";
 import { ErrorModal } from "../Modals/ErrorModal";
 import { DeleteModal } from "../Modals/DeleteModal";
@@ -72,7 +72,7 @@ export const RootLayout = () => {
           </header>
           <main className={styles.main}>
             {modal.login && <LoginModal />}
-            {modal.register && <Register />}
+            {modal.register && <RegisterModal />}
             {modal.resetPassword && <ForgottenPasswordModal />}
             {modal.profile && <ProfileModal />}
             {modal.updateProfile && <UpdateProfile />}
