@@ -7,6 +7,8 @@ export interface ArticleItem {
   constent: {
     blocks: { text: string }[];
   };
+  createdAt: number;
+  date: string;
 }
 
 export interface CarouselProps {

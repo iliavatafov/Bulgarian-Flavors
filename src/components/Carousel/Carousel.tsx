@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Paper } from "@mui/material";
-import { CarouselCard } from "../CarouselCard/CarouselCard.js";
+import { CarouselCard } from "../CarouselCard/CarouselCard";
 import Carousel from "react-material-ui-carousel";
 
 import {
