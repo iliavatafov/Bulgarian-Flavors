@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { DELETE_ARTICLE_KEY } from "../../constants/rootLayout";
 
-import { Navbar } from "../Navbar/Navbar";
+import { Navbar } from "../Navbar/index";
 import { Footer } from "../Footer/Footer";
 import { ForgottenPasswordModal } from "../UserProfile/ForgottenPasswordModal/index";
 import { LoginModal } from "../UserProfile/LoginModal";
