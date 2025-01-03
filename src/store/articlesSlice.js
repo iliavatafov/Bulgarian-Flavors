@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import ArticlesAPI from "../services/articles";
+import { modalActions } from "./modalSlice";
 
 const initialModalState = {
   articles: {
@@ -22,6 +24,30 @@ const articlesSlice = createSlice({
     },
   },
 });
+
+export const updateAllArticles = () => async (dispatch) => {
+  try {
+    const articles = await ArticlesAPI.getAllArticles();
+
+    dispatch(
+      articleActions.setArticles({
+        collection: "allArticles",
+        data: articles,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteArticle = (section, articleId) => async () => {
+  try {
+    await ArticlesAPI.deleteArticle(section, articleId);
+    await updateAllArticles();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const articleActions = articlesSlice.actions;
 

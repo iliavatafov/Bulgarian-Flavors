@@ -7,6 +7,8 @@ import ArticlesAPI from "../../services/articles";
 
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { DELETE_ARTICLE_KEY } from "../../constants/rootLayout";
+
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
 import { ForgottenPasswordModal } from "../UserProfile/ForgottenPasswordModal/index";
@@ -15,7 +17,7 @@ import { ProfileModal } from "../UserProfile/ProfileModal";
 import { RegisterModal } from "../UserProfile/RegisterModal";
 import { UpdateProfileModal } from "../UserProfile/UpdateProfileModal";
 import { ErrorModal } from "../Modals/ErrorModal";
-import { DeleteModal } from "../Modals/DeleteModal";
+import { DeleteArticleModal } from "../Modals/DeleteArticleModal";
 import { SearchBar } from "../Search/SearchBar";
 
 import styles from "./RootLayout.module.css";
@@ -77,7 +79,7 @@ export const RootLayout = () => {
             {modal.profile && <ProfileModal />}
             {modal.updateProfile && <UpdateProfileModal />}
             {modal.errorData.isError && <ErrorModal />}
-            {modal.delete.isDelete && <DeleteModal />}
+            {modal.delete.key === DELETE_ARTICLE_KEY && <DeleteArticleModal />}
             <Outlet />
           </main>
           <footer className={styles.footer}>

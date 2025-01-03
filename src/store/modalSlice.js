@@ -7,11 +7,12 @@ const initialModalState = {
   profile: false,
   updateProfile: false,
   delete: {
-    isDelete: false,
+    key: "",
     message: "",
     title: "",
     section: "",
     article: "",
+    articleId: "",
   },
   errorData: {
     isError: false,

@@ -44,7 +44,7 @@ export const ArticleDetails: FC = () => {
   const openDeleteModal = useCallback(() => {
     dispatch(
       modalActions.setDeleteModal({
-        isDelete: true,
+        key: "article",
         title: DELETE_MODAL_TITLE,
         message: DELETE_MODAL_MESSAGE,
         section: section,
