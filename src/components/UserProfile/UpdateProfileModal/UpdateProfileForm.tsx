@@ -23,7 +23,7 @@ import { FormInput } from "../common/FormInput";
 import { StatusMessage } from "../common/StatusMessage";
 import { Button } from "../../Button";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const UpdateProfileForm = () => {
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);

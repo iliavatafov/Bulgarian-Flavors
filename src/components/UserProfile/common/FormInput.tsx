@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import type { FormInputProps } from "../../../types/authTypes";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const FormInput: FC<FormInputProps> = ({
   label,

@@ -19,7 +19,7 @@ import { Button } from "../../Button";
 import { StatusMessage } from "../common/StatusMessage";
 import { FormInput } from "../common/FormInput";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const RegisterForm = () => {
   const { getInputType, shouldShowPassword, getHandleShowPassword } =

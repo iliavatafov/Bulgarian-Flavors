@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ import ArticlesAPI from "../../services/articles";
 import EmptyState from "../../components/EmptyState/EmptyState.js";
 import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
 import { GridHeader } from "../../components/Articles/ArticlesGrid/GridHeader";
-import { CarouselComponent } from "../../components/Carousel/Carousel.js";
+import { CarouselComponent } from "../../components/Carousel/Carousel";
 
 import styles from "./AllArticles.module.css";
 

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import type { StatusMessageProps } from "../../../types/authTypes";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const StatusMessage: FC<StatusMessageProps> = ({ message, type }) => {
   const className = type === "error" ? styles.errorMessage : styles.message;

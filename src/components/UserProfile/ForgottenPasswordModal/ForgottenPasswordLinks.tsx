@@ -10,7 +10,7 @@ import {
   REGISTRATION_LINK_TEXT,
 } from "../../../constants/auth";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const ForgottenPasswordLinks = () => {
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import { modalActions } from "../../../store/modalSlice";
 
 import { ALREADY_HAVE_ACCOUNT, LOGIN_TEXT } from "../../../constants/auth";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const RegisterFormLinks = () => {
   const dispatch = useDispatch();

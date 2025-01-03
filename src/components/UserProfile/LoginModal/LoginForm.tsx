@@ -22,7 +22,7 @@ import { FormInput } from "../common/FormInput";
 import { StatusMessage } from "../common/StatusMessage";
 import { Button } from "../../Button";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const LoginForm = () => {
   const { getInputType, shouldShowPassword, getHandleShowPassword } =

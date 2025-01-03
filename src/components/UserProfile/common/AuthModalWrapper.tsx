@@ -8,7 +8,7 @@ import { modalActions } from "../../../store/modalSlice";
 
 import type { AuthModalWrapperProps } from "../../../types/authTypes";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const AuthModalWrapper: FC<AuthModalWrapperProps> = ({ children }) => {
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import { modalActions } from "../../../store/modalSlice";
 
 import { CLOSE_BUTTON_TEXT } from "../../../constants/auth";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const UpdateProfileFormLinks = () => {
   const dispatch = useDispatch();

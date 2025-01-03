@@ -10,7 +10,7 @@ import type { AppDispatch } from "../../../store";
 import { Button } from "../../Button";
 import { Link } from "react-router-dom";
 
-import styles from "../Auth.module.css";
+import styles from "../UserProfile.module.css";
 
 export const LoginFormLinks = () => {
   const dispatch: AppDispatch = useDispatch();
