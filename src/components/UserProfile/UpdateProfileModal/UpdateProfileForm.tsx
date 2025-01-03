@@ -4,7 +4,7 @@ import { usePasswordVisibility } from "../../../hooks/usePasswordVisability";
 import { get } from "lodash";
 
 import type { AppDispatch, RootState } from "../../../store";
-import { updateEmail, updatePassword } from "../../../store/authSlice";
+import { updatePassword } from "../../../store/authSlice";
 import { modalActions } from "../../../store/modalSlice";
 
 import { Form, Formik, FormikHelpers } from "formik";
@@ -14,21 +14,25 @@ import {
   updateProfileValidationSchema,
 } from "../../../constants/schemas/authSchemas";
 import {
-  HELP_MESSAGE,
   UPDATE_PROFILE_BUTTON_TEXT,
   UPDATING_PROFILE_BUTTON_TEXT,
 } from "../../../constants/auth";
 import type { Field, RegisterFormValues } from "../../../types/authTypes";
 
-import { TextInput } from "../common/TextInput";
+import { FormInput } from "../common/FormInput";
+import { StatusMessage } from "../common/StatusMessage";
 import { Button } from "../../Button";
 
 import styles from "../Auth.module.css";
 
 export const UpdateProfileForm = () => {
-  const { getInputType, shouldShowPassword, getHandleShowPassword } =
-    usePasswordVisibility();
   const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const { getInputType, shouldShowPassword, getHandleShowPassword } =
+    usePasswordVisibility({
+      password: false,
+      confirmPassword: false,
+    });
+
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmit = useCallback(
@@ -36,21 +40,11 @@ export const UpdateProfileForm = () => {
       values: RegisterFormValues,
       { setSubmitting, setStatus }: FormikHelpers<RegisterFormValues>
     ) => {
-      const { email, password } = values;
+      const { password } = values;
       setStatus({ error: null });
 
       try {
-        const promises = [];
-
-        if (email !== get(currentUser, "currentUser", null)) {
-          promises.push(dispatch(updateEmail(email)));
-        }
-
-        if (password) {
-          promises.push(dispatch(updatePassword(password)));
-        }
-
-        await Promise.all(promises);
+        if (password) await dispatch(updatePassword(password));
         dispatch(modalActions.closeModal());
       } catch (error: any) {
         setStatus({ error: error.message });
@@ -58,7 +52,7 @@ export const UpdateProfileForm = () => {
         setSubmitting(false);
       }
     },
-    [currentUser, dispatch]
+    [dispatch]
   );
 
   return (
@@ -74,17 +68,16 @@ export const UpdateProfileForm = () => {
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
         <Form className={styles["form"]}>
           {status && status.error && (
-            <div className={styles.errorMessage}>
-              <p>{status.error}</p>
-            </div>
+            <StatusMessage message={status.error} type="error" />
           )}
           {updateProfileFormSchema.map((field: Field) => (
-            <TextInput
+            <FormInput
               key={field.name}
               label={field.label}
               name={field.name}
               type={getInputType(field)}
               placeholder={field.placeholder}
+              disabled={field.disabled}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFieldValue(field.name, e.target.value);
                 setStatus({ error: null });
@@ -93,9 +86,6 @@ export const UpdateProfileForm = () => {
               handleShowPassword={getHandleShowPassword(field)}
             />
           ))}
-          <p className={styles.helpMessage}>
-            <span>*</span> {HELP_MESSAGE}
-          </p>
           <Button
             type="submit"
             value={

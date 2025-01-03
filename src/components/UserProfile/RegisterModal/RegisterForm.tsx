@@ -16,13 +16,18 @@ import type { AppDispatch } from "../../../store";
 import type { Field, RegisterFormValues } from "../../../types/authTypes";
 
 import { Button } from "../../Button";
-import { TextInput } from "../common/TextInput";
+import { StatusMessage } from "../common/StatusMessage";
+import { FormInput } from "../common/FormInput";
 
 import styles from "../Auth.module.css";
 
 export const RegisterForm = () => {
   const { getInputType, shouldShowPassword, getHandleShowPassword } =
-    usePasswordVisibility();
+    usePasswordVisibility({
+      password: false,
+      confirmPassword: false,
+    });
+
   const dispatch: AppDispatch = useDispatch();
 
   const handleSubmit = useCallback(
@@ -52,12 +57,10 @@ export const RegisterForm = () => {
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
         <Form className={styles["form"]}>
           {status && status.error && (
-            <div className={styles.errorMessage}>
-              <p>{status.error}</p>
-            </div>
+            <StatusMessage message={status.error} type="error" />
           )}
           {registerFormSchema.map((field: Field) => (
-            <TextInput
+            <FormInput
               key={field.name}
               label={field.label}
               name={field.name}

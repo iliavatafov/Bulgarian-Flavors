@@ -1,28 +1,23 @@
-import { ChangeEvent } from "react";
+import { FC } from "react";
 
 import { ErrorMessage, Field } from "formik";
 
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import type { FormInputProps } from "../../../types/authTypes";
+
 import styles from "../Auth.module.css";
 
-export const TextInput = ({
+export const FormInput: FC<FormInputProps> = ({
   label,
   name,
   type,
   placeholder,
   onChange,
+  disabled = false,
   showPassword,
   handleShowPassword,
-}: {
-  label: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  showPassword?: boolean;
-  handleShowPassword?: () => void;
 }) => (
   <div className={styles["form"]}>
     <label htmlFor={name}>{label}</label>
@@ -30,6 +25,7 @@ export const TextInput = ({
       type={type}
       name={name}
       placeholder={placeholder}
+      disabled={disabled}
       className={styles.input}
       onChange={onChange}
     />

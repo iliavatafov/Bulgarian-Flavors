@@ -19,6 +19,7 @@ export const LoginFormLinks = () => {
     () => dispatch(modalActions.openModal("register")),
     [dispatch]
   );
+
   const openResetPasswordModal = useCallback(
     () => dispatch(modalActions.openModal("resetPassword")),
     [dispatch]

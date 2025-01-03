@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { modalActions } from "../../../store/modalSlice";
@@ -17,7 +17,7 @@ export const ProfileModal = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     setError("");
 
     try {
@@ -27,7 +27,7 @@ export const ProfileModal = () => {
     } catch (error) {
       setError(EXIT_ERROR_MESSAGE);
     }
-  };
+  }, [dispatch]);
 
   return (
     <Modal>

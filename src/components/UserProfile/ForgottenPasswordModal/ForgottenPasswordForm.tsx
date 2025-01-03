@@ -6,9 +6,8 @@ import * as Yup from "yup";
 
 import { resetPassword } from "../../../store/authSlice";
 
+import { forgottenPasswordValidationSchema } from "../../../constants/schemas/authSchemas";
 import {
-  INVALID_EMAIL_TEXT,
-  REQUIRED_FIELD_TEXT,
   SUBMIT_BUTTON_TEXT,
   SUBMITTING_BUTTON_TEXT,
   SUCCESS_MESSAGE,
@@ -16,14 +15,11 @@ import {
 import type { FormValues } from "../../../types/authTypes";
 import type { AppDispatch } from "../../../store";
 
-import { TextInput } from "../common/TextInput";
+import { FormInput } from "../common/FormInput";
+import { StatusMessage } from "../common/StatusMessage";
 import { Button } from "../../Button";
 
 import styles from "../Auth.module.css";
-
-const validationSchema = Yup.object({
-  email: Yup.string().email(INVALID_EMAIL_TEXT).required(REQUIRED_FIELD_TEXT),
-});
 
 export const ForgotPasswordForm = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -50,12 +46,12 @@ export const ForgotPasswordForm = () => {
   return (
     <Formik
       initialValues={{ email: "" }}
-      validationSchema={validationSchema}
+      validationSchema={forgottenPasswordValidationSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
         <Form className={styles["form"]}>
-          <TextInput
+          <FormInput
             label="E-mail"
             name="email"
             type="email"
@@ -66,14 +62,10 @@ export const ForgotPasswordForm = () => {
             }}
           />
           {status && status.error && (
-            <div className={styles.errorMessage} role="alert">
-              <p>{status.error}</p>
-            </div>
+            <StatusMessage message={status.error} type="error" />
           )}
           {status && status.success && (
-            <div className={styles.message} role="status">
-              <p>{status.success}</p>
-            </div>
+            <StatusMessage message={status.success} type="success" />
           )}
           <Button
             disabled={isSubmitting}

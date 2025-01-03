@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -14,8 +15,13 @@ import styles from "../Auth.module.css";
 export const ForgottenPasswordLinks = () => {
   const dispatch = useDispatch();
 
-  const openLoginModal = () => dispatch(modalActions.openModal("login"));
-  const openRegisterModal = () => dispatch(modalActions.openModal("register"));
+  const openLoginModal = useCallback(() => {
+    dispatch(modalActions.openModal("login"));
+  }, [dispatch]);
+
+  const openRegisterModal = useCallback(() => {
+    dispatch(modalActions.openModal("register"));
+  }, [dispatch]);
 
   return (
     <>

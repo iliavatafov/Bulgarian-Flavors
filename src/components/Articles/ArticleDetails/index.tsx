@@ -41,7 +41,7 @@ export const ArticleDetails: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const openDeleteModal = () => {
+  const openDeleteModal = useCallback(() => {
     dispatch(
       modalActions.setDeleteModal({
         isDelete: true,
@@ -51,11 +51,11 @@ export const ArticleDetails: FC = () => {
         articleId: articleId,
       })
     );
-  };
+  }, [dispatch, section, articleId]);
 
-  const editArticle = () => {
+  const editArticle = useCallback(() => {
     navigate(`/edit-article/${section}/${articleId}`);
-  };
+  }, [navigate, section, articleId]);
 
   const getItemData = useCallback(
     (key: string) => {

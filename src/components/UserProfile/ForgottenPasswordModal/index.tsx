@@ -1,10 +1,9 @@
+import { FORGOTTEN_PASSWORD_TITLE } from "../../../constants/auth";
+
 import { Modal } from "../../Modals/Modal";
 import { AuthModalWrapper } from "../common/AuthModalWrapper";
 import { ForgotPasswordForm } from "./ForgottenPasswordForm";
 import { ForgottenPasswordLinks } from "./ForgottenPasswordLinks";
-
-import { FORGOTTEN_PASSWORD_TITLE } from "../../../constants/auth";
-
 import { ModalTitle } from "../common/ModalTitle";
 
 export const ForgottenPasswordModal = () => {

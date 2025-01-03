@@ -5,12 +5,9 @@ import type {
   PasswordVisibilityKeys,
 } from "../types/authTypes";
 
-export const usePasswordVisibility = () => {
+export const usePasswordVisibility = (initialState: PasswordVisibility) => {
   const [passwordVisibility, setPasswordVisibility] =
-    useState<PasswordVisibility>({
-      password: false,
-      confirmPassword: false,
-    });
+    useState<PasswordVisibility>(initialState);
 
   const togglePasswordVisibility = useCallback(
     (field: PasswordVisibilityKeys) => {

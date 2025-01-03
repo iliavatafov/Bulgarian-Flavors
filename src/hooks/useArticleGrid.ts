@@ -11,7 +11,11 @@ import {
   MOBILE_LOAD_POINT_OFFSET,
   PAGE_SIZE,
 } from "../constants/articlesGrid";
-import type { ArticleItem, RootState } from "../types/articlesGridTypes";
+import type {
+  ArticleAspect,
+  ArticleItem,
+  RootState,
+} from "../types/articlesGridTypes";
 
 export const useArticleGrid = (section: string, isLoading: boolean) => {
   const [_page, setPage] = useState(1);
@@ -66,5 +70,15 @@ export const useArticleGrid = (section: string, isLoading: boolean) => {
 
   useScroll(handleScroll);
 
-  return { articlesToRender, isMobileView, isHomePage, isSearchView };
+  const getGridClassName = useCallback((articleAspect: ArticleAspect) => {
+    return `grid-container${articleAspect.mid ? "-mid" : ""}`;
+  }, []);
+
+  return {
+    articlesToRender,
+    isMobileView,
+    isHomePage,
+    isSearchView,
+    getGridClassName,
+  };
 };

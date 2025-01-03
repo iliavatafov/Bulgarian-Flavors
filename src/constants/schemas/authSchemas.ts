@@ -12,6 +12,7 @@ export const updateProfileFormSchema = [
     name: "email",
     type: "email",
     placeholder: "E-mail",
+    disabled: true,
   },
   {
     label: "Нова парола",
@@ -19,6 +20,7 @@ export const updateProfileFormSchema = [
     type: "password",
     placeholder: "Нова парола",
     showPassword: true,
+    disabled: false,
   },
   {
     label: "Повторете новата парола",
@@ -26,6 +28,7 @@ export const updateProfileFormSchema = [
     type: "password",
     placeholder: "Повторете новата парола",
     showPassword: true,
+    disabled: false,
   },
 ];
 
@@ -91,4 +94,8 @@ export const registerValidationSchema = Yup.object({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), undefined], PASSWORDS_DONT_MATCH_MESSAGE)
     .required(REQUIRED_FIELD_TEXT),
+});
+
+export const forgottenPasswordValidationSchema = Yup.object({
+  email: Yup.string().email(INVALID_EMAIL_TEXT).required(REQUIRED_FIELD_TEXT),
 });

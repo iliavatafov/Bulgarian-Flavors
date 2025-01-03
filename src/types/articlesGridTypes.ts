@@ -30,3 +30,10 @@ export interface RootState {
     searchInput: string;
   };
 }
+
+export type ArticleAspect = {
+  xs: number;
+  md: number;
+  lg: number;
+  mid: boolean;
+};

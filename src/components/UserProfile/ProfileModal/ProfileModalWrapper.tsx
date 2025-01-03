@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,11 @@ export const ProfileModalWrapper: FC<AuthModalWrapperProps> = ({
   children,
 }) => {
   const dispatch = useDispatch();
-  const closeModalAction = () => dispatch(modalActions.closeModal());
+
+  const closeModalAction = useCallback(
+    () => dispatch(modalActions.closeModal()),
+    [dispatch]
+  );
 
   return (
     <div className={styles["profile-container"]}>

@@ -10,6 +10,7 @@ import styles from "../Auth.module.css";
 
 export const UpdateProfileFormLinks = () => {
   const dispatch = useDispatch();
+
   const handleReturnLink = useCallback(() => {
     dispatch(modalActions.openModal("profile"));
   }, [dispatch]);

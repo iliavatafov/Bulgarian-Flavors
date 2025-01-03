@@ -1,6 +1,4 @@
-import { FC } from "react";
-import { Button, createTheme, ThemeProvider, ButtonProps } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { alpha, createTheme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
   interface Palette {
@@ -27,7 +25,7 @@ const greenCyanMain = "#00d49a";
 const darkblueMain = "#001e59";
 const lightblueMain = "#489dfe";
 
-const theme = createTheme({
+export const styledButtonTheme = createTheme({
   palette: {
     greenCyan: {
       main: greenCyanMain,
@@ -49,24 +47,3 @@ const theme = createTheme({
     },
   },
 });
-
-interface ThemedButtonProps extends ButtonProps {
-  color?:
-    | "greenCyan"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning"
-    | "darkblue"
-    | "lightblue";
-}
-
-export const ThemedButton: FC<ThemedButtonProps> = (props) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Button {...props} />
-    </ThemeProvider>
-  );
-};

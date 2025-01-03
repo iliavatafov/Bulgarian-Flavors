@@ -32,3 +32,5 @@ export const DESKTOP_LOAD_POINT_OFFSET = 1400;
 export const MOBILE_BREAKPOINT = 801;
 
 export const HOME_VIEW_TITLES = ["Новини", "Най-четени"];
+
+export const GRID_STYLE = { margin: 0, gap: "3rem" };

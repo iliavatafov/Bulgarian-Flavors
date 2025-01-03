@@ -41,9 +41,6 @@ export const LOGIN_BUTTON_TEXT = "Влез";
 
 export const UPDATE_ACCOUNT_TEXT = "Актуализиране на акаунт";
 
-export const HELP_MESSAGE =
-  "Не е необходимо въвеждане на нова парола при актуализация на e-mail адрес";
-
 export const UPDATING_PROFILE_BUTTON_TEXT = "Обновяване на профил";
 
 export const UPDATE_PROFILE_BUTTON_TEXT = "Обнови профил";

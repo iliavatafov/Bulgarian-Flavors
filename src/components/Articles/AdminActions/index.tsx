@@ -6,7 +6,7 @@ import {
 } from "../../../constants/adminActions";
 import type { AdminActionsProps } from "../../../types/articlesTypes";
 
-import { ThemedButton } from "../../common/Button";
+import { StyledButton } from "../../common/StyledButton";
 
 import styles from "./styles.module.css";
 
@@ -16,12 +16,12 @@ export const AdminActions: FC<AdminActionsProps> = ({
 }) => {
   return (
     <div className={styles["admin-actions"]}>
-      <ThemedButton onClick={editArticle} variant="contained" color="greenCyan">
+      <StyledButton onClick={editArticle} variant="contained" color="greenCyan">
         {EDIT_ACTION_TEXT}
-      </ThemedButton>
-      <ThemedButton onClick={openDeleteModal} variant="contained" color="error">
+      </StyledButton>
+      <StyledButton onClick={openDeleteModal} variant="contained" color="error">
         {DELETE_ACTION_TEXT}
-      </ThemedButton>
+      </StyledButton>
     </div>
   );
 };

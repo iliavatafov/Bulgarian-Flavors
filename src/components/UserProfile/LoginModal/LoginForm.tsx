@@ -1,5 +1,6 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { usePasswordVisibility } from "../../../hooks/usePasswordVisability";
 
 import { Formik, Form, FormikHelpers } from "formik";
 
@@ -17,34 +18,35 @@ import {
 } from "../../../constants/auth";
 import { type LoginFormValues } from "../../../types/authTypes";
 
-import { TextInput } from "../common/TextInput";
+import { FormInput } from "../common/FormInput";
+import { StatusMessage } from "../common/StatusMessage";
 import { Button } from "../../Button";
 
 import styles from "../Auth.module.css";
 
 export const LoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const { getInputType, shouldShowPassword, getHandleShowPassword } =
+    usePasswordVisibility({ password: false });
   const dispatch: AppDispatch = useDispatch();
 
-  const handleSubmit = async (
-    values: LoginFormValues,
-    { setSubmitting, setStatus }: FormikHelpers<LoginFormValues>
-  ) => {
-    const { email, password } = values;
-    setStatus({ error: null });
+  const handleSubmit = useCallback(
+    async (
+      values: LoginFormValues,
+      { setSubmitting, setStatus }: FormikHelpers<LoginFormValues>
+    ) => {
+      const { email, password } = values;
+      setStatus({ error: null });
 
-    try {
-      await dispatch(login(email, password));
-    } catch (error: any) {
-      setStatus({ error: error.message });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleShowPassword = useCallback(() => {
-    setShowPassword((prevState) => !prevState);
-  }, []);
+      try {
+        await dispatch(login(email, password));
+      } catch (error: any) {
+        setStatus({ error: error.message });
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <Formik
@@ -55,27 +57,21 @@ export const LoginForm = () => {
       {({ isSubmitting, status, setFieldValue, setStatus }) => (
         <Form className={styles.form}>
           {status && status.error && (
-            <div className={styles.errorMessage} role="alert">
-              <p>{status.error}</p>
-            </div>
+            <StatusMessage message={status.error} type="error" />
           )}
           {loginFormSchema.map((field) => (
-            <TextInput
+            <FormInput
               key={field.name}
               label={field.label}
               name={field.name}
-              type={
-                field.name === "password" && showPassword ? "text" : field.type
-              }
+              type={getInputType(field)}
               placeholder={field.placeholder}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFieldValue(field.name, e.target.value);
                 setStatus({ error: null });
               }}
-              showPassword={field.showPassword && showPassword}
-              handleShowPassword={
-                field.showPassword ? handleShowPassword : undefined
-              }
+              showPassword={shouldShowPassword(field)}
+              handleShowPassword={getHandleShowPassword(field)}
             />
           ))}
           <Button

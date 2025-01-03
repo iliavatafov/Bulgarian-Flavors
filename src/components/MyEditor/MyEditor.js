@@ -15,13 +15,13 @@ import { articleActions } from "../../store/articlesSlice";
 import ArticlesAPI from "../../services/articles";
 
 import useInputValidation from "../../hooks/useInputValidation.js";
-import useEditorActions from "../../hooks/myEditor.js";
+import useEditorActions from "../../hooks/useEditor";
 
 import { Button } from "../Button/index";
 import { Input } from "../Input/Input";
 import { trackArticleView } from "../../analitics/firebase-analitics.js";
 
-import { inputInitialState } from "../../constants/myEditor.js";
+import { inputInitialState } from "../../constants/myEditor";
 
 import styles from "./MyEditor.module.css";
 
