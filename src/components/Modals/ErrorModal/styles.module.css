@@ -25,6 +25,7 @@
 }
 
 .error-body {
+  text-align: center;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -32,8 +33,10 @@
   justify-content: center;
 }
 
-.errorMessage h2 {
-  margin-bottom: 0.5rem;
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .link-to-error-container {

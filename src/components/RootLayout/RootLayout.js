@@ -61,7 +61,7 @@ export const RootLayout = () => {
           <CircularProgress />
         </div>
       ) : (
-        <div className={styles["content-containter"]}>
+        <div className={styles["content-container"]}>
           <header className={styles.header}>
             <Navbar />
             {isSearch && (
