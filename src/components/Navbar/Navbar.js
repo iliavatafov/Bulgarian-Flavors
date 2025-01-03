@@ -8,7 +8,11 @@ import { searchActions } from "../../store/searchSlice";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
 
-import { MyLinks, MyLinksLoggedIn, MyLinksAdmin } from "./MyLinks";
+import {
+  DEFAULT_LINKS,
+  STANDARD_USER_LINKS,
+  ADMIN_LINKS,
+} from "../../constants/navbarLinks";
 
 import "./Navbar.css";
 
@@ -25,12 +29,12 @@ export const Navbar = () => {
   useEffect(() => {
     if (currentUser?.currentUser) {
       if (currentUser.currentUser === "iliyavatafov@gmail.com") {
-        setMenuToRender(MyLinksAdmin);
+        setMenuToRender(ADMIN_LINKS);
       } else {
-        setMenuToRender(MyLinksLoggedIn);
+        setMenuToRender(STANDARD_USER_LINKS);
       }
     } else {
-      setMenuToRender(MyLinks);
+      setMenuToRender(DEFAULT_LINKS);
     }
   }, [currentUser]);
 

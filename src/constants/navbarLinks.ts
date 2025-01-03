@@ -1,4 +1,4 @@
-export const MyLinks = [
+export const DEFAULT_LINKS = [
   {
     title: "Начало",
     url: "/",
@@ -27,7 +27,7 @@ export const MyLinks = [
   },
 ];
 
-export const MyLinksLoggedIn = [
+export const STANDARD_USER_LINKS = [
   {
     title: "Начало",
     url: "/",
@@ -56,7 +56,7 @@ export const MyLinksLoggedIn = [
   },
 ];
 
-export const MyLinksAdmin = [
+export const ADMIN_LINKS = [
   {
     title: "Начало",
     url: "/",
