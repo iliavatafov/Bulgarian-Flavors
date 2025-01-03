@@ -1,6 +1,9 @@
-import "./Input.css";
+import { FC } from "react";
+import { InputProps } from "../../types/inputTypes";
 
-export const Input = ({
+import "./styles.css";
+
+export const Input: FC<InputProps> = ({
   type,
   id,
   label,
@@ -12,7 +15,7 @@ export const Input = ({
   name,
   icon,
   classes,
-  changeHandler = null,
+  changeHandler = () => {},
   value,
 }) => {
   return (
@@ -24,7 +27,7 @@ export const Input = ({
         id={id}
         ref={reference}
         required={require}
-        defaultValue={defaultVal && defaultVal}
+        defaultValue={defaultVal}
         disabled={disable}
         placeholder={placeHolder}
         name={name}
