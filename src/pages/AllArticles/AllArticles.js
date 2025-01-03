@@ -10,7 +10,7 @@ import { articleActions } from "../../store/articlesSlice";
 
 import ArticlesAPI from "../../services/articles";
 
-import EmptyState from "../../components/EmptyState/EmptyState.js";
+import EmptyState from "../../components/EmptyState/EmptyState";
 import { ArticleGrid } from "../../components/Articles/ArticlesGrid";
 import { GridHeader } from "../../components/Articles/ArticlesGrid/GridHeader";
 import { CarouselComponent } from "../../components/Carousel/Carousel";
