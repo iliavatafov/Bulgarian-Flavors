@@ -22,7 +22,7 @@ import {
 
 import { isValidURL } from "../utils/validations";
 
-import styles from "../components/MyEditor/MyEditor.module.css";
+import styles from "../components/Modals/ManageArticlesModal/styles.module.css";
 
 const useEditorActions = () => {
   const [textAlignment, setTextAlignment] = useState("left");

@@ -54,7 +54,7 @@ export const ArticleDetails: FC = () => {
   }, [dispatch, section, articleId]);
 
   const editArticle = useCallback(() => {
-    navigate(`/edit-article/${section}/${articleId}`);
+    dispatch(modalActions.openModal("manageArticle"));
   }, [navigate, section, articleId]);
 
   const getItemData = useCallback(

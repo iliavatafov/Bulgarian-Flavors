@@ -19,6 +19,7 @@ import { UpdateProfileModal } from "../UserProfile/UpdateProfileModal";
 import { ErrorModal } from "../Modals/ErrorModal";
 import { DeleteArticleModal } from "../Modals/DeleteArticleModal";
 import { SearchBar } from "../Search/SearchBar";
+import { ManageArticlesModal } from "../Modals/ManageArticlesModal/index";
 
 import styles from "./RootLayout.module.css";
 
@@ -80,6 +81,7 @@ export const RootLayout = () => {
             {modal.updateProfile && <UpdateProfileModal />}
             {modal.errorData.isError && <ErrorModal />}
             {modal.delete.key === DELETE_ARTICLE_KEY && <DeleteArticleModal />}
+            {modal.manageArticle && <ManageArticlesModal />}
             <Outlet />
           </main>
           <footer className={styles.footer}>

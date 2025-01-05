@@ -8,9 +8,7 @@ import { RootLayout } from "./components/RootLayout/RootLayout";
 import { WineAndFood } from "./pages/WineAndFood/WineAndFood";
 import { TourismInitiatives } from "./pages/TourismInitiatives/TourismInitiatives";
 import { Destination } from "./pages/Destination/Destination";
-import { CreateArticle } from "./pages/CreateArticle/CreateArticle";
 import { AllArticles } from "./pages/AllArticles/AllArticles";
-import { AdminRoute } from "./components/AdminRoute";
 
 import "draft-js/dist/Draft.css";
 import { ArticleDetails } from "./components/Articles/ArticleDetails/index";
@@ -32,22 +30,6 @@ function App() {
         { path: "/next-destination", element: <Destination /> },
         { path: "/tourism-initiatives", element: <TourismInitiatives /> },
         { path: "/search", element: <AllArticles /> },
-        {
-          path: "/create-article",
-          element: (
-            <AdminRoute>
-              <CreateArticle />
-            </AdminRoute>
-          ),
-        },
-        {
-          path: "/edit-article/:section/:articleId",
-          element: (
-            <AdminRoute>
-              <CreateArticle />
-            </AdminRoute>
-          ),
-        },
         { path: "/:section/:articleId", element: <ArticleDetails /> },
         { path: "*", element: <AllArticles /> },
       ],

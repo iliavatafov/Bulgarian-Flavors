@@ -90,6 +90,38 @@ select {
   font: inherit;
 }
 
+/* Global scrollbar styles */
+
+/* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+*::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+/* Custom scrollbar for Firefox */
+* {
+  scrollbar-width: thin; /* Width of the scrollbar */
+  scrollbar-color: #888 #f1f1f1; /* Color of the scrollbar thumb and track */
+}
+
+/* Custom scrollbar for Internet Explorer and Edge */
+* {
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* Auto-hiding scrollbar */
+}
+
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {

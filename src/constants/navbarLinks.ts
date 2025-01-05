@@ -79,8 +79,9 @@ export const ADMIN_LINKS = [
   },
   {
     title: "Създай статия",
-    url: "/create-article",
-    isModal: false,
+    url: "#",
+    isModal: true,
+    modalName: "manageArticle",
   },
   {
     title: "Профил",

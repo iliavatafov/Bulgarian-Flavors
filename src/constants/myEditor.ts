@@ -28,3 +28,9 @@ export const inputInitialState = {
   imageURL: "",
   section: "wine-and-food",
 };
+
+export const ERROR_MESSAGE_TITLE = "Грешка";
+export const GET_ALL_ARTICLES_ERROR_MESSAGE =
+  "Възникна проблем при зареждане на всички статии.";
+export const UPDATE_ARTICLE_ERROR_MESSAGE =
+  "Възникна проблем при съсздаване на статията. Моля опитайте отново.";

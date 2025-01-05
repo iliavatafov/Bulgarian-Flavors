@@ -6,6 +6,7 @@ const initialModalState = {
   resetPassword: false,
   profile: false,
   updateProfile: false,
+  manageArticle: false,
   delete: {
     key: "",
     message: "",
