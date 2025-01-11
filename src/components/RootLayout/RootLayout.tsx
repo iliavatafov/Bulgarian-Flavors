@@ -8,6 +8,7 @@ import ArticlesAPI from "../../services/articles";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { DELETE_ARTICLE_KEY } from "../../constants/rootLayout";
+import type { RootState } from "../../store";
 
 import { Navbar } from "../Navbar/index";
 import { Footer } from "../Footer/Footer";
@@ -24,11 +25,11 @@ import { ManageArticlesModal } from "../Modals/ManageArticlesModal/index";
 import styles from "./RootLayout.module.css";
 
 export const RootLayout = () => {
-  const modal = useSelector((state) => state.modal);
-  const loading = useSelector((state) => state.loading.loading);
-  const isSearch = useSelector((state) => state.search.isSearch);
+  const modal = useSelector((state: RootState) => state.modal);
+  const loading = useSelector((state: RootState) => state.loading.loading);
+  const isSearch = useSelector((state: RootState) => state.search.isSearch);
   const allArticles = useSelector(
-    (state) => state.articles.articles.allArticles
+    (state: RootState) => state.articles.articles.allArticles
   );
 
   const dispatch = useDispatch();
