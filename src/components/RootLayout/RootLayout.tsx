@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { articleActions } from "../../store/articlesSlice";
@@ -19,12 +19,12 @@ import { RegisterModal } from "../UserProfile/RegisterModal";
 import { UpdateProfileModal } from "../UserProfile/UpdateProfileModal";
 import { ErrorModal } from "../Modals/ErrorModal";
 import { DeleteArticleModal } from "../Modals/DeleteArticleModal";
-import { SearchBar } from "../Search/SearchBar";
+import { SearchBar } from "../Search/SearchBar.tsx";
 import { ManageArticlesModal } from "../Modals/ManageArticlesModal/index";
 
 import styles from "./RootLayout.module.css";
 
-export const RootLayout = () => {
+export const RootLayout: FC = () => {
   const modal = useSelector((state: RootState) => state.modal);
   const loading = useSelector((state: RootState) => state.loading.loading);
   const isSearch = useSelector((state: RootState) => state.search.isSearch);
