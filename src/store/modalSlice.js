@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "lodash";
 
 const initialModalState = {
   login: false,
@@ -6,7 +7,11 @@ const initialModalState = {
   resetPassword: false,
   profile: false,
   updateProfile: false,
-  manageArticle: false,
+  manageArticle: {
+    isEdit: false,
+    isCreate: false,
+    show: false,
+  },
   delete: {
     key: "",
     message: "",
@@ -42,6 +47,9 @@ const modalSlice = createSlice({
     },
     setDeleteModal(state, action) {
       state.delete = action.payload;
+    },
+    setManageArticleModal(state, action) {
+      state.manageArticle = action.payload;
     },
   },
 });

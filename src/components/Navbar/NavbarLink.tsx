@@ -19,7 +19,15 @@ export const NavbarLink: FC<NavbarLinkProps> = ({
 
   const handleClick = useCallback(() => {
     if (isModal && modalName) {
-      dispatch(modalActions.openModal(modalName));
+      modalName === "manageArticle"
+        ? dispatch(
+            modalActions.setManageArticleModal({
+              isEdit: false,
+              isCreate: true,
+              show: true,
+            })
+          )
+        : dispatch(modalActions.openModal(modalName));
     }
   }, [dispatch, isModal, modalName]);
 

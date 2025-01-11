@@ -81,7 +81,7 @@ export const RootLayout = () => {
             {modal.updateProfile && <UpdateProfileModal />}
             {modal.errorData.isError && <ErrorModal />}
             {modal.delete.key === DELETE_ARTICLE_KEY && <DeleteArticleModal />}
-            {modal.manageArticle && <ManageArticlesModal />}
+            {modal.manageArticle.show && <ManageArticlesModal />}
             <Outlet />
           </main>
           <footer className={styles.footer}>

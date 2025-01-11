@@ -3,11 +3,12 @@ import { FC } from "react";
 import { ErrorMessage } from "formik";
 import { Editor } from "draft-js";
 
+import { START_ARTICLE_TEXT } from "../../../constants/createArticle";
 import type { EditorSectionProps } from "../../../types/articlesTypes";
 
 import styles from "./styles.module.css";
 
-const EditorSection: FC<EditorSectionProps> = ({
+export const EditorSection: FC<EditorSectionProps> = ({
   editorState,
   setEditorState,
   handleKeyCommand,
@@ -30,7 +31,7 @@ const EditorSection: FC<EditorSectionProps> = ({
           }}
           blockRendererFn={blockRendererFn}
           ref={editorRef}
-          placeholder="Започни статия..."
+          placeholder={START_ARTICLE_TEXT}
         />
       </div>
       <ErrorMessage
@@ -41,5 +42,3 @@ const EditorSection: FC<EditorSectionProps> = ({
     </>
   );
 };
-
-export default EditorSection;

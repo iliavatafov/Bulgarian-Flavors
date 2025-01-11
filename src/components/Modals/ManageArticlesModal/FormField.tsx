@@ -17,9 +17,9 @@ export const FormField: FC<FormFieldProps> = ({
     <>
       {type === "select" ? (
         <Field as="select" name={name} className={className}>
-          {options?.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+          {options?.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
             </option>
           ))}
         </Field>

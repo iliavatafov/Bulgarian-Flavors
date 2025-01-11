@@ -54,10 +54,16 @@ export const ArticleDetails: FC = () => {
   }, [dispatch, section, articleId]);
 
   const editArticle = useCallback(() => {
-    dispatch(modalActions.openModal("manageArticle"));
+    dispatch(
+      modalActions.setManageArticleModal({
+        isEdit: true,
+        isCreate: false,
+        show: true,
+      })
+    );
   }, [navigate, section, articleId]);
 
-  const getItemData = useCallback(
+  const getItemContent = useCallback(
     (key: string) => {
       return get(rawData, key, "");
     },
@@ -85,13 +91,16 @@ export const ArticleDetails: FC = () => {
         />
       )}
       <ArticleHeader
-        title={getItemData("title")}
-        author={getItemData("author")}
-        date={getItemData("date")}
+        title={getItemContent("title")}
+        author={getItemContent("author")}
+        date={getItemContent("date")}
       />
       <ImageList cols={1}>
         <ImageListItem>
-          <img src={getItemData("URL") ?? "#"} alt={getItemData("title")} />
+          <img
+            src={getItemContent("URL") ?? "#"}
+            alt={getItemContent("title")}
+          />
         </ImageListItem>
       </ImageList>
       <ArticleContent articleData={articleData} />

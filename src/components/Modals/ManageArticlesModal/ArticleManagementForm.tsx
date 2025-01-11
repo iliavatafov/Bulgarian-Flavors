@@ -20,7 +20,7 @@ import { ActionBar } from "./ActionBar";
 
 import styles from "./styles.module.css";
 import "draft-js/dist/Draft.css";
-import EditorSection from "./EditorSections";
+import { EditorSection } from "./EditorSections";
 
 export const ArticleManagementForm: FC<ArticleManagementFormProps> = ({
   isEdit,

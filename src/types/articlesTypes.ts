@@ -132,3 +132,13 @@ export interface FormFieldProps {
   className?: string;
   options?: { value: string; label: string }[];
 }
+
+interface ModalState {
+  manageArticle: {
+    isEdit: boolean;
+  };
+}
+
+export interface RootState {
+  modal: ModalState;
+}

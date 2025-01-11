@@ -13,3 +13,4 @@ export const UPDATE_BUTTON_TEXT = "Обнови статия";
 export const CREATE_BUTTON_TEXT = "Създай статия";
 export const UPDATE_ARTICLE_TEXT = "Редактирай статия";
 export const CREATE_ARTICLE_TEXT = "Създай статия";
+export const START_ARTICLE_TEXT = "Започни статия...";

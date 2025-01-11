@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Typography } from "@mui/material";
 
-import type { TextProps } from "../../../types/articlesTypes";
 import { BODY_SX_STYLES } from "../../../constants/articleCard";
+import type { TextProps } from "../../../types/articlesTypes";
 
 export const CardBody: FC<TextProps> = ({ text }) => {
   return (

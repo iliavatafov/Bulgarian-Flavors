@@ -1,9 +1,9 @@
 import { FC } from "react";
 
+import { Typography } from "@mui/material";
+
 import { TITLE_SX_STYLES } from "../../../constants/articleCard";
 import type { TitleProps } from "../../../types/articlesTypes";
-
-import { Typography } from "@mui/material";
 
 export const CardTitle: FC<TitleProps> = ({ title }) => {
   return (
