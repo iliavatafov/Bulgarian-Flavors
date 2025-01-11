@@ -20,19 +20,20 @@ export const EditorSection: FC<EditorSectionProps> = ({
   return (
     <>
       <div className={styles["editor-container"]}>
-        <Editor
-          className={styles["editor"]}
-          textAlignment={textAlignment}
-          editorState={editorState}
-          handleKeyCommand={handleKeyCommand}
-          onChange={(newState: any) => {
-            setEditorState(newState);
-            setFieldValue("content", newState);
-          }}
-          blockRendererFn={blockRendererFn}
-          ref={editorRef}
-          placeholder={START_ARTICLE_TEXT}
-        />
+        <div className={styles["editor"]}>
+          <Editor
+            textAlignment={textAlignment}
+            editorState={editorState}
+            handleKeyCommand={handleKeyCommand}
+            onChange={(newState: any) => {
+              setEditorState(newState);
+              setFieldValue("content", newState);
+            }}
+            blockRendererFn={blockRendererFn}
+            ref={editorRef}
+            placeholder={START_ARTICLE_TEXT}
+          />
+        </div>
       </div>
       <ErrorMessage
         name="content"

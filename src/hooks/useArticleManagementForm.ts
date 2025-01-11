@@ -3,7 +3,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { FormikHelpers } from "formik";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  RawDraftContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 
 import { loadingActions } from "../store/loadingSlice.js";
 import { modalActions } from "../store/modalSlice.js";
@@ -39,7 +44,7 @@ export const useArticleManagementForm = ({
   const navigate = useNavigate();
 
   const createEmptyEditorState = () => {
-    const newEditorState = EditorState.createEmpty(decorator);
+    const newEditorState: EditorState = EditorState.createEmpty(decorator);
     setEditorState(newEditorState);
   };
 
@@ -60,7 +65,22 @@ export const useArticleManagementForm = ({
         imageURL: article.URL || "",
       });
 
-      const contentState = convertFromRaw(article.constent);
+      const rawContentState: RawDraftContentState = article.constent || {
+        blocks: [
+          {
+            text: "",
+            key: "initial",
+            type: "unstyled",
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [],
+            data: {},
+          },
+        ],
+        entityMap: {},
+      };
+
+      const contentState = convertFromRaw(rawContentState);
       const newEditorState = EditorState.createWithContent(
         contentState,
         decorator

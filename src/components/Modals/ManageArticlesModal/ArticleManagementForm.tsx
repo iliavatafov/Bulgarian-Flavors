@@ -27,7 +27,7 @@ export const ArticleManagementForm: FC<ArticleManagementFormProps> = ({
   articleId,
   section,
 }) => {
-  const editor = useRef(null);
+  const editor = useRef<any>(null);
 
   const {
     editorState,

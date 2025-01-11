@@ -221,14 +221,17 @@ select {
   }
 }
 
+input {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 input:not(:focus) {
   border: 1px solid lightgray;
   border-radius: 4px;
-  padding-left: 1rem;
 }
 
 input:focus {
-  padding-left: 1rem;
   outline: none;
   border: 1px solid var(--green-cyan-color);
   border-radius: 6px;

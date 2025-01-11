@@ -1,7 +1,14 @@
 import { useCallback, useState } from "react";
 
-import { EditorState, RichUtils, AtomicBlockUtils } from "draft-js";
-import { CompositeDecorator } from "draft-js";
+import {
+  EditorState,
+  RichUtils,
+  AtomicBlockUtils,
+  CompositeDecorator,
+  ContentBlock,
+  ContentState,
+} from "draft-js";
+
 import "draft-js/dist/Draft.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,13 +31,28 @@ import { isValidURL } from "../utils/validations";
 
 import styles from "../components/Modals/ManageArticlesModal/styles.module.css";
 
+interface LinkProps {
+  contentState: ContentState;
+  entityKey: string;
+  children: React.ReactNode;
+}
+
+interface ImageComponentProps {
+  block: ContentBlock;
+  contentState: ContentState;
+  blockProps: {
+    editorState: EditorState;
+    setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;
+  };
+}
+
 const useEditorActions = () => {
   const [textAlignment, setTextAlignment] = useState("left");
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
 
-  const Link = ({ contentState, entityKey, children }) => {
+  const Link = ({ contentState, entityKey, children }: LinkProps) => {
     const { url } = contentState.getEntity(entityKey).getData();
     return (
       <a
@@ -44,7 +66,11 @@ const useEditorActions = () => {
     );
   };
 
-  const findLinkEntities = (contentBlock, callback, contentState) => {
+  const findLinkEntities = (
+    contentBlock: ContentBlock,
+    callback: (start: number, end: number) => void,
+    contentState: ContentState
+  ) => {
     contentBlock.findEntityRanges((character) => {
       const entityKey = character.getEntity();
       return (
@@ -62,7 +88,7 @@ const useEditorActions = () => {
   ]);
 
   const handleKeyCommand = useCallback(
-    (command) => {
+    (command: string) => {
       const newState = RichUtils.handleKeyCommand(editorState, command);
 
       if (newState) {
@@ -76,34 +102,42 @@ const useEditorActions = () => {
   );
 
   const onBoldClick = useCallback(() => {
-    setEditorState((state) => RichUtils.toggleInlineStyle(state, "BOLD"));
+    setEditorState((state: EditorState) =>
+      RichUtils.toggleInlineStyle(state, "BOLD")
+    );
   }, []);
 
   const onItalicClick = useCallback(() => {
-    setEditorState((state) => RichUtils.toggleInlineStyle(state, "ITALIC"));
+    setEditorState((state: EditorState) =>
+      RichUtils.toggleInlineStyle(state, "ITALIC")
+    );
   }, []);
 
   const onUnderlineClick = useCallback(() => {
-    setEditorState((state) => RichUtils.toggleInlineStyle(state, "UNDERLINE"));
+    setEditorState((state: EditorState) =>
+      RichUtils.toggleInlineStyle(state, "UNDERLINE")
+    );
   }, []);
 
   const onHeadingClick = useCallback(() => {
-    setEditorState((state) => RichUtils.toggleBlockType(state, "header-one"));
+    setEditorState((state: EditorState) =>
+      RichUtils.toggleBlockType(state, "header-one")
+    );
   }, []);
 
   const onUnorderedListClick = useCallback(() => {
-    setEditorState((state) =>
+    setEditorState((state: EditorState) =>
       RichUtils.toggleBlockType(state, "unordered-list-item")
     );
   }, []);
 
   const onOrderedListClick = useCallback(() => {
-    setEditorState((state) =>
+    setEditorState((state: EditorState) =>
       RichUtils.toggleBlockType(state, "ordered-list-item")
     );
   }, []);
 
-  const onAlignClick = useCallback((alignment) => {
+  const onAlignClick = useCallback((alignment: string) => {
     setTextAlignment(alignment);
   }, []);
 
@@ -113,6 +147,7 @@ const useEditorActions = () => {
     const startKey = selection.getStartKey();
     const startOffset = selection.getStartOffset();
     const blockWithLinkAtBeginning = contentState.getBlockForKey(startKey);
+    debugger;
     const linkKey = blockWithLinkAtBeginning.getEntityAt(startOffset);
 
     let url = "";
@@ -133,11 +168,9 @@ const useEditorActions = () => {
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
-        const newEditorState = EditorState.set(
-          editorState,
-          { currentContent: contentStateWithEntity },
-          "create-entity"
-        );
+        const newEditorState = EditorState.set(editorState, {
+          currentContent: contentStateWithEntity,
+        });
 
         setEditorState(
           RichUtils.toggleLink(
@@ -177,59 +210,67 @@ const useEditorActions = () => {
     }
   }, [editorState]);
 
-  const ImageComponent = useCallback(({ block, contentState, blockProps }) => {
-    const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
-    const { editorState, setEditorState } = blockProps;
+  const ImageComponent = useCallback(
+    ({ block, contentState, blockProps }: ImageComponentProps) => {
+      const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
+      const { editorState, setEditorState } = blockProps;
 
-    const handleDeleteImage = (block) => {
-      const blockKey = block.getKey();
-      const contentState = editorState.getCurrentContent();
-      const blockMap = contentState.getBlockMap();
-      const entityKey = block.getEntityAt(0);
+      const handleDeleteImage = (block: ContentBlock) => {
+        const blockKey = block.getKey();
+        const contentState = editorState.getCurrentContent();
+        const blockMap = contentState.getBlockMap();
+        const entityKey = block.getEntityAt(0);
 
-      if (entityKey) {
-        const newBlockMap = blockMap.delete(blockKey).map((contentBlock) => {
-          const updatedCharacterList = contentBlock
-            .getCharacterList()
-            .filter((character) => character.getEntity() !== entityKey);
-          return contentBlock.set("characterList", updatedCharacterList);
-        });
+        if (entityKey) {
+          const newBlockMap = blockMap
+            .delete(blockKey)
+            .map((contentBlock: ContentBlock | undefined) => {
+              if (!contentBlock) return contentBlock;
+              const updatedCharacterList = contentBlock
+                .getCharacterList()
+                .filter(
+                  (character: any) => character.getEntity() !== entityKey
+                );
+              return contentBlock.set("characterList", updatedCharacterList);
+            });
 
-        const newContentState = contentState.merge({
-          blockMap: newBlockMap,
-          selectionAfter: contentState.getSelectionAfter().merge({
-            anchorKey: blockKey,
-            focusKey: blockKey,
-            anchorOffset: 0,
-            focusOffset: 0,
-            isBackward: false,
-          }),
-        });
+          const newContentState = contentState.merge({
+            blockMap: newBlockMap,
+            selectionAfter: contentState.getSelectionAfter().merge({
+              anchorKey: blockKey,
+              focusKey: blockKey,
+              anchorOffset: 0,
+              focusOffset: 0,
+              isBackward: false,
+            }),
+          }) as ContentState;
 
-        const newEditorState = EditorState.push(
-          editorState,
-          newContentState,
-          "remove-range"
-        );
+          const newEditorState = EditorState.push(
+            editorState,
+            newContentState,
+            "remove-range"
+          );
 
-        setEditorState(newEditorState);
-      }
-    };
+          setEditorState(newEditorState);
+        }
+      };
 
-    return (
-      <div className={styles["image-wrapper"]}>
-        <div className={styles["image-controls"]}>
-          <FontAwesomeIcon
-            icon={faTrash}
-            onClick={() => handleDeleteImage(block)}
-          />
+      return (
+        <div className={styles["image-wrapper"]}>
+          <div className={styles["image-controls"]}>
+            <FontAwesomeIcon
+              icon={faTrash}
+              onClick={() => handleDeleteImage(block)}
+            />
+          </div>
+          <img src={src} alt="DraftJS" className={styles.image} />
         </div>
-        <img src={src} alt="DraftJS" className={styles.image} />
-      </div>
-    );
-  }, []);
+      );
+    },
+    []
+  );
 
-  const blockRendererFn = useCallback((block) => {
+  const blockRendererFn = useCallback((block: any) => {
     const type = block.getType();
     if (type === "atomic") {
       return {

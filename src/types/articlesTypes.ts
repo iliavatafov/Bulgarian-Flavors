@@ -3,8 +3,9 @@ import { ReactElement, ReactNode } from "react";
 import {
   Editor,
   EditorState,
-  DraftDecorator,
   DraftHandleValue,
+  DraftDecoratorType,
+  RawDraftContentState,
 } from "draft-js";
 
 export interface AdminActionsProps {
@@ -66,9 +67,9 @@ export interface UseArticleManagementFormProps {
   section: string | undefined;
   isEdit: boolean;
   editor: React.RefObject<any>;
-  editorState: typeof EditorState;
-  setEditorState: (editorState: typeof EditorState) => void;
-  decorator: typeof DraftDecorator;
+  editorState: EditorState;
+  setEditorState: (editorState: EditorState) => void;
+  decorator: DraftDecoratorType;
 }
 
 export interface Article {
@@ -76,9 +77,7 @@ export interface Article {
   author?: string;
   date?: string;
   URL?: string;
-  constent?: {
-    blocks: { text: string }[];
-  };
+  constent?: RawDraftContentState;
   section?: string;
   createdAt?: string;
   id?: string;
@@ -112,15 +111,15 @@ export interface ArticleManagementModalProps {
 }
 
 export interface EditorSectionProps {
-  editorState: typeof EditorState;
-  setEditorState: (editorState: typeof EditorState) => void;
+  editorState: EditorState;
+  setEditorState: (editorState: EditorState) => void;
   handleKeyCommand: (
     command: string,
-    editorState: typeof EditorState
-  ) => typeof DraftHandleValue;
-  textAlignment: string;
+    editorState: EditorState
+  ) => DraftHandleValue;
+  textAlignment: any;
   blockRendererFn: (block: any) => any;
-  editorRef: React.RefObject<typeof Editor>;
+  editorRef: React.RefObject<Editor>;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
