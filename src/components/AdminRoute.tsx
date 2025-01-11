@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import { modalActions } from "../store/modalSlice";
+import { get } from "lodash";
 import UsersAPI from "../services/users";
 
-export const AdminRoute = ({ children }) => {
-  const currentUser = useSelector((state) => state.auth.currentUser);
+import type { AdminRouteProps, RootState } from "../types/adminRouteTypes";
+
+export const AdminRoute: FC<AdminRouteProps> = ({ children }) => {
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ export const AdminRoute = ({ children }) => {
         ? await UsersAPI.getUserByUid(currentUser.uid)
         : [];
 
-      if (!Object.keys(userData).length || !userData.isAdmin) {
+      if (!Object.keys(userData).length || get(userData, "isAdmin", false)) {
         navigate("/");
         dispatch(modalActions.openModal("login"));
       }
