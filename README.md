@@ -39,7 +39,6 @@ To run this project locally:
    ```bash
    cd Bulgarian-Flavors
    
-
 3. Install the dependencies using pnpm:
   ```bash
    pnpm install
@@ -48,7 +47,6 @@ To run this project locally:
    
    ```bash
    pnpm start
-
 
 📱 Demo
 You can check out the live demo of the application:
