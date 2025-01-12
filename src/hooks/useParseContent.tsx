@@ -1,50 +1,87 @@
+import { ImageList, ImageListItem, Typography, Link } from "@mui/material";
 import { JSX } from "react";
+import type { Content, TextAlign } from "../types/parseContentTypes";
 import { get } from "lodash";
 
-import { ImageList, ImageListItem, Typography } from "@mui/material";
-import Link from "@mui/material/Link";
-
-import type { Content, TextAlign } from "../types/parseContentTypes";
-
+// Render functions for different content types
 const renderLink = (
   text: string,
   url: string,
   target: string,
   alignment: TextAlign,
   key: string
-) => (
+): JSX.Element => (
   <Link key={key} href={url} target={target} style={{ textAlign: alignment }}>
     {text}
   </Link>
 );
 
-const renderImage = (src: string, alignment: TextAlign, key: string) => (
+const renderImage = (
+  src: string,
+  alignment: TextAlign,
+  key: string
+): JSX.Element => (
   <ImageList key={key} cols={1} style={{ textAlign: alignment }}>
-    <ImageListItem key={key} style={{ textAlign: alignment }}>
-      <img src={src} alt="Image" />
+    <ImageListItem key={key}>
+      <img src={src} alt="Content Image" />
     </ImageListItem>
   </ImageList>
 );
+
+const renderVideo = (src: string, key: string): JSX.Element => {
+  const isYouTubeVideo = (url: string) => {
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+    return youtubeRegex.test(url);
+  };
+
+  if (isYouTubeVideo(src)) {
+    const youtubeEmbedUrl = src.replace(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/,
+      "youtube.com/embed/$1"
+    );
+
+    return (
+      <div key={key} style={{ textAlign: "center", margin: "1em 0" }}>
+        <iframe
+          width="560"
+          height="315"
+          src={youtubeEmbedUrl}
+          title="YouTube video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ maxWidth: "100%" }}
+        ></iframe>
+      </div>
+    );
+  }
+
+  // Render regular videos for non-YouTube URLs
+  return (
+    <div key={key} style={{ textAlign: "center", margin: "1em 0" }}>
+      <video controls style={{ maxWidth: "100%" }}>
+        <source src={src} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  );
+};
 
 const renderStyledText = (
   text: string,
   style: string,
   alignment: TextAlign,
   key: string
-) => {
+): JSX.Element => {
   const styleProps: { [key: string]: React.CSSProperties } = {
     bold: { fontWeight: "bold" },
     italic: { fontStyle: "italic" },
     underline: { textDecoration: "underline" },
   };
-
-  const appliedStyle = styleProps[style] || {};
-
   return (
     <Typography
       key={key}
       component="span"
-      style={{ textAlign: alignment, ...appliedStyle }}
+      style={{ textAlign: alignment, ...styleProps[style] }}
     >
       {text}
     </Typography>
@@ -56,13 +93,12 @@ const renderHeaderBlock = (
   blockType: string,
   alignment: TextAlign,
   key: string
-) => {
+): JSX.Element => {
   const blockStyleProps: { [key: string]: React.CSSProperties } = {
     "header-one": { fontSize: "2em", fontWeight: "bold" },
     "header-two": { fontSize: "1.5em", fontWeight: "bold" },
     "header-three": { fontSize: "1.17em", fontWeight: "bold" },
   };
-
   return (
     <Typography
       key={key}
@@ -79,10 +115,9 @@ const renderListBlock = (
   blockType: string,
   alignment: TextAlign,
   key: string
-) => {
+): JSX.Element => {
   const isOrdered = blockType === "ordered-list-item";
   const ListComponent = isOrdered ? "ol" : "ul";
-
   return (
     <ListComponent
       key={key}
@@ -105,9 +140,9 @@ export const useParseContent = ({
   let currentListItems: string[] = [];
   let currentListType: string | null = null;
 
-  blocks.forEach((block, index) => {
+  blocks.forEach((block: any, index) => {
     const { text, type, data, entityRanges, inlineStyleRanges } = block;
-    const alignment = get(data, "alignment", "left");
+    const alignment: TextAlign = get(data, "alignment", "left");
 
     // Handle list blocks
     if (type === "unordered-list-item" || type === "ordered-list-item") {
@@ -140,7 +175,7 @@ export const useParseContent = ({
         currentListType = null;
       }
 
-      // **Handle header blocks**
+      // Handle headers
       if (type.startsWith("header-")) {
         parsedContent.push([
           renderHeaderBlock(text, type, alignment, `header-${index}`),
@@ -148,15 +183,14 @@ export const useParseContent = ({
         return;
       }
 
-      // Handle regular content blocks (unstyled text, links, images)
+      // Handle regular content blocks (unstyled text, links, images, videos)
       const components: JSX.Element[] = [];
       let currentPosition = 0;
 
       while (currentPosition < text.length) {
         const entity = entityRanges.find(
-          (range) => range.offset === currentPosition
+          (range: any) => range.offset === currentPosition
         );
-
         if (entity) {
           const { key, length } = entity;
           const entityType = entityMap[key].type;
@@ -183,6 +217,13 @@ export const useParseContent = ({
                 `image-${index}-${currentPosition}`
               )
             );
+          } else if (entityType === "VIDEO") {
+            components.push(
+              renderVideo(
+                get(entityMap, `[${key}].data.src`, "#"),
+                `video-${index}-${currentPosition}`
+              )
+            );
           }
 
           currentPosition += length;
@@ -190,7 +231,7 @@ export const useParseContent = ({
         }
 
         const styleRange = inlineStyleRanges.find(
-          (range) => range.offset === currentPosition
+          (range: any) => range.offset === currentPosition
         );
         if (styleRange) {
           const { style, length } = styleRange;
