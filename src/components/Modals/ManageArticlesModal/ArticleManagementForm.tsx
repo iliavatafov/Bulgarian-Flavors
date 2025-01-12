@@ -17,10 +17,10 @@ import type { ArticleManagementFormProps } from "../../../types/articlesTypes";
 import { Button } from "../../Button";
 import { FormField } from "./FormField";
 import { ActionBar } from "./ActionBar";
+import { EditorSection } from "./EditorSection";
 
 import styles from "./styles.module.css";
 import "draft-js/dist/Draft.css";
-import { EditorSection } from "./EditorSection";
 
 export const ArticleManagementForm: FC<ArticleManagementFormProps> = ({
   isEdit,

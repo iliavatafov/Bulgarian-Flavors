@@ -20,9 +20,6 @@ import {
   faList,
   faListOl,
   faUnderline,
-  faAlignLeft,
-  faAlignCenter,
-  faAlignRight,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 

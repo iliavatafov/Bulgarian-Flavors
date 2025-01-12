@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { searchActions } from "../store/searchSlice";
 
 import { get } from "lodash";
 
-import { searchActions } from "../store/searchSlice";
+import UsersAPI from "../services/users";
 
 import {
   DEFAULT_LINKS,
@@ -23,12 +24,28 @@ export const useNavbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userEmail = get(currentUser, "currentUser", null);
-    userEmail
-      ? userEmail === "iliyavatafov@gmail.com"
-        ? setMenuToRender(ADMIN_LINKS)
-        : setMenuToRender(STANDARD_USER_LINKS)
-      : setMenuToRender(DEFAULT_LINKS);
+    const fetchUserData = async () => {
+      const userId = get(currentUser, "uid", null);
+
+      if (userId) {
+        try {
+          const user = await UsersAPI.getUserByUid(userId);
+
+          if (get(user, "isAdmin", false)) {
+            setMenuToRender(ADMIN_LINKS);
+          } else {
+            setMenuToRender(STANDARD_USER_LINKS);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setMenuToRender(DEFAULT_LINKS);
+        }
+      } else {
+        setMenuToRender(DEFAULT_LINKS);
+      }
+    };
+
+    fetchUserData();
   }, [currentUser]);
 
   useEffect(() => {
