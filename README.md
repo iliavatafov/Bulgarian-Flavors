@@ -30,21 +30,18 @@ Welcome to **Bulgarian Flavors**, a modern news website built with **TypeScript*
 To run this project locally:
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/iliavatafov/Bulgarian-Flavors
 
 2. Navigate to the project directory:
-
    ```bash
-   cd Bulgarian-Flavors
+   cd ./Bulgarian-Flavors
    
 3. Install the dependencies using pnpm:
    ```bash
    pnpm install
 
 4. Start the application:
-   
    ```bash
    pnpm start
 
