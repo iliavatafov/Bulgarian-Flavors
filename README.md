@@ -51,13 +51,9 @@ Obtain your Firebase credentials and configure them in the Firebase setup in the
 
 📱 Demo
 You can check out the live demo of the application:
-Bulgarian Flavors Website
-
-🤝 Contributing
-Feel free to fork the repository and contribute by submitting issues or pull requests! If you have any questions or suggestions, don't hesitate to reach out.
+- [Bulgarian Flavors Website](https://dashing-kringle-5254bd.netlify.app/)
 
 📫 Contact
 If you have any questions or would like to collaborate, feel free to reach out:
-
-LinkedIn
-GitHub
+- [LinkedIn](https://www.linkedin.com/in/ilia-vatafov-517ba3163/)
+- [Company GitHub Profile](https://github.com/ivatafov-rms)
