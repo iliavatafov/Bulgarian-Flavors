@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import ArticlesAPI from "../services/articles";
-import { modalActions } from "./modalSlice";
 
 const initialModalState = {
   articles: {
@@ -9,6 +8,7 @@ const initialModalState = {
     tourismInitiatives: [],
     allArticles: [],
   },
+  isAdmin: false,
 };
 
 const articlesSlice = createSlice({
@@ -21,6 +21,9 @@ const articlesSlice = createSlice({
       if (collection && data) {
         state.articles[collection] = data;
       }
+    },
+    setIsAdmin(state, action) {
+      state.isAdmin = action.payload;
     },
   },
 });

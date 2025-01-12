@@ -1,9 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { articleActions } from "../../store/articlesSlice";
+
+import { get } from "lodash";
+
 import ArticlesAPI from "../../services/articles";
+import UsersAPI from "../../services/users.js";
 
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -28,6 +31,7 @@ export const RootLayout: FC = () => {
   const modal = useSelector((state: RootState) => state.modal);
   const loading = useSelector((state: RootState) => state.loading.loading);
   const isSearch = useSelector((state: RootState) => state.search.isSearch);
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const allArticles = useSelector(
     (state: RootState) => state.articles.articles.allArticles
   );
@@ -55,6 +59,28 @@ export const RootLayout: FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = get(currentUser, "uid", null);
+
+      if (userId) {
+        try {
+          const user = await UsersAPI.getUserByUid(userId);
+
+          if (get(user, "isAdmin", false)) {
+            dispatch(articleActions.setIsAdmin(true));
+          } else {
+            dispatch(articleActions.setIsAdmin(false));
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [currentUser]);
 
   return (
     <>

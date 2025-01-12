@@ -7,12 +7,12 @@ import { get } from "lodash";
 import { CircularProgress, ImageList, ImageListItem } from "@mui/material";
 
 import {
-  ADMIN_EMAIL,
   DELETE_MODAL_MESSAGE,
   DELETE_MODAL_TITLE,
   ERROR_MESSAGE,
 } from "../../../constants/articleDetails";
 import type { CurrentUser } from "../../../types/articlesTypes";
+import type { RootState } from "../../../store";
 
 import { modalActions } from "../../../store/modalSlice";
 
@@ -30,6 +30,7 @@ export const ArticleDetails: FC = () => {
     articleId: string;
   }>();
 
+  const isAdmin = useSelector((state: RootState) => state.articles.isAdmin);
   const currentUser = useSelector(
     (state: { auth: { currentUser: CurrentUser } }) => state.auth.currentUser
   );
@@ -84,7 +85,7 @@ export const ArticleDetails: FC = () => {
 
   return (
     <div className={styles["article-wrapper"]}>
-      {currentUser?.currentUser === ADMIN_EMAIL && (
+      {isAdmin && (
         <AdminActions
           editArticle={editArticle}
           openDeleteModal={openDeleteModal}
