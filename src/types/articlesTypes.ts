@@ -7,6 +7,7 @@ import {
   DraftDecoratorType,
   RawDraftContentState,
 } from "draft-js";
+import { TextAlign } from "./parseContentTypes";
 
 export interface AdminActionsProps {
   editArticle: () => void;
@@ -140,4 +141,44 @@ interface ModalState {
 
 export interface RootState {
   modal: ModalState;
+}
+
+export interface RenderHeaderBlockProps {
+  text: string;
+  blockType: string;
+  alignment: TextAlign;
+  key: string;
+}
+
+export interface RenderImageProps {
+  src: string;
+  alignment: TextAlign;
+  key: string;
+}
+
+export interface RenderListBlockProps {
+  items: string[];
+  blockType: string;
+  alignment: TextAlign;
+  key: string;
+}
+
+export interface RenderStyledTextProps {
+  text: string;
+  style: string;
+  alignment: TextAlign;
+  key: string;
+}
+
+export interface RenderVideoProps {
+  src: string;
+  key: string;
+}
+
+export interface LinkProps {
+  url: string;
+  target?: string;
+  style?: React.CSSProperties;
+  text: string;
+  alignment: TextAlign;
 }

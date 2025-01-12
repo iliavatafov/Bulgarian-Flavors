@@ -1,136 +1,15 @@
-import { ImageList, ImageListItem, Typography, Link } from "@mui/material";
 import { JSX } from "react";
-import type { Content, TextAlign } from "../types/parseContentTypes";
 import { get } from "lodash";
+import { Typography } from "@mui/material";
 
-// Render functions for different content types
-const renderLink = (
-  text: string,
-  url: string,
-  target: string,
-  alignment: TextAlign,
-  key: string
-): JSX.Element => (
-  <Link key={key} href={url} target={target} style={{ textAlign: alignment }}>
-    {text}
-  </Link>
-);
+import type { Content, TextAlign } from "../types/parseContentTypes";
 
-const renderImage = (
-  src: string,
-  alignment: TextAlign,
-  key: string
-): JSX.Element => (
-  <ImageList key={key} cols={1} style={{ textAlign: alignment }}>
-    <ImageListItem key={key}>
-      <img src={src} alt="Content Image" />
-    </ImageListItem>
-  </ImageList>
-);
-
-const renderVideo = (src: string, key: string): JSX.Element => {
-  const isYouTubeVideo = (url: string) => {
-    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
-    return youtubeRegex.test(url);
-  };
-
-  if (isYouTubeVideo(src)) {
-    const youtubeEmbedUrl = src.replace(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/,
-      "youtube.com/embed/$1"
-    );
-
-    return (
-      <div key={key} style={{ textAlign: "center", margin: "1em 0" }}>
-        <iframe
-          width="560"
-          height="315"
-          src={youtubeEmbedUrl}
-          title="YouTube video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{ maxWidth: "100%" }}
-        ></iframe>
-      </div>
-    );
-  }
-
-  // Render regular videos for non-YouTube URLs
-  return (
-    <div key={key} style={{ textAlign: "center", margin: "1em 0" }}>
-      <video controls style={{ maxWidth: "100%" }}>
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
-  );
-};
-
-const renderStyledText = (
-  text: string,
-  style: string,
-  alignment: TextAlign,
-  key: string
-): JSX.Element => {
-  const styleProps: { [key: string]: React.CSSProperties } = {
-    bold: { fontWeight: "bold" },
-    italic: { fontStyle: "italic" },
-    underline: { textDecoration: "underline" },
-  };
-  return (
-    <Typography
-      key={key}
-      component="span"
-      style={{ textAlign: alignment, ...styleProps[style] }}
-    >
-      {text}
-    </Typography>
-  );
-};
-
-const renderHeaderBlock = (
-  text: string,
-  blockType: string,
-  alignment: TextAlign,
-  key: string
-): JSX.Element => {
-  const blockStyleProps: { [key: string]: React.CSSProperties } = {
-    "header-one": { fontSize: "2em", fontWeight: "bold" },
-    "header-two": { fontSize: "1.5em", fontWeight: "bold" },
-    "header-three": { fontSize: "1.17em", fontWeight: "bold" },
-  };
-  return (
-    <Typography
-      key={key}
-      component="div"
-      style={{ textAlign: alignment, ...blockStyleProps[blockType] }}
-    >
-      {text}
-    </Typography>
-  );
-};
-
-const renderListBlock = (
-  items: string[],
-  blockType: string,
-  alignment: TextAlign,
-  key: string
-): JSX.Element => {
-  const isOrdered = blockType === "ordered-list-item";
-  const ListComponent = isOrdered ? "ol" : "ul";
-  return (
-    <ListComponent
-      key={key}
-      style={{ textAlign: alignment, paddingLeft: "1.5em" }}
-    >
-      {items.map((item, index) => (
-        <li key={`${key}-item-${index}`} style={{ textAlign: alignment }}>
-          {item}
-        </li>
-      ))}
-    </ListComponent>
-  );
-};
+import { LinkItem } from "../components/Articles/ArticleDetails/ArticleItems/LinkItem";
+import { ImageItem } from "../components/Articles/ArticleDetails/ArticleItems/ImageItem";
+import { VideoItem } from "../components/Articles/ArticleDetails/ArticleItems/VideoItem";
+import { StyledTextItem } from "../components/Articles/ArticleDetails/ArticleItems/StyledTextItem";
+import { HeaderItem } from "../components/Articles/ArticleDetails/ArticleItems/HeaderItem";
+import { ListBlockItem } from "../components/Articles/ArticleDetails/ArticleItems/ListBlockItem";
 
 export const useParseContent = ({
   blocks,
@@ -148,12 +27,12 @@ export const useParseContent = ({
     if (type === "unordered-list-item" || type === "ordered-list-item") {
       if (currentListType && currentListType !== type) {
         parsedContent.push([
-          renderListBlock(
-            currentListItems,
-            currentListType,
-            alignment,
-            `list-${index}`
-          ),
+          <ListBlockItem
+            key={`list-${index}`}
+            items={currentListItems}
+            blockType={currentListType!}
+            alignment={alignment}
+          />,
         ]);
         currentListItems = [];
       }
@@ -164,12 +43,12 @@ export const useParseContent = ({
       // Render any pending list items
       if (currentListItems.length > 0) {
         parsedContent.push([
-          renderListBlock(
-            currentListItems,
-            currentListType!,
-            alignment,
-            `list-${index}`
-          ),
+          <ListBlockItem
+            key={`list-${index}`}
+            items={currentListItems}
+            blockType={currentListType!}
+            alignment={alignment}
+          />,
         ]);
         currentListItems = [];
         currentListType = null;
@@ -178,7 +57,12 @@ export const useParseContent = ({
       // Handle headers
       if (type.startsWith("header-")) {
         parsedContent.push([
-          renderHeaderBlock(text, type, alignment, `header-${index}`),
+          <HeaderItem
+            key={`header-${index}`}
+            text={text}
+            blockType={type}
+            alignment={alignment}
+          />,
         ]);
         return;
       }
@@ -188,6 +72,12 @@ export const useParseContent = ({
       let currentPosition = 0;
 
       while (currentPosition < text.length) {
+        if (text[currentPosition] === "\n") {
+          components.push(<br key={`br-${index}-${currentPosition}`} />);
+          currentPosition++;
+          continue;
+        }
+
         const entity = entityRanges.find(
           (range: any) => range.offset === currentPosition
         );
@@ -201,28 +91,28 @@ export const useParseContent = ({
 
           if (entityType === "LINK") {
             components.push(
-              renderLink(
-                entityText,
-                get(entityMap, `[${key}].data.url`, "#"),
-                get(entityMap, `[${key}].data.target`, "_blank"),
-                alignment,
-                `link-${index}-${currentPosition}`
-              )
+              <LinkItem
+                text={entityText}
+                url={get(entityMap, `[${key}].data.url`, "#")}
+                target={get(entityMap, `[${key}].data.target`, "_blank")}
+                alignment={alignment}
+                key={`link-${index}-${currentPosition}`}
+              />
             );
           } else if (entityType === "IMAGE") {
             components.push(
-              renderImage(
-                get(entityMap, `[${key}].data.src`, "#"),
-                alignment,
-                `image-${index}-${currentPosition}`
-              )
+              <ImageItem
+                key={`image-${index}-${currentPosition}`}
+                src={get(entityMap, `[${key}].data.src`, "#")}
+                alignment={alignment}
+              />
             );
           } else if (entityType === "VIDEO") {
             components.push(
-              renderVideo(
-                get(entityMap, `[${key}].data.src`, "#"),
-                `video-${index}-${currentPosition}`
-              )
+              <VideoItem
+                key={`video-${index}-${currentPosition}`}
+                src={get(entityMap, `[${key}].data.src`, "#")}
+              />
             );
           }
 
@@ -235,13 +125,14 @@ export const useParseContent = ({
         );
         if (styleRange) {
           const { style, length } = styleRange;
+
           components.push(
-            renderStyledText(
-              text.slice(currentPosition, currentPosition + length),
-              style.toLowerCase(),
-              alignment,
-              `style-${index}-${currentPosition}`
-            )
+            <StyledTextItem
+              text={text.slice(currentPosition, currentPosition + length)}
+              style={style.toLowerCase()}
+              alignment={alignment}
+              key={`style-${index}-${currentPosition}`}
+            />
           );
           currentPosition += length;
           continue;
@@ -266,7 +157,12 @@ export const useParseContent = ({
   // Handle remaining list items
   if (currentListItems.length > 0) {
     parsedContent.push([
-      renderListBlock(currentListItems, currentListType!, "left", "final-list"),
+      <ListBlockItem
+        key="final-list"
+        items={currentListItems}
+        blockType={currentListType!}
+        alignment="left"
+      />,
     ]);
   }
 

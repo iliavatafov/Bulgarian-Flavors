@@ -9,3 +9,8 @@ export const validateStrMinLength = (
 ): boolean => {
   return string.length >= number;
 };
+
+export const isYouTubeVideo = (url: string) => {
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+  return youtubeRegex.test(url);
+};
