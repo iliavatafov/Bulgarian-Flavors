@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { ErrorMessage } from "formik";
-import { Editor } from "draft-js";
+import { Editor, EditorState } from "draft-js";
 
 import { START_ARTICLE_TEXT } from "../../../constants/createArticle";
 import type { EditorSectionProps } from "../../../types/articlesTypes";
@@ -25,7 +25,7 @@ export const EditorSection: FC<EditorSectionProps> = ({
             textAlignment={textAlignment}
             editorState={editorState}
             handleKeyCommand={handleKeyCommand}
-            onChange={(newState: any) => {
+            onChange={(newState: EditorState) => {
               setEditorState(newState);
               setFieldValue("content", newState);
             }}

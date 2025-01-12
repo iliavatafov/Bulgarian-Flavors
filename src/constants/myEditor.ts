@@ -34,3 +34,6 @@ export const GET_ALL_ARTICLES_ERROR_MESSAGE =
   "Възникна проблем при зареждане на всички статии.";
 export const UPDATE_ARTICLE_ERROR_MESSAGE =
   "Възникна проблем при съсздаване на статията. Моля опитайте отново.";
+export const EDITOR_VIDEO_TITLE = "YouTube video player";
+export const EDITOR_VIDEO_ALLOW =
+  "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";

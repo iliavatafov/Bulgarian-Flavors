@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   EditorState,
@@ -8,7 +8,6 @@ import {
   ContentBlock,
   ContentState,
 } from "draft-js";
-
 import "draft-js/dist/Draft.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,51 +19,26 @@ import {
   faLink,
   faList,
   faListOl,
-  faTrash,
   faUnderline,
   faAlignLeft,
   faAlignCenter,
   faAlignRight,
+  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { isValidURL } from "../utils/validations";
 
+import { EditorLink } from "../components/Modals/ManageArticlesModal/EditorLink";
+import { EditorImage } from "../components/Modals/ManageArticlesModal/EditorImage";
+import { EditorVideo } from "../components/Modals/ManageArticlesModal/EditorVideo";
+
 import styles from "../components/Modals/ManageArticlesModal/styles.module.css";
-
-interface LinkProps {
-  contentState: ContentState;
-  entityKey: string;
-  children: React.ReactNode;
-}
-
-interface ImageComponentProps {
-  block: ContentBlock;
-  contentState: ContentState;
-  blockProps: {
-    editorState: EditorState;
-    setEditorState: React.Dispatch<React.SetStateAction<EditorState>>;
-  };
-}
 
 const useEditorActions = () => {
   const [textAlignment, setTextAlignment] = useState("left");
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-
-  const Link = ({ contentState, entityKey, children }: LinkProps) => {
-    const { url } = contentState.getEntity(entityKey).getData();
-    return (
-      <a
-        className={styles.link}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {children}
-      </a>
-    );
-  };
 
   const findLinkEntities = (
     contentBlock: ContentBlock,
@@ -83,7 +57,7 @@ const useEditorActions = () => {
   const decorator = new CompositeDecorator([
     {
       strategy: findLinkEntities,
-      component: Link,
+      component: EditorLink,
     },
   ]);
 
@@ -141,13 +115,18 @@ const useEditorActions = () => {
     setTextAlignment(alignment);
   }, []);
 
+  const promptForURL = useCallback((defaultValue = ""): string | null => {
+    const url = prompt("Enter the URL:", defaultValue);
+    return url ? url.trim() : null;
+  }, []);
+
   const onLinkClick = useCallback(() => {
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const startKey = selection.getStartKey();
     const startOffset = selection.getStartOffset();
     const blockWithLinkAtBeginning = contentState.getBlockForKey(startKey);
-    debugger;
+
     const linkKey = blockWithLinkAtBeginning.getEntityAt(startOffset);
 
     let url = "";
@@ -167,7 +146,6 @@ const useEditorActions = () => {
           { url: newUrl }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
         const newEditorState = EditorState.set(editorState, {
           currentContent: contentStateWithEntity,
         });
@@ -186,7 +164,7 @@ const useEditorActions = () => {
   }, [editorState]);
 
   const onImageClick = useCallback(() => {
-    const url = prompt("Enter the image URL:");
+    const url = promptForURL();
     if (url) {
       if (isValidURL(url)) {
         const contentState = editorState.getCurrentContent();
@@ -208,195 +186,203 @@ const useEditorActions = () => {
         alert("Invalid URL");
       }
     }
-  }, [editorState]);
+  }, [editorState, promptForURL]);
 
-  const ImageComponent = useCallback(
-    ({ block, contentState, blockProps }: ImageComponentProps) => {
-      const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
-      const { editorState, setEditorState } = blockProps;
-
-      const handleDeleteImage = (block: ContentBlock) => {
-        const blockKey = block.getKey();
+  const onVideoClick = useCallback(() => {
+    const url = promptForURL("Enter the YouTube video URL:");
+    if (url) {
+      if (isValidURL(url)) {
+        const embedUrl = url.replace("watch?v=", "embed/");
         const contentState = editorState.getCurrentContent();
-        const blockMap = contentState.getBlockMap();
-        const entityKey = block.getEntityAt(0);
+        const contentStateWithEntity = contentState.createEntity(
+          "VIDEO",
+          "IMMUTABLE",
+          { src: embedUrl }
+        );
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
-        if (entityKey) {
-          const newBlockMap = blockMap
-            .delete(blockKey)
-            .map((contentBlock: ContentBlock | undefined) => {
-              if (!contentBlock) return contentBlock;
-              const updatedCharacterList = contentBlock
-                .getCharacterList()
-                .filter(
-                  (character: any) => character.getEntity() !== entityKey
-                );
-              return contentBlock.set("characterList", updatedCharacterList);
-            });
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+          editorState,
+          entityKey,
+          " "
+        );
 
-          const newContentState = contentState.merge({
-            blockMap: newBlockMap,
-            selectionAfter: contentState.getSelectionAfter().merge({
-              anchorKey: blockKey,
-              focusKey: blockKey,
-              anchorOffset: 0,
-              focusOffset: 0,
-              isBackward: false,
-            }),
-          }) as ContentState;
+        setEditorState(newEditorState);
+      } else {
+        alert("Invalid URL");
+      }
+    }
+  }, [editorState, promptForURL]);
 
-          const newEditorState = EditorState.push(
-            editorState,
-            newContentState,
-            "remove-range"
-          );
+  const blockRendererFn = useCallback(
+    (block: ContentBlock) => {
+      const type = block.getType();
+      if (type === "atomic") {
+        const entity = block.getEntityAt(0);
+        const entityType =
+          entity && editorState.getCurrentContent().getEntity(entity).getType();
 
-          setEditorState(newEditorState);
+        if (entityType === "IMAGE") {
+          return {
+            component: EditorImage,
+            editable: false,
+            props: {
+              editorState,
+              setEditorState,
+            },
+          };
+        } else if (entityType === "VIDEO") {
+          return {
+            component: EditorVideo,
+            editable: false,
+            props: {
+              editorState,
+              setEditorState,
+            },
+          };
         }
-      };
-
-      return (
-        <div className={styles["image-wrapper"]}>
-          <div className={styles["image-controls"]}>
-            <FontAwesomeIcon
-              icon={faTrash}
-              onClick={() => handleDeleteImage(block)}
-            />
-          </div>
-          <img src={src} alt="DraftJS" className={styles.image} />
-        </div>
-      );
+      }
+      return null;
     },
-    []
+    [editorState]
   );
 
-  const blockRendererFn = useCallback((block: any) => {
-    const type = block.getType();
-    if (type === "atomic") {
-      return {
-        component: ImageComponent,
-        editable: false,
-        props: {
-          editorState,
-          setEditorState,
-        },
-      };
-    }
-    return null;
-  }, []);
-
-  const actions = [
-    {
-      id: "1",
-      icon: (
-        <FontAwesomeIcon
-          className={styles.icon}
-          icon={faBold}
-          onClick={onBoldClick}
-        />
-      ),
-    },
-    {
-      id: "2",
-      icon: (
-        <FontAwesomeIcon
-          className={styles.icon}
-          onClick={onItalicClick}
-          icon={faItalic}
-        />
-      ),
-    },
-    {
-      id: "3",
-      icon: (
-        <FontAwesomeIcon
-          className={styles.icon}
-          onClick={onUnderlineClick}
-          icon={faUnderline}
-        />
-      ),
-    },
-    {
-      id: "4",
-      icon: (
-        <FontAwesomeIcon
-          icon={faHeading}
-          className={styles.icon}
-          onClick={onHeadingClick}
-        />
-      ),
-    },
-    {
-      id: "5",
-      icon: (
-        <FontAwesomeIcon
-          icon={faAlignLeft}
-          className={styles.icon}
-          onClick={() => onAlignClick("left")}
-        />
-      ),
-    },
-    {
-      id: "6",
-      icon: (
-        <FontAwesomeIcon
-          icon={faAlignCenter}
-          className={styles.icon}
-          onClick={() => onAlignClick("center")}
-        />
-      ),
-    },
-    {
-      id: "7",
-      icon: (
-        <FontAwesomeIcon
-          icon={faAlignRight}
-          className={styles.icon}
-          onClick={() => onAlignClick("right")}
-        />
-      ),
-    },
-    {
-      id: "8",
-      icon: (
-        <FontAwesomeIcon
-          icon={faList}
-          className={styles.icon}
-          onClick={onUnorderedListClick}
-        />
-      ),
-    },
-    {
-      id: "9",
-      icon: (
-        <FontAwesomeIcon
-          icon={faListOl}
-          className={styles.icon}
-          onClick={onOrderedListClick}
-        />
-      ),
-    },
-    {
-      id: "10",
-      icon: (
-        <FontAwesomeIcon
-          icon={faLink}
-          className={styles.icon}
-          onClick={onLinkClick}
-        />
-      ),
-    },
-    {
-      id: "11",
-      icon: (
-        <FontAwesomeIcon
-          icon={faImage}
-          className={styles.icon}
-          onClick={onImageClick}
-        />
-      ),
-    },
-  ];
+  const actions = useMemo(
+    () => [
+      {
+        id: "1",
+        icon: (
+          <FontAwesomeIcon
+            className={styles.icon}
+            icon={faBold}
+            onClick={onBoldClick}
+          />
+        ),
+      },
+      {
+        id: "2",
+        icon: (
+          <FontAwesomeIcon
+            className={styles.icon}
+            onClick={onItalicClick}
+            icon={faItalic}
+          />
+        ),
+      },
+      {
+        id: "3",
+        icon: (
+          <FontAwesomeIcon
+            className={styles.icon}
+            onClick={onUnderlineClick}
+            icon={faUnderline}
+          />
+        ),
+      },
+      {
+        id: "4",
+        icon: (
+          <FontAwesomeIcon
+            icon={faHeading}
+            className={styles.icon}
+            onClick={onHeadingClick}
+          />
+        ),
+      },
+      // {
+      //   id: "5",
+      //   icon: (
+      //     <FontAwesomeIcon
+      //       icon={faAlignLeft}
+      //       className={styles.icon}
+      //       onClick={() => onAlignClick("left")}
+      //     />
+      //   ),
+      // },
+      // {
+      //   id: "6",
+      //   icon: (
+      //     <FontAwesomeIcon
+      //       icon={faAlignCenter}
+      //       className={styles.icon}
+      //       onClick={() => onAlignClick("center")}
+      //     />
+      //   ),
+      // },
+      // {
+      //   id: "7",
+      //   icon: (
+      //     <FontAwesomeIcon
+      //       icon={faAlignRight}
+      //       className={styles.icon}
+      //       onClick={() => onAlignClick("right")}
+      //     />
+      //   ),
+      // },
+      {
+        id: "8",
+        icon: (
+          <FontAwesomeIcon
+            icon={faList}
+            className={styles.icon}
+            onClick={onUnorderedListClick}
+          />
+        ),
+      },
+      {
+        id: "9",
+        icon: (
+          <FontAwesomeIcon
+            icon={faListOl}
+            className={styles.icon}
+            onClick={onOrderedListClick}
+          />
+        ),
+      },
+      {
+        id: "10",
+        icon: (
+          <FontAwesomeIcon
+            icon={faLink}
+            className={styles.icon}
+            onClick={onLinkClick}
+          />
+        ),
+      },
+      {
+        id: "11",
+        icon: (
+          <FontAwesomeIcon
+            icon={faImage}
+            className={styles.icon}
+            onClick={onImageClick}
+          />
+        ),
+      },
+      {
+        id: "12",
+        icon: (
+          <FontAwesomeIcon
+            icon={faVideo}
+            className={styles.icon}
+            onClick={onVideoClick}
+          />
+        ),
+      },
+    ],
+    [
+      onBoldClick,
+      onItalicClick,
+      onUnderlineClick,
+      onHeadingClick,
+      onAlignClick,
+      onUnorderedListClick,
+      onOrderedListClick,
+      onLinkClick,
+      onImageClick,
+      onVideoClick,
+    ]
+  );
 
   return {
     editorState,

@@ -124,8 +124,19 @@ select {
   cursor: pointer;
 }
 
-.image-wrapper {
+.image-wrapper,
+.video-wrapper {
   background-color: #eee;
+}
+
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .image-controls {
@@ -147,8 +158,10 @@ select {
   color: var(--green-cyan-color);
 }
 
-.image {
-  width: 60%;
+.image,
+.video {
+  width: auto;
+  height: auto;
   margin: 0 auto;
 }
 
@@ -188,6 +201,29 @@ select {
 
 .xmark:hover {
   color: var(--green-cyan-color);
+}
+
+.text-align-left,
+.text-align-left .public-DraftStyleDefault-block,
+.text-align-left .public-DraftStyleDefault-block span {
+  text-align: left !important;
+}
+
+.text-align-center,
+.text-align-center .public-DraftStyleDefault-block,
+.text-align-center .public-DraftStyleDefault-block span {
+  text-align: center !important;
+}
+
+.text-align-right,
+.text-align-right .public-DraftStyleDefault-block,
+.text-align-right .public-DraftStyleDefault-block span {
+  text-align: right !important;
+  background-color: red;
+}
+
+.public-DraftStyleDefault-block {
+  width: 100%;
 }
 
 @media screen and (max-width: 1090px) {
