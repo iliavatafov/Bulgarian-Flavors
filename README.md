@@ -44,9 +44,11 @@ To run this project locally:
    ```bash
    npm start
 
+
 📱 Demo
 You can check out the live demo of the application:
 - [Bulgarian Flavors Website](https://dashing-kringle-5254bd.netlify.app/)
+
 
 📫 Contact
 If you have any questions or would like to collaborate, feel free to reach out:
