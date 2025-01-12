@@ -36,15 +36,10 @@ To run this project locally:
 2. Clone the repository:
 
    ```bash
-   cd bulgarian-flavors
+   cd Bulgarian-Flavors
    npm install
 
-3. Set up Firebase:
-
-Create a Firebase project.
-Obtain your Firebase credentials and configure them in the Firebase setup in the app.
-
-4. Start the application:
+3. Start the application:
    
    ```bash
    npm start
