@@ -23,6 +23,7 @@ Welcome to **Bulgarian Flavors**, a modern news website built with **TypeScript*
 - **Yup**: Schema validation used with Formik for form validation.
 - **Draft.js**: A framework for building rich text editors in React, used for creating and editing articles.
 - **Firebase**: Backend-as-a-Service (BaaS) used for user authentication and backend data management.
+- **pnpm**: A fast, disk space-efficient package manager used to manage project dependencies.
 
 ## 🔧 Setup & Installation
 
@@ -37,12 +38,12 @@ To run this project locally:
 
    ```bash
    cd Bulgarian-Flavors
-   npm install
+   pnpm install
 
 3. Start the application:
    
    ```bash
-   npm start
+   pnpm start
 
 
 📱 Demo
