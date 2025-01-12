@@ -33,6 +33,7 @@ const renderStyledText = (
   const styleProps: { [key: string]: React.CSSProperties } = {
     bold: { fontWeight: "bold" },
     italic: { fontStyle: "italic" },
+    underline: { textDecoration: "underline" },
   };
 
   const appliedStyle = styleProps[style] || {};
@@ -48,98 +49,117 @@ const renderStyledText = (
   );
 };
 
+const renderHeaderBlock = (
+  text: string,
+  blockType: string,
+  alignment: TextAlign,
+  key: string
+) => {
+  const blockStyleProps: { [key: string]: React.CSSProperties } = {
+    "header-one": { fontSize: "2em", fontWeight: "bold" },
+    "header-two": { fontSize: "1.5em", fontWeight: "bold" },
+    "header-three": { fontSize: "1.17em", fontWeight: "bold" },
+  };
+
+  return (
+    <Typography
+      key={key}
+      component="div"
+      style={{ textAlign: alignment, ...blockStyleProps[blockType] }}
+    >
+      {text}
+    </Typography>
+  );
+};
+
 export const useParseContent = ({
   blocks,
   entityMap,
 }: Content): JSX.Element[][] => {
   const parsedContent = blocks.map((block, index) => {
-    let text = block.text;
-    const components = [];
+    const { text, type, data, entityRanges, inlineStyleRanges } = block;
+    const components: JSX.Element[] = [];
     let currentPosition = 0;
 
+    const alignment = get(data, "alignment", "left");
+
+    if (
+      type.startsWith("header") ||
+      type === "blockquote" ||
+      type === "code-block"
+    ) {
+      switch (type) {
+        case "header-one":
+        case "header-two":
+        case "header-three":
+          return [renderHeaderBlock(text, type, alignment, `header-${index}`)];
+      }
+    }
+
     while (currentPosition < text.length) {
-      if (block.type === "unstyled" && text[currentPosition] === "\n") {
-        components.push(<br key={`br-${index}-${currentPosition}`} />);
-        currentPosition++;
-      } else {
-        const alignment = get(block, "data.alignment", "left");
-        const entity = block.entityRanges.find(
-          (range) => range.offset === currentPosition
+      const entity = entityRanges.find(
+        (range) => range.offset === currentPosition
+      );
+
+      if (entity) {
+        const { key, length } = entity;
+        const entityType = entityMap[key].type;
+        const entityText = text.slice(
+          currentPosition,
+          currentPosition + length
         );
 
-        if (entity && entityMap[entity.key].type === "LINK") {
-          const url = get(entityMap, `[${entity.key}].data.url`, "#");
-          const target = get(
-            entityMap,
-            `[${entity.key}].data.target`,
-            "_blank"
-          );
-
+        if (entityType === "LINK") {
           components.push(
             renderLink(
-              text.slice(currentPosition, currentPosition + entity.length),
-              url,
-              target,
+              entityText,
+              get(entityMap, `[${key}].data.url`, "#"),
+              get(entityMap, `[${key}].data.target`, "_blank"),
               alignment,
               `link-${index}-${currentPosition}`
             )
           );
-
-          currentPosition += entity.length;
-        } else {
-          const imageEntity = block.entityRanges.find(
-            (range) =>
-              range.offset === currentPosition &&
-              entityMap[range.key].type === "IMAGE"
+        } else if (entityType === "IMAGE") {
+          components.push(
+            renderImage(
+              get(entityMap, `[${key}].data.src`, "#"),
+              alignment,
+              `image-${index}-${currentPosition}`
+            )
           );
-
-          if (imageEntity) {
-            const src = get(entityMap, `[${imageEntity.key}].data.src`, "#");
-            const imageLength = imageEntity.length;
-
-            components.push(
-              renderImage(src, alignment, `image-${index}-${currentPosition}`)
-            );
-
-            currentPosition += imageLength;
-          } else {
-            let styleRanges = block.inlineStyleRanges.filter(
-              (range) => range.offset === currentPosition
-            );
-
-            let styleComponent = null;
-
-            if (styleRanges.length > 0) {
-              const style = styleRanges[0].style.toLowerCase();
-              const styleLength = styleRanges[0].length;
-
-              styleComponent = renderStyledText(
-                text.slice(currentPosition, currentPosition + styleLength),
-                style,
-                alignment,
-                `${style}-${index}-${currentPosition}`
-              );
-
-              currentPosition += styleLength;
-            }
-
-            if (styleComponent) {
-              components.push(styleComponent);
-            } else {
-              components.push(
-                <Typography
-                  key={`text-${index}-${currentPosition}`}
-                  component="span"
-                  style={{ textAlign: alignment }}
-                >
-                  {text[currentPosition]}
-                </Typography>
-              );
-              currentPosition++;
-            }
-          }
         }
+
+        currentPosition += length;
+        continue;
       }
+
+      const styleRange = inlineStyleRanges.find(
+        (range) => range.offset === currentPosition
+      );
+      if (styleRange) {
+        const { style, length } = styleRange;
+        components.push(
+          renderStyledText(
+            text.slice(currentPosition, currentPosition + length),
+            style.toLowerCase(),
+            alignment,
+            `style-${index}-${currentPosition}`
+          )
+        );
+        currentPosition += length;
+        continue;
+      }
+
+      components.push(
+        <Typography
+          key={`text-${index}-${currentPosition}`}
+          component="span"
+          style={{ textAlign: alignment }}
+        >
+          {text[currentPosition]}
+        </Typography>
+      );
+      currentPosition++;
     }
 
     return components;

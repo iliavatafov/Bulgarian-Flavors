@@ -2,7 +2,7 @@ import { SentimentVeryDissatisfied } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 
-const EmptyState: FC<{ text: string }> = ({ text }) => {
+export const EmptyState: FC<{ text: string }> = ({ text }) => {
   return (
     <Box
       display="flex"
@@ -19,5 +19,3 @@ const EmptyState: FC<{ text: string }> = ({ text }) => {
     </Box>
   );
 };
-
-export default EmptyState;

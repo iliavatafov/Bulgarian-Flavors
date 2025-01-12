@@ -19,10 +19,10 @@ import { modalActions } from "../../../store/modalSlice";
 import { AdminActions } from "../AdminActions/index";
 import { ArticleHeader } from "./ArticleHeader/index";
 import { ArticleContent } from "./ArticleContent";
-import EmptyState from "../../EmptyState/EmptyState";
+import { EmptyState } from "../../EmptyState/EmptyState";
+import { ArticleFooter } from "./ArticleFooter";
 
 import styles from "./styles.module.css";
-import { ArticleFooter } from "./ArticleFooter";
 
 export const ArticleDetails: FC = () => {
   const { section, articleId } = useParams<{

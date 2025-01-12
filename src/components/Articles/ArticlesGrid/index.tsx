@@ -19,7 +19,7 @@ import type {
 
 import { GridHeader } from "./GridHeader";
 import { ArticleCard } from "../ArticleCard/index";
-import EmptyState from "../../EmptyState/EmptyState";
+import { EmptyState } from "../../EmptyState/EmptyState";
 
 import styles from "./styles.module.css";
 
