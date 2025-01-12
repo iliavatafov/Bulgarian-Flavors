@@ -1,8 +1,10 @@
+import { JSX } from "react";
+import { get } from "lodash";
+
 import { ImageList, ImageListItem, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
-import { JSX } from "react";
+
 import type { Content, TextAlign } from "../types/parseContentTypes";
-import { get } from "lodash";
 
 const renderLink = (
   text: string,
@@ -72,98 +74,160 @@ const renderHeaderBlock = (
   );
 };
 
+const renderListBlock = (
+  items: string[],
+  blockType: string,
+  alignment: TextAlign,
+  key: string
+) => {
+  const isOrdered = blockType === "ordered-list-item";
+  const ListComponent = isOrdered ? "ol" : "ul";
+
+  return (
+    <ListComponent
+      key={key}
+      style={{ textAlign: alignment, paddingLeft: "1.5em" }}
+    >
+      {items.map((item, index) => (
+        <li key={`${key}-item-${index}`} style={{ textAlign: alignment }}>
+          {item}
+        </li>
+      ))}
+    </ListComponent>
+  );
+};
+
 export const useParseContent = ({
   blocks,
   entityMap,
 }: Content): JSX.Element[][] => {
-  const parsedContent = blocks.map((block, index) => {
-    const { text, type, data, entityRanges, inlineStyleRanges } = block;
-    const components: JSX.Element[] = [];
-    let currentPosition = 0;
+  const parsedContent: JSX.Element[][] = [];
+  let currentListItems: string[] = [];
+  let currentListType: string | null = null;
 
+  blocks.forEach((block, index) => {
+    const { text, type, data, entityRanges, inlineStyleRanges } = block;
     const alignment = get(data, "alignment", "left");
 
-    if (
-      type.startsWith("header") ||
-      type === "blockquote" ||
-      type === "code-block"
-    ) {
-      switch (type) {
-        case "header-one":
-        case "header-two":
-        case "header-three":
-          return [renderHeaderBlock(text, type, alignment, `header-${index}`)];
+    // Handle list blocks
+    if (type === "unordered-list-item" || type === "ordered-list-item") {
+      if (currentListType && currentListType !== type) {
+        parsedContent.push([
+          renderListBlock(
+            currentListItems,
+            currentListType,
+            alignment,
+            `list-${index}`
+          ),
+        ]);
+        currentListItems = [];
       }
-    }
 
-    while (currentPosition < text.length) {
-      const entity = entityRanges.find(
-        (range) => range.offset === currentPosition
-      );
+      currentListType = type;
+      currentListItems.push(text);
+    } else {
+      // Render any pending list items
+      if (currentListItems.length > 0) {
+        parsedContent.push([
+          renderListBlock(
+            currentListItems,
+            currentListType!,
+            alignment,
+            `list-${index}`
+          ),
+        ]);
+        currentListItems = [];
+        currentListType = null;
+      }
 
-      if (entity) {
-        const { key, length } = entity;
-        const entityType = entityMap[key].type;
-        const entityText = text.slice(
-          currentPosition,
-          currentPosition + length
+      // **Handle header blocks**
+      if (type.startsWith("header-")) {
+        parsedContent.push([
+          renderHeaderBlock(text, type, alignment, `header-${index}`),
+        ]);
+        return;
+      }
+
+      // Handle regular content blocks (unstyled text, links, images)
+      const components: JSX.Element[] = [];
+      let currentPosition = 0;
+
+      while (currentPosition < text.length) {
+        const entity = entityRanges.find(
+          (range) => range.offset === currentPosition
         );
 
-        if (entityType === "LINK") {
-          components.push(
-            renderLink(
-              entityText,
-              get(entityMap, `[${key}].data.url`, "#"),
-              get(entityMap, `[${key}].data.target`, "_blank"),
-              alignment,
-              `link-${index}-${currentPosition}`
-            )
+        if (entity) {
+          const { key, length } = entity;
+          const entityType = entityMap[key].type;
+          const entityText = text.slice(
+            currentPosition,
+            currentPosition + length
           );
-        } else if (entityType === "IMAGE") {
-          components.push(
-            renderImage(
-              get(entityMap, `[${key}].data.src`, "#"),
-              alignment,
-              `image-${index}-${currentPosition}`
-            )
-          );
+
+          if (entityType === "LINK") {
+            components.push(
+              renderLink(
+                entityText,
+                get(entityMap, `[${key}].data.url`, "#"),
+                get(entityMap, `[${key}].data.target`, "_blank"),
+                alignment,
+                `link-${index}-${currentPosition}`
+              )
+            );
+          } else if (entityType === "IMAGE") {
+            components.push(
+              renderImage(
+                get(entityMap, `[${key}].data.src`, "#"),
+                alignment,
+                `image-${index}-${currentPosition}`
+              )
+            );
+          }
+
+          currentPosition += length;
+          continue;
         }
 
-        currentPosition += length;
-        continue;
-      }
-
-      const styleRange = inlineStyleRanges.find(
-        (range) => range.offset === currentPosition
-      );
-      if (styleRange) {
-        const { style, length } = styleRange;
-        components.push(
-          renderStyledText(
-            text.slice(currentPosition, currentPosition + length),
-            style.toLowerCase(),
-            alignment,
-            `style-${index}-${currentPosition}`
-          )
+        const styleRange = inlineStyleRanges.find(
+          (range) => range.offset === currentPosition
         );
-        currentPosition += length;
-        continue;
+        if (styleRange) {
+          const { style, length } = styleRange;
+          components.push(
+            renderStyledText(
+              text.slice(currentPosition, currentPosition + length),
+              style.toLowerCase(),
+              alignment,
+              `style-${index}-${currentPosition}`
+            )
+          );
+          currentPosition += length;
+          continue;
+        }
+
+        components.push(
+          <Typography
+            key={`text-${index}-${currentPosition}`}
+            component="span"
+            style={{ textAlign: alignment }}
+          >
+            {text[currentPosition]}
+          </Typography>
+        );
+        currentPosition++;
       }
 
-      components.push(
-        <Typography
-          key={`text-${index}-${currentPosition}`}
-          component="span"
-          style={{ textAlign: alignment }}
-        >
-          {text[currentPosition]}
-        </Typography>
-      );
-      currentPosition++;
+      parsedContent.push(components);
     }
-
-    return components;
   });
+
+  // Handle remaining list items
+  if (currentListItems.length > 0) {
+    parsedContent.push([
+      renderListBlock(currentListItems, currentListType!, "left", "final-list"),
+    ]);
+  }
 
   return parsedContent;
 };
