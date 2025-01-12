@@ -34,13 +34,17 @@ To run this project locally:
    ```bash
    git clone https://github.com/iliavatafov/Bulgarian-Flavors
 
-2. Clone the repository:
+2. Navigate to the project directory:
 
    ```bash
    cd Bulgarian-Flavors
+   
+
+3. Install the dependencies using pnpm:
+  ```bash
    pnpm install
 
-3. Start the application:
+4. Start the application:
    
    ```bash
    pnpm start
